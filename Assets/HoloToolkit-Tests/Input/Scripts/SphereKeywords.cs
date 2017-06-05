@@ -7,7 +7,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     [RequireComponent(typeof(Renderer))]
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
-    {
+    { // look at the ISpeechHander
         private Material cachedMaterial;
 
         private void Awake()
