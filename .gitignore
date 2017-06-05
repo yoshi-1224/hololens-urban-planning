@@ -2,6 +2,7 @@
 App/
 UWP/
 Library/
-Planetarium.csproj
-Planetarium.sln
+URA_Project.sln
+URA_Project.Editor.csproj
+URA_Project.csproj
 Temp/
