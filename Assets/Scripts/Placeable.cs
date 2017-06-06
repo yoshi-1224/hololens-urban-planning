@@ -1,14 +1,15 @@
-﻿using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Unity.SpatialMapping;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity;
+using HoloToolkit.Unity.SpatialMapping;
+using HoloToolkit.Unity.InputModule;
 
 /// <summary>
 /// Enumeration containing the surfaces on which a GameObject
 /// can be placed.  For simplicity of this sample, only one
 /// surface type is allowed to be selected.
 /// </summary>
-public enum PlacementSurfaces
-{
+public enum PlacementSurfaces {
     // Horizontal surface with an upward pointing normal.    
     Horizontal = 1,
 
@@ -26,8 +27,7 @@ public enum PlacementSurfaces
 /// * A transparent cube representing the object's box collider.
 /// * Shadow on the target surface indicating whether or not placement is valid.
 /// </summary>
-public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
-{
+public class Placeable : MonoBehaviour, IInputClickHandler {
     [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
     public Material PlaceableBoundsMaterial = null;
 
@@ -35,19 +35,16 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     public Material NotPlaceableBoundsMaterial = null;
 
     [Tooltip("The material used to render the placement shadow when placement it allowed.")]
-    public Material PlaceableShadowInTargetPositionMaterial = null;
+    public Material PlaceableShadowMaterial = null;
 
     [Tooltip("The material used to render the placement shadow when placement it not allowed.")]
-    public Material NotPlaceableShadowInTargetPositionMaterial = null;
-
-    [Tooltip("If True a shadow will be displayed on the object target position")]
-    public bool DisplayShadowInTargetPosition;
+    public Material NotPlaceableShadowMaterial = null;
 
     [Tooltip("The type of surface on which the object can be placed.")]
     public PlacementSurfaces PlacementSurface = PlacementSurfaces.Horizontal;
 
-    [Tooltip("Text mesh useed during debug mode")]
-    public TextMesh DebugTextMesh;
+    [Tooltip("The child object(s) to hide during placement.")]
+    public List<GameObject> ChildrenToHide = new List<GameObject>();
 
     /// <summary>
     /// Indicates if the object is in the process of being placed.
@@ -57,89 +54,77 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     // The most recent distance to the surface.  This is used to 
     // locate the object when the user's gaze does not intersect
     // with the Spatial Mapping mesh.
-    private float _lastDistance = 2.0f;
+    private float lastDistance = 2.0f;
 
     // The distance away from the target surface that the object should hover prior while being placed.
-    private readonly float _hoverDistance = 0.15f;
+    private float hoverDistance = 0.15f;
 
     // Threshold (the closer to 0, the stricter the standard) used to determine if a surface is flat.
-    private readonly float _distanceThreshold = 0.02f;
+    private float distanceThreshold = 0.02f;
 
     // Threshold (the closer to 1, the stricter the standard) used to determine if a surface is vertical.
-    private readonly float _upNormalThreshold = 0.9f;
+    private float upNormalThreshold = 0.9f;
 
     // Maximum distance, from the object, that placement is allowed.
     // This is used when raycasting to see if the object is near a placeable surface.
-    private readonly float _maximumPlacementDistance = 5.0f;
+    private float maximumPlacementDistance = 5.0f;
 
     // Speed (1.0 being fastest) at which the object settles to the surface upon placement.
-    private readonly float _placementVelocity = 0.06f;
+    private float placementVelocity = 0.06f;
 
     // Indicates whether or not this script manages the object's box collider.
-    private bool _managingBoxCollider;
+    private bool managingBoxCollider = false;
 
     // The box collider used to determine of the object will fit in the desired location.
     // It is also used to size the bounding cube.
-    private BoxCollider _boxCollider;
+    private BoxCollider boxCollider = null;
 
     // Visible asset used to show the dimensions of the object. This asset is sized
     // using the box collider's bounds.
-    private GameObject _boundsAsset;
+    private GameObject boundsAsset = null;
 
     // Visible asset used to show the where the object is attempting to be placed.
     // This asset is sized using the box collider's bounds.
-    private GameObject _shadowAsset;
+    private GameObject shadowAsset = null;
 
     // The location at which the object will be placed.
-    private Vector3 _targetPosition;
+    private Vector3 targetPosition;
 
     /// <summary>
     /// Called when the GameObject is created.
     /// </summary>
-    // ReSharper disable once UnusedMember.Local
-    private void Awake()
-    {
-        _targetPosition = gameObject.transform.position;
+    private void Awake() {
+        targetPosition = gameObject.transform.position;
 
         // Get the object's collider.
-        _boxCollider = gameObject.GetComponent<BoxCollider>();
-        if (_boxCollider == null)
-        {
+        boxCollider = gameObject.GetComponent<BoxCollider>();
+        if (boxCollider == null) {
             // The object does not have a collider, create one and remember that
             // we are managing it.
-            _managingBoxCollider = true;
-            _boxCollider = gameObject.AddComponent<BoxCollider>();
-            _boxCollider.enabled = false;
+            managingBoxCollider = true;
+            boxCollider = gameObject.AddComponent<BoxCollider>();
+            boxCollider.enabled = false;
         }
 
         // Create the object that will be used to indicate the bounds of the GameObject.
-        _boundsAsset = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        _boundsAsset.transform.parent = gameObject.transform;
-        _boundsAsset.SetActive(false);
+        boundsAsset = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        boundsAsset.transform.parent = gameObject.transform;
+        boundsAsset.SetActive(false);
 
         // Create a object that will be used as a shadow.
-        _shadowAsset = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        _shadowAsset.transform.parent = gameObject.transform;
-        _shadowAsset.SetActive(false);
+        shadowAsset = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        shadowAsset.transform.parent = gameObject.transform;
+        shadowAsset.SetActive(false);
     }
 
     /// <summary>
-    /// Called when our object is selected.  Generally called by
-    /// a gesture management component.
+    /// Called when our object is clicked.
     /// </summary>
-    public void OnInputClicked(InputClickedEventData eventData)
-    {
-        PlaceObject();
-    }
-
-    void PlaceObject()
-    {
-        if (!IsPlacing)
-        {
+    public void OnInputClicked(InputClickedEventData eventData) {
+        if (!IsPlacing) {
             OnPlacementStart();
         }
-        else
-        {
+        else {
             OnPlacementStop();
         }
     }
@@ -147,33 +132,33 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// <summary>
     /// Called once per frame.
     /// </summary>
-    // ReSharper disable once UnusedMember.Local
-    private void Update()
-    {
-        Debug("Is placing:" + IsPlacing);
-        if (IsPlacing)
-        {
+    private void Update() {
+        if (IsPlacing) {
+            // Move the object.
             Move();
 
             // Set the visual elements.
             Vector3 targetPosition;
             Vector3 surfaceNormal;
-            var canBePlaced = ValidatePlacement(out targetPosition, out surfaceNormal);
+            bool canBePlaced = ValidatePlacement(out targetPosition, out surfaceNormal);
             DisplayBounds(canBePlaced);
-            if (DisplayShadowInTargetPosition)
-                DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
+            DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
         }
-        else
-        {
+        else {
             // Disable the visual elements.
-            _boundsAsset.SetActive(false);
-            _shadowAsset.SetActive(false);
+            boundsAsset.SetActive(false);
+            shadowAsset.SetActive(false);
 
             // Gracefully place the object on the target surface.
-            var dist = (gameObject.transform.position - _targetPosition).magnitude;
-            if (dist > 0)
-            {
-                gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, _targetPosition, _placementVelocity / dist);
+            float dist = (gameObject.transform.position - targetPosition).magnitude;
+            if (dist > 0) {
+                gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
+            }
+            else {
+                // Unhide the child object(s) to make placement easier.
+                for (int i = 0; i < ChildrenToHide.Count; i++) {
+                    ChildrenToHide[i].SetActive(true);
+                }
             }
         }
     }
@@ -190,12 +175,10 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// <returns>
     /// True if the target position is valid for placing the object, otherwise false.
     /// </returns>
-    private bool ValidatePlacement(out Vector3 position, out Vector3 surfaceNormal)
-    {
-        var raycastDirection = gameObject.transform.forward;
+    private bool ValidatePlacement(out Vector3 position, out Vector3 surfaceNormal) {
+        Vector3 raycastDirection = gameObject.transform.forward;
 
-        if (PlacementSurface == PlacementSurfaces.Horizontal)
-        {
+        if (PlacementSurface == PlacementSurfaces.Horizontal) {
             // Placing on horizontal surfaces.
             // Raycast from the bottom face of the box collider.
             raycastDirection = -(Vector3.up);
@@ -205,12 +188,11 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
         position = Vector3.zero;
         surfaceNormal = Vector3.zero;
 
-        var facePoints = GetColliderFacePoints();
+        Vector3[] facePoints = GetColliderFacePoints();
 
         // The origin points we receive are in local space and we 
         // need to raycast in world space.
-        for (var i = 0; i < facePoints.Length; i++)
-        {
+        for (int i = 0; i < facePoints.Length; i++) {
             facePoints[i] = gameObject.transform.TransformVector(facePoints[i]) + gameObject.transform.position;
         }
 
@@ -219,9 +201,8 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
         if (!Physics.Raycast(facePoints[0],
                         raycastDirection,
                         out centerHit,
-                        _maximumPlacementDistance,
-                        SpatialMappingManager.Instance.LayerMask))
-        {
+                        maximumPlacementDistance,
+                        SpatialMappingManager.Instance.LayerMask)) {
             // If the ray failed to hit the surface, we are done.
             return false;
         }
@@ -231,24 +212,20 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
         surfaceNormal = centerHit.normal;
 
         // Cast a ray from the corners of the box collider face to the surface.
-        for (var i = 1; i < facePoints.Length; i++)
-        {
+        for (int i = 1; i < facePoints.Length; i++) {
             RaycastHit hitInfo;
             if (Physics.Raycast(facePoints[i],
                                 raycastDirection,
                                 out hitInfo,
-                                _maximumPlacementDistance,
-                                SpatialMappingManager.Instance.LayerMask))
-            {
+                                maximumPlacementDistance,
+                                SpatialMappingManager.Instance.LayerMask)) {
                 // To be a valid placement location, each of the corners must have a similar
                 // enough distance to the surface as the center point
-                if (!IsEquivalentDistance(centerHit.distance, hitInfo.distance))
-                {
+                if (!IsEquivalentDistance(centerHit.distance, hitInfo.distance)) {
                     return false;
                 }
             }
-            else
-            {
+            else {
                 // The raycast failed to intersect with the target layer.
                 return false;
             }
@@ -256,6 +233,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
 
         return true;
     }
+
     /// <summary>
     /// Determine the coordinates, in local space, of the box collider face that 
     /// will be placed against the target surface.
@@ -263,19 +241,18 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// <returns>
     /// Vector3 array with the center point of the face at index 0.
     /// </returns>
-    private Vector3[] GetColliderFacePoints()
-    {
+    private Vector3[] GetColliderFacePoints() {
         // Get the collider extents.  
         // The size values are twice the extents.
-        var extents = _boxCollider.size / 2;
+        Vector3 extents = boxCollider.size / 2;
 
         // Calculate the min and max values for each coordinate.
-        var minX = _boxCollider.center.x - extents.x;
-        var maxX = _boxCollider.center.x + extents.x;
-        var minY = _boxCollider.center.y - extents.y;
-        var maxY = _boxCollider.center.y + extents.y;
-        var minZ = _boxCollider.center.z - extents.z;
-        var maxZ = _boxCollider.center.z + extents.z;
+        float minX = boxCollider.center.x - extents.x;
+        float maxX = boxCollider.center.x + extents.x;
+        float minY = boxCollider.center.y - extents.y;
+        float maxY = boxCollider.center.y + extents.y;
+        float minZ = boxCollider.center.z - extents.z;
+        float maxZ = boxCollider.center.z + extents.z;
 
         Vector3 center;
         Vector3 corner0;
@@ -283,38 +260,42 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
         Vector3 corner2;
         Vector3 corner3;
 
-        if (PlacementSurface == PlacementSurfaces.Horizontal)
-        {
+        if (PlacementSurface == PlacementSurfaces.Horizontal) {
             // Placing on horizontal surfaces.
-            center = new Vector3(_boxCollider.center.x, minY, _boxCollider.center.z);
+            center = new Vector3(boxCollider.center.x, minY, boxCollider.center.z);
             corner0 = new Vector3(minX, minY, minZ);
             corner1 = new Vector3(minX, minY, maxZ);
             corner2 = new Vector3(maxX, minY, minZ);
             corner3 = new Vector3(maxX, minY, maxZ);
         }
-        else
-        {
+        else {
             // Placing on vertical surfaces.
-            center = new Vector3(_boxCollider.center.x, _boxCollider.center.y, maxZ);
+            center = new Vector3(boxCollider.center.x, boxCollider.center.y, maxZ);
             corner0 = new Vector3(minX, minY, maxZ);
             corner1 = new Vector3(minX, maxY, maxZ);
             corner2 = new Vector3(maxX, minY, maxZ);
             corner3 = new Vector3(maxX, maxY, maxZ);
         }
 
-        return new[] { center, corner0, corner1, corner2, corner3 };
+        return new Vector3[] { center, corner0, corner1, corner2, corner3 };
     }
 
     /// <summary>
     /// Put the object into placement mode.
     /// </summary>
-    public void OnPlacementStart()
-    {
+    public void OnPlacementStart() {
         // If we are managing the collider, enable it. 
-        if (_managingBoxCollider)
-            _boxCollider.enabled = true;
+        if (managingBoxCollider) {
+            boxCollider.enabled = true;
+        }
 
-        // Tell the gesture manager that it is to assume all input is to be given to this object.
+        // Hide the child object(s) to make placement easier.
+        for (int i = 0; i < ChildrenToHide.Count; i++) {
+            ChildrenToHide[i].SetActive(false);
+        }
+
+        // Tell the gesture manager that it is to assume
+        // all input is to be given to this object.
         InputManager.Instance.OverrideFocusedObject = gameObject;
 
         // Enter placement mode.
@@ -329,37 +310,33 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// the object is in an invalid location.  To determine whether or not
     /// the object has been placed, check the value of the IsPlacing property.
     /// </remarks>
-    public void OnPlacementStop()
-    {
+    public void OnPlacementStop() {
         // ValidatePlacement requires a normal as an out parameter.
         Vector3 position;
         Vector3 surfaceNormal;
 
         // Check to see if we can exit placement mode.
-        if (!ValidatePlacement(out position, out surfaceNormal))
-        {
+        if (!ValidatePlacement(out position, out surfaceNormal)) {
             return;
         }
 
-        // Exit placement mode.
-        IsPlacing = false;
-
         // The object is allowed to be placed.
         // We are placing at a small buffer away from the surface.
-        _targetPosition = position + (0.01f * surfaceNormal);
+        targetPosition = position + (0.01f * surfaceNormal);
 
         OrientObject(true, surfaceNormal);
 
         // If we are managing the collider, disable it. 
-        if (_managingBoxCollider)
-        {
-            _boxCollider.enabled = false;
+        if (managingBoxCollider) {
+            boxCollider.enabled = false;
         }
 
         // Tell the gesture manager that it is to resume
         // its normal behavior.
         InputManager.Instance.OverrideFocusedObject = null;
 
+        // Exit placement mode.
+        IsPlacing = false;
     }
 
     /// <summary>
@@ -369,44 +346,40 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// If the user's gaze does not intersect with a surface, the object
     /// will remain at the most recently calculated distance.
     /// </remarks>
-    private void Move()
-    {
-        var moveTo = gameObject.transform.position;
-        var surfaceNormal = Vector3.zero;
+    private void Move() {
+        Vector3 moveTo = gameObject.transform.position;
+        Vector3 surfaceNormal = Vector3.zero;
         RaycastHit hitInfo;
 
-        var hit = Physics.Raycast(Camera.main.transform.position,
+        bool hit = Physics.Raycast(Camera.main.transform.position,
                                 Camera.main.transform.forward,
                                 out hitInfo,
                                 20f,
                                 SpatialMappingManager.Instance.LayerMask);
 
-        if (hit)
-        {
-            var offsetDistance = _hoverDistance;
+        if (hit) {
+            float offsetDistance = hoverDistance;
 
             // Place the object a small distance away from the surface while keeping 
             // the object from going behind the user.
-            if (hitInfo.distance <= _hoverDistance)
-            {
+            if (hitInfo.distance <= hoverDistance) {
                 offsetDistance = 0f;
             }
 
             moveTo = hitInfo.point + (offsetDistance * hitInfo.normal);
 
-            _lastDistance = hitInfo.distance;
+            lastDistance = hitInfo.distance;
             surfaceNormal = hitInfo.normal;
         }
-        else
-        {
+        else {
             // The raycast failed to hit a surface.  In this case, keep the object at the distance of the last
             // intersected surface.
-            moveTo = Camera.main.transform.position + (Camera.main.transform.forward * _lastDistance);
+            moveTo = Camera.main.transform.position + (Camera.main.transform.forward * lastDistance);
         }
 
         // Follow the user's gaze.
-        var dist = Mathf.Abs((gameObject.transform.position - moveTo).magnitude);
-        gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, moveTo, _placementVelocity / dist);
+        float dist = Mathf.Abs((gameObject.transform.position - moveTo).magnitude);
+        gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, moveTo, placementVelocity / dist);
 
         // Orient the object.
         // We are using the return value from Physics.Raycast to instruct
@@ -429,24 +402,20 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// The aligntoVerticalSurface parameter is ignored if the object
     /// is to be placed on a horizontalSurface
     /// </remarks>
-    private void OrientObject(bool alignToVerticalSurface, Vector3 surfaceNormal)
-    {
-        var rotation = Camera.main.transform.localRotation;
+    private void OrientObject(bool alignToVerticalSurface, Vector3 surfaceNormal) {
+        Quaternion rotation = Camera.main.transform.localRotation;
 
         // If the user's gaze does not intersect with the Spatial Mapping mesh,
         // orient the object towards the user.
-        if (alignToVerticalSurface && (PlacementSurface == PlacementSurfaces.Vertical))
-        {
+        if (alignToVerticalSurface && (PlacementSurface == PlacementSurfaces.Vertical)) {
             // We are placing on a vertical surface.
             // If the normal of the Spatial Mapping mesh indicates that the
             // surface is vertical, orient parallel to the surface.
-            if (Mathf.Abs(surfaceNormal.y) <= (1 - _upNormalThreshold))
-            {
+            if (Mathf.Abs(surfaceNormal.y) <= (1 - upNormalThreshold)) {
                 rotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
             }
         }
-        else
-        {
+        else {
             rotation.x = 0f;
             rotation.z = 0f;
         }
@@ -460,25 +429,22 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// <param name="canBePlaced">
     /// Specifies if the object is in a valid placement location.
     /// </param>
-    private void DisplayBounds(bool canBePlaced)
-    {
+    private void DisplayBounds(bool canBePlaced) {
         // Ensure the bounds asset is sized and positioned correctly.
-        _boundsAsset.transform.localPosition = _boxCollider.center;
-        _boundsAsset.transform.localScale = _boxCollider.size;
-        _boundsAsset.transform.rotation = gameObject.transform.rotation;
+        boundsAsset.transform.localPosition = boxCollider.center;
+        boundsAsset.transform.localScale = boxCollider.size;
+        boundsAsset.transform.rotation = gameObject.transform.rotation;
 
         // Apply the appropriate material.
-        if (canBePlaced)
-        {
-            _boundsAsset.GetComponent<Renderer>().sharedMaterial = PlaceableBoundsMaterial;
+        if (canBePlaced) {
+            boundsAsset.GetComponent<Renderer>().sharedMaterial = PlaceableBoundsMaterial;
         }
-        else
-        {
-            _boundsAsset.GetComponent<Renderer>().sharedMaterial = NotPlaceableBoundsMaterial;
+        else {
+            boundsAsset.GetComponent<Renderer>().sharedMaterial = NotPlaceableBoundsMaterial;
         }
 
         // Show the bounds asset.
-        _boundsAsset.SetActive(true);
+        boundsAsset.SetActive(true);
     }
 
     /// <summary>
@@ -495,44 +461,37 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// </param>
     private void DisplayShadow(Vector3 position,
                             Vector3 surfaceNormal,
-                            bool canBePlaced)
-    {
+                            bool canBePlaced) {
         // Rotate and scale the shadow so that it is displayed on the correct surface and matches the object.
-        var rotationX = 0.0f;
+        float rotationX = 0.0f;
 
-        if (PlacementSurface == PlacementSurfaces.Horizontal)
-        {
+        if (PlacementSurface == PlacementSurfaces.Horizontal) {
             rotationX = 90.0f;
-            _shadowAsset.transform.localScale = new Vector3(_boxCollider.size.x, _boxCollider.size.z, 1);
+            shadowAsset.transform.localScale = new Vector3(boxCollider.size.x, boxCollider.size.z, 1);
         }
-        else
-        {
-            _shadowAsset.transform.localScale = _boxCollider.size;
+        else {
+            shadowAsset.transform.localScale = boxCollider.size;
         }
 
-        var rotation = Quaternion.Euler(rotationX, gameObject.transform.rotation.eulerAngles.y, 0);
-        _shadowAsset.transform.rotation = rotation;
+        Quaternion rotation = Quaternion.Euler(rotationX, gameObject.transform.rotation.eulerAngles.y, 0);
+        shadowAsset.transform.rotation = rotation;
 
         // Apply the appropriate material.
-        if (canBePlaced)
-        {
-            _shadowAsset.GetComponent<Renderer>().sharedMaterial = PlaceableShadowInTargetPositionMaterial;
+        if (canBePlaced) {
+            shadowAsset.GetComponent<Renderer>().sharedMaterial = PlaceableShadowMaterial;
         }
-        else
-        {
-            _shadowAsset.GetComponent<Renderer>().sharedMaterial = NotPlaceableShadowInTargetPositionMaterial;
+        else {
+            shadowAsset.GetComponent<Renderer>().sharedMaterial = NotPlaceableShadowMaterial;
         }
 
         // Show the shadow asset as appropriate.        
-        if (position != Vector3.zero)
-        {
+        if (position != Vector3.zero) {
             // Position the shadow a small distance from the target surface, along the normal.
-            _shadowAsset.transform.position = position + (0.01f * surfaceNormal);
-            _shadowAsset.SetActive(true);
+            shadowAsset.transform.position = position + (0.01f * surfaceNormal);
+            shadowAsset.SetActive(true);
         }
-        else
-        {
-            _shadowAsset.SetActive(false);
+        else {
+            shadowAsset.SetActive(false);
         }
     }
 
@@ -548,37 +507,19 @@ public class Placeable : MonoBehaviour, IInputClickHandler, IInputHandler
     /// <returns>
     /// True if the distances are within the desired tolerance, otherwise false.
     /// </returns>
-    private bool IsEquivalentDistance(float d1, float d2)
-    {
-        var dist = Mathf.Abs(d1 - d2);
-        return (dist <= _distanceThreshold);
+    private bool IsEquivalentDistance(float d1, float d2) {
+        float dist = Mathf.Abs(d1 - d2);
+        return (dist <= distanceThreshold);
     }
 
     /// <summary>
     /// Called when the GameObject is unloaded.
     /// </summary>
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         // Unload objects we have created.
-        Destroy(_boundsAsset);
-        _boundsAsset = null;
-        Destroy(_shadowAsset);
-        _shadowAsset = null;
-    }
-
-    public void OnInputUp(InputEventData eventData)
-    {
-
-    }
-
-    public void OnInputDown(InputEventData eventData)
-    {
-        //PlaceObject();
-    }
-
-    private void Debug(string message)
-    {
-        if (DebugTextMesh != null)
-            DebugTextMesh.text = message;
+        Destroy(boundsAsset);
+        boundsAsset = null;
+        Destroy(shadowAsset);
+        shadowAsset = null;
     }
 }
