@@ -19,9 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4793742693994796}
+  - component: {fileID: 114846153931771154}
   - component: {fileID: 114796537841796742}
   - component: {fileID: 114318265183798904}
-  - component: {fileID: 114846153931771154}
   m_Layer: 0
   m_Name: SpatialProcessing
   m_TagString: Untagged

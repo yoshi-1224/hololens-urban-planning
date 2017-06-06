@@ -93,6 +93,8 @@ public class SpatialProcessing : Singleton<SpatialProcessing>
 
                 // After scanning is over, switch to the secondary (occlusion) material.
                 SpatialMappingManager.Instance.SetSurfaceMaterial(secondaryMaterial);
+
+                // TODO: Call whatever script that creates the map?
             }
             else
             {
