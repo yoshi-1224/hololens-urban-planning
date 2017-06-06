@@ -126,7 +126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &174634396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +266,11 @@ Prefab:
       propertyPath: secondaryMaterial
       value: 
       objectReference: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
+    - target: {fileID: 114796537841796742, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
+        type: 2}
+      propertyPath: destroyPlanesMask
+      value: 28
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b8ebb43b49a3124584a5381fd4f4b63, type: 2}
   m_IsPrefabParent: 0
@@ -274,6 +279,86 @@ Transform:
   m_PrefabParentObject: {fileID: 4793742693994796, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
     type: 2}
   m_PrefabInternal: {fileID: 295261331}
+--- !u!1001 &532583251
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105790965803102, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &532583252 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1180102220966894, guid: 3f6e4ec67e680d1438cb1dd7bc51a83b,
+    type: 2}
+  m_PrefabInternal: {fileID: 532583251}
+--- !u!114 &532583253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 532583252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f59e8e2e3673b4241a4ee8d81a30bb5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlaceableBoundsMaterial: {fileID: 2100000, guid: d36438e93d8cebc45af745f035b60969,
+    type: 2}
+  NotPlaceableBoundsMaterial: {fileID: 2100000, guid: 6a07a5d4c6829c1499b7a8b907b75e33,
+    type: 2}
+  PlaceableShadowMaterial: {fileID: 2100000, guid: a25dd465874dfa54799f6e094507ccff,
+    type: 2}
+  NotPlaceableShadowMaterial: {fileID: 2100000, guid: ca6d4215d30dd1d4fb473ff9a009765d,
+    type: 2}
+  PlacementSurface: 1
+  ChildrenToHide: []
 --- !u!1001 &550531065
 Prefab:
   m_ObjectHideFlags: 0
