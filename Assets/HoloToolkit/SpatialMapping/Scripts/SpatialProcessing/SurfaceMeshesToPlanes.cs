@@ -96,6 +96,17 @@ namespace HoloToolkit.Unity.SpatialMapping
         private static readonly float FrameTime = .008f;
 #endif
 
+        /// <summary>
+        /// deactivate the planes when not the object is not being placed
+        /// </summary>
+        public void deactivatePlanes() {
+            planesParent.SetActive(false);
+        }
+
+        public void activatePlanes() {
+            planesParent.SetActive(true);
+        }
+
         // GameObject initialization.
         private void Start()
         {
@@ -339,6 +350,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             serializedObject.ApplyModifiedProperties();
         }
+
     }
 #endif
 }

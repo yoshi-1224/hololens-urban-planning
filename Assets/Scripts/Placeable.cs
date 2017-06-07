@@ -294,6 +294,8 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             ChildrenToHide[i].SetActive(false);
         }
 
+        SurfaceMeshesToPlanes.Instance.activatePlanes();
+
         // Tell the gesture manager that it is to assume
         // all input is to be given to this object.
         InputManager.Instance.OverrideFocusedObject = gameObject;
@@ -319,6 +321,8 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         if (!ValidatePlacement(out position, out surfaceNormal)) {
             return;
         }
+
+        SurfaceMeshesToPlanes.Instance.deactivatePlanes();
 
         // The object is allowed to be placed.
         // We are placing at a small buffer away from the surface.

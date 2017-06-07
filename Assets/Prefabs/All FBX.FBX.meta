@@ -1,0 +1,156 @@
+fileFormatVersion: 2
+guid: 5b6c6f50a1e1d7d4f80cae464b33f6b4
+timeCreated: 1496810936
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: CityEngineShapeMaterial_2_m
+    100004: CityEngineShapeMaterial_47_m
+    100006: CityEngineShapeMaterial_48_m
+    100008: CityEngineShapeMaterial_49_m
+    100010: CityEngineShapeMaterial_50_m
+    100012: CityEngineShapeMaterial_51_m
+    100014: CityEngineShapeMaterial_52_m
+    100016: CityEngineShapeMaterial_53_m
+    100018: CityEngineShapeMaterial_54_m
+    100020: CityEngineShapeMaterial_55_m
+    100022: CityEngineShapeMaterial_56_m
+    100024: CityEngineShapeMaterial_57_m
+    100026: CityEngineShapeMaterial_58_m
+    100028: LOD1
+    100030: Terrain
+    400000: //RootNode
+    400002: CityEngineShapeMaterial_2_m
+    400004: CityEngineShapeMaterial_47_m
+    400006: CityEngineShapeMaterial_48_m
+    400008: CityEngineShapeMaterial_49_m
+    400010: CityEngineShapeMaterial_50_m
+    400012: CityEngineShapeMaterial_51_m
+    400014: CityEngineShapeMaterial_52_m
+    400016: CityEngineShapeMaterial_53_m
+    400018: CityEngineShapeMaterial_54_m
+    400020: CityEngineShapeMaterial_55_m
+    400022: CityEngineShapeMaterial_56_m
+    400024: CityEngineShapeMaterial_57_m
+    400026: CityEngineShapeMaterial_58_m
+    400028: LOD1
+    400030: Terrain
+    2300000: CityEngineShapeMaterial_2_m
+    2300002: CityEngineShapeMaterial_47_m
+    2300004: CityEngineShapeMaterial_48_m
+    2300006: CityEngineShapeMaterial_49_m
+    2300008: CityEngineShapeMaterial_50_m
+    2300010: CityEngineShapeMaterial_51_m
+    2300012: CityEngineShapeMaterial_52_m
+    2300014: CityEngineShapeMaterial_53_m
+    2300016: CityEngineShapeMaterial_54_m
+    2300018: CityEngineShapeMaterial_55_m
+    2300020: CityEngineShapeMaterial_56_m
+    2300022: CityEngineShapeMaterial_57_m
+    2300024: CityEngineShapeMaterial_58_m
+    2300026: LOD1
+    2300028: Terrain
+    3300000: CityEngineShapeMaterial_2_m
+    3300002: CityEngineShapeMaterial_47_m
+    3300004: CityEngineShapeMaterial_48_m
+    3300006: CityEngineShapeMaterial_49_m
+    3300008: CityEngineShapeMaterial_50_m
+    3300010: CityEngineShapeMaterial_51_m
+    3300012: CityEngineShapeMaterial_52_m
+    3300014: CityEngineShapeMaterial_53_m
+    3300016: CityEngineShapeMaterial_54_m
+    3300018: CityEngineShapeMaterial_55_m
+    3300020: CityEngineShapeMaterial_56_m
+    3300022: CityEngineShapeMaterial_57_m
+    3300024: CityEngineShapeMaterial_58_m
+    3300026: LOD1
+    3300028: Terrain
+    4300000: CityEngineShapeMaterial_57_m
+    4300002: CityEngineShapeMaterial_54_m
+    4300004: CityEngineShapeMaterial_56_m
+    4300006: CityEngineShapeMaterial_50_m
+    4300008: CityEngineShapeMaterial_51_m
+    4300010: CityEngineShapeMaterial_55_m
+    4300012: CityEngineShapeMaterial_2_m
+    4300014: CityEngineShapeMaterial_53_m
+    4300016: CityEngineShapeMaterial_48_m
+    4300018: CityEngineShapeMaterial_52_m
+    4300020: CityEngineShapeMaterial_47_m
+    4300022: CityEngineShapeMaterial_49_m
+    4300024: CityEngineShapeMaterial_58_m
+    4300026: LOD1
+    4300028: Terrain
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
