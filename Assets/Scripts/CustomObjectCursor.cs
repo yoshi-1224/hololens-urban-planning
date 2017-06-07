@@ -48,7 +48,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// </summary>
     /// <param name="state"></param>
     public override void OnCursorStateChange(CursorStateEnum state) {
-        base.OnCursorStateChange(state); 
+        base.OnCursorStateChange(state);
         if (state != CursorStateEnum.Contextual) {
 
             // First, try to find a cursor for the current state
@@ -66,14 +66,10 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
             if (newActive.Name == null) {
                 return;
             }
-            else if (newActive.CursorState == CursorStateEnum.ObserveHover) {
-                // we do not want to show Cursor-Visual-state cursor
-                // when it is on spatial mapping layer
-                //if (isObjectInSpatialMappingLayer()) {
-                //    newActive.CursorObject = CursorStateData[3].CursorObject; //TODO
-                //}
-                
-            }
+
+            if (TargetedObject.GetComponent<Fakecomponent>() != null) {
+
+            } // something like this?
 
             // If we come here, there is a cursor for the new state, 
             // so de-activate a possible earlier active cursor
@@ -90,7 +86,4 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         }
     }
 
-    private bool isObjectInSpatialMappingLayer() {
-        return GazeManager.Instance.HitObject.layer == spatialMappingLayerNo;
-    }
 }

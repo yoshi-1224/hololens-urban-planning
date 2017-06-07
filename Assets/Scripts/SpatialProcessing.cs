@@ -95,6 +95,7 @@ public class SpatialProcessing : Singleton<SpatialProcessing>
                 SpatialMappingManager.Instance.SetSurfaceMaterial(secondaryMaterial);
 
                 // TODO: Call whatever script that creates the map?
+                MapPlacement.Instance.InstantiateMap();
             }
             else
             {

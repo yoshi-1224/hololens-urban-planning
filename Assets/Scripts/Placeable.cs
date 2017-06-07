@@ -90,6 +90,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     // The location at which the object will be placed.
     private Vector3 targetPosition;
 
+    private bool placingComplete;
     /// <summary>
     /// Called when the GameObject is created.
     /// </summary>
@@ -133,7 +134,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     /// Called once per frame.
     /// </summary>
     private void Update() {
-        if (IsPlacing) {
+        if (IsPlacing) { // being selected by the user
             // Move the object.
             Move();
 
@@ -145,20 +146,23 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
         }
         else {
-            // Disable the visual elements.
-            boundsAsset.SetActive(false);
-            shadowAsset.SetActive(false);
+            if (!placingComplete) {
+                // Disable the visual elements.
+                boundsAsset.SetActive(false);
+                shadowAsset.SetActive(false);
 
-            // Gracefully place the object on the target surface.
-            float dist = (gameObject.transform.position - targetPosition).magnitude;
-            if (dist > 0) {
-                gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
-            }
-            else {
-                // Unhide the child object(s) to make placement easier.
-                for (int i = 0; i < ChildrenToHide.Count; i++) {
-                    ChildrenToHide[i].SetActive(true);
+                // Gracefully place the object on the target surface.
+                float dist = (gameObject.transform.position - targetPosition).magnitude;
+                if (dist > 0) {
+                    gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
                 }
+                else {
+                    // Unhide the child object(s) to make placement easier.
+                    for (int i = 0; i < ChildrenToHide.Count; i++) {
+                        ChildrenToHide[i].SetActive(true);
+                    }
+                }
+                placingComplete = true;
             }
         }
     }
@@ -302,6 +306,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
 
         // Enter placement mode.
         IsPlacing = true;
+        placingComplete = false;
     }
 
     /// <summary>
@@ -430,9 +435,6 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     /// <summary>
     /// Displays the bounds asset.
     /// </summary>
-    /// <param name="canBePlaced">
-    /// Specifies if the object is in a valid placement location.
-    /// </param>
     private void DisplayBounds(bool canBePlaced) {
         // Ensure the bounds asset is sized and positioned correctly.
         boundsAsset.transform.localPosition = boxCollider.center;
@@ -454,18 +456,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     /// <summary>
     /// Displays the placement shadow asset.
     /// </summary>
-    /// <param name="position">
-    /// The position at which to place the shadow asset.
-    /// </param>
-    /// <param name="surfaceNormal">
-    /// The normal of the surface on which the asset will be placed
-    /// </param>
-    /// <param name="canBePlaced">
-    /// Specifies if the object is in a valid placement location.
-    /// </param>
-    private void DisplayShadow(Vector3 position,
-                            Vector3 surfaceNormal,
-                            bool canBePlaced) {
+    private void DisplayShadow(Vector3 position, Vector3 surfaceNormal, bool canBePlaced) {
         // Rotate and scale the shadow so that it is displayed on the correct surface and matches the object.
         float rotationX = 0.0f;
 
@@ -498,19 +489,9 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             shadowAsset.SetActive(false);
         }
     }
-
     /// <summary>
-    /// Determines if two distance values should be considered equivalent. 
+    /// returns true if the difference in distance is within tolerance
     /// </summary>
-    /// <param name="d1">
-    /// Distance to compare.
-    /// </param>
-    /// <param name="d2">
-    /// Distance to compare.
-    /// </param>
-    /// <returns>
-    /// True if the distances are within the desired tolerance, otherwise false.
-    /// </returns>
     private bool IsEquivalentDistance(float d1, float d2) {
         float dist = Mathf.Abs(d1 - d2);
         return (dist <= distanceThreshold);

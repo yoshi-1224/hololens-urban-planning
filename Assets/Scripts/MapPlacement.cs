@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity;
+public class MapPlacement : Singleton<MapPlacement> {
 
-public class MapPlacement : MonoBehaviour {
+    public GameObject mapPrefab;
+    
+    public void InstantiateMap() {
+        GameObject map = Instantiate(mapPrefab);
+        map.transform.parent = transform;
+        // let the user choose the location to place
+        map.GetComponent<Placeable>().OnInputClicked(null);
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 }
