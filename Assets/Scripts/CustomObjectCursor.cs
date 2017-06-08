@@ -26,7 +26,12 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// </summary>
     public Transform ParentTransform;
 
-    private short spatialMappingLayerNo = 31;
+    /// <summary>
+    /// for feedbacks for manipulation and navigation
+    /// </summary>
+    public GameObject manipulationFeedbackObject;
+    public GameObject navigationFeedbackObject;
+
     /// <summary>
     /// On enable look for a sprite renderer on children
     /// </summary>
@@ -48,6 +53,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// </summary>
     /// <param name="state"></param>
     public override void OnCursorStateChange(CursorStateEnum state) {
+        Debug.Log("Updating cursor");
         base.OnCursorStateChange(state);
         if (state != CursorStateEnum.Contextual) {
 
@@ -67,10 +73,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
                 return;
             }
 
-            if (TargetedObject.GetComponent<Fakecomponent>() != null) {
-
-            } // something like this?
-
             // If we come here, there is a cursor for the new state, 
             // so de-activate a possible earlier active cursor
             for (int cursorIndex = 0; cursorIndex < CursorStateData.Length; cursorIndex++) {
@@ -80,10 +82,34 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
                     break;
                 }
             }
-
-            // ... and set the cursor for the new state active.
             newActive.CursorObject.SetActive(true);
         }
     }
 
+    /// The below codes are for navigation and manipulation feedback
+    /// To be called by objects that implement IFocusable
+
+    public void showNavigationFeedback() {
+        if (navigationFeedbackObject == null || navigationFeedbackObject.activeSelf)
+            return;
+        navigationFeedbackObject.SetActive(true);
+    }
+
+    public void hideNav() {
+        if (navigationFeedbackObject == null || !navigationFeedbackObject.activeSelf)
+            return;
+        navigationFeedbackObject.SetActive(false);
+    }
+
+    public void showManipulationFeedback() {
+        if (manipulationFeedbackObject == null || manipulationFeedbackObject.activeSelf)
+            return;
+        manipulationFeedbackObject.SetActive(true);
+    }
+
+    public void hideMan() {
+        if(manipulationFeedbackObject == null || !manipulationFeedbackObject.activeSelf)
+            return;
+        manipulationFeedbackObject.SetActive(false);
+    }
 }
