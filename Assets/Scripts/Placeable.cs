@@ -93,7 +93,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
 
     private bool placingComplete;
 
-    private Renderer renderer;
+    private Renderer mapRenderer;
     private void Awake() {
         targetPosition = gameObject.transform.position;
 
@@ -119,7 +119,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
 
         // added by me
         EnableAudioHapticFeedback();
-        renderer = GetComponent<Renderer>();
+        mapRenderer = GetComponent<Renderer>();
     }
 
     /// <summary>
@@ -128,8 +128,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     public void OnInputClicked(InputClickedEventData eventData) {
         if (!IsPlacing) {
             OnPlacementStart();
-        }
-        else {
+        } else {
             OnPlacementStop();
         }
     }
@@ -149,26 +148,26 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             DisplayBounds(canBePlaced);
             DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
             
-        }
-        else {
+        }  else {
 
             if (!placingComplete) {
-                renderer.enabled = true;
-                // Disable the visual elements.
+                // enable the renderer when the placement position is confirmed
+                // and hide the shadow
+                mapRenderer.enabled = true;
                 boundsAsset.SetActive(false);
                 shadowAsset.SetActive(false);
+
                 // Gracefully place the object on the target surface.
                 // Animation-stuff so do not remove this Update loop
                 float dist = (gameObject.transform.position - targetPosition).magnitude;
                 if (dist > 0) {
                     gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
-                }
-                else {
-                    // Unhide the child object(s)
+                } else {
                     for (int i = 0; i < ChildrenToHide.Count; i++) {
                         ChildrenToHide[i].SetActive(true);
                     }
-                    
+                    // transform.position has been confirmed in a new location
+                    // we no longer have to perform the above statements
                     placingComplete = true;
                 }
             }
@@ -305,9 +304,9 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             ChildrenToHide[i].SetActive(false);
         }
 
-        // disable the mesh
-
+        // show the planes during placement and hide the map renderer
         SurfaceMeshesToPlanes.Instance.activatePlanes();
+        mapRenderer.enabled = false;
 
         // Tell the gesture manager that it is to assume
         // all input is to be given to this object.
@@ -317,7 +316,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         IsPlacing = true;
         placingComplete = false;
         playPlacementAudio();
-        renderer.enabled = false;
+
     }
 
     /// <summary>
