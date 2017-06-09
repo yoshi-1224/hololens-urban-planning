@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
-
+/// <summary>
+/// This handles the voice commands as well as the gesture inputs on a building.
+/// </summary>
 public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     [Tooltip("The table object to show on show details")]
     public GameObject tablePrefab;
@@ -24,9 +26,11 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private const string COMMAND_ROTATE = "rotate";
     
     private CustomObjectCursor cursorScriptCache;
+    private Material[] defaultMaterials;
 
     void Start() {
         cursorScriptCache = GameObject.FindWithTag("cursor").GetComponent<CustomObjectCursor>();
+        defaultMaterials = GetComponent<Renderer>().materials;
         isTableAlreadyExists = false;
         EnableAudioHapticFeedback();
     }
@@ -37,10 +41,12 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
     public void OnFocusEnter() {
         cursorScriptCache.showManipulationFeedback();
+        enableEmission();
     }
 
     public void OnFocusExit() {
         cursorScriptCache.hideManipulationFeedback();
+        disableEmission();
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
@@ -67,18 +73,23 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     // voice command handlers
 
     private void showDetails() {
-        Debug.Log("show details called");
-        if (isTableAlreadyExists)
+        //if (isTableAlreadyExists)
+        //    return;
+        playTableSound();
+        if (isTableAlreadyExists) {
+            positionTableObject();
             return;
+        }
 
         tableObject = Instantiate(tablePrefab);
+        fillTableData();
         positionTableObject();
+
         isTableAlreadyExists = true;
-        playTableSound();
+        //playTableSound();
     }
 
     private void hideDetails() {
-        Debug.Log("hide details called");
         if (!isTableAlreadyExists)
             return;
 
@@ -114,5 +125,30 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         float ratio = 0.4f;
         tableObject.transform.position = ratio * Camera.main.transform.position + (1 - ratio) * transform.position;
         tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+    }
+
+    private void fillTableData() {
+        TextMesh nameText = tableObject.transform.Find("Name").gameObject.GetComponent<TextMesh>();
+        TextMesh descriptionText = tableObject.transform.Find("Desc_v").gameObject.GetComponent<TextMesh>();
+        TextMesh heightText = tableObject.transform.Find("Height").gameObject.GetComponent<TextMesh>();
+        TextMesh widthText = tableObject.transform.Find("Width").gameObject.GetComponent<TextMesh>();
+
+        /// fill in the data
+        //nameText.text = "";
+        //descriptionText.text = "";
+        //heightText.text = "";
+        //widthText.text = "";
+    }
+
+    private void enableEmission() {
+        for (int i = 0; i < defaultMaterials.Length; i++) {
+            defaultMaterials[i].EnableKeyword("_EMISSION");
+        }
+    }
+
+    private void disableEmission() {
+        for (int i = 0; i < defaultMaterials.Length; i++) {
+            defaultMaterials[i].DisableKeyword("_EMISSION");
+        }
     }
 }
