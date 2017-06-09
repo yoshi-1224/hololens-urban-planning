@@ -8,8 +8,7 @@ public class MapPlacement : Singleton<MapPlacement> {
     
     public void InstantiateMap() {
         GameObject map = Instantiate(mapPrefab);
-        map.transform.parent = transform;
-        // let the user choose the location to place
+        // let the user choose the location to place first
         map.GetComponent<Placeable>().OnInputClicked(null);
 
     }

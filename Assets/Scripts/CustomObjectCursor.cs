@@ -53,7 +53,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// </summary>
     /// <param name="state"></param>
     public override void OnCursorStateChange(CursorStateEnum state) {
-        Debug.Log("Updating cursor");
         base.OnCursorStateChange(state);
         if (state != CursorStateEnum.Contextual) {
 
@@ -95,7 +94,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         navigationFeedbackObject.SetActive(true);
     }
 
-    public void hideNav() {
+    public void hideNavigationFeedback() {
         if (navigationFeedbackObject == null || !navigationFeedbackObject.activeSelf)
             return;
         navigationFeedbackObject.SetActive(false);
@@ -107,7 +106,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         manipulationFeedbackObject.SetActive(true);
     }
 
-    public void hideMan() {
+    public void hideManipulationFeedback() {
         if(manipulationFeedbackObject == null || !manipulationFeedbackObject.activeSelf)
             return;
         manipulationFeedbackObject.SetActive(false);

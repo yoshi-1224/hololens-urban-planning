@@ -46,6 +46,11 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     [Tooltip("The child object(s) to hide during placement.")]
     public List<GameObject> ChildrenToHide = new List<GameObject>();
 
+    [Tooltip("The sound to play when the map is placed")]
+    public AudioClip PlacementSound;
+
+    private AudioSource audioSource;
+
     /// <summary>
     /// Indicates if the object is in the process of being placed.
     /// </summary>
@@ -70,7 +75,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     private float maximumPlacementDistance = 5.0f;
 
     // Speed (1.0 being fastest) at which the object settles to the surface upon placement.
-    private float placementVelocity = 0.06f;
+    private float placementVelocity = 0.03f;
 
     // Indicates whether or not this script manages the object's box collider.
     private bool managingBoxCollider = false;
@@ -78,22 +83,17 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     // The box collider used to determine of the object will fit in the desired location.
     // It is also used to size the bounding cube.
     private BoxCollider boxCollider = null;
-
-    // Visible asset used to show the dimensions of the object. This asset is sized
-    // using the box collider's bounds.
+    
+    // These assets are sized using the box collider's bounds.
     private GameObject boundsAsset = null;
-
-    // Visible asset used to show the where the object is attempting to be placed.
-    // This asset is sized using the box collider's bounds.
     private GameObject shadowAsset = null;
 
     // The location at which the object will be placed.
     private Vector3 targetPosition;
 
     private bool placingComplete;
-    /// <summary>
-    /// Called when the GameObject is created.
-    /// </summary>
+
+    private Renderer renderer;
     private void Awake() {
         targetPosition = gameObject.transform.position;
 
@@ -116,6 +116,10 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         shadowAsset = GameObject.CreatePrimitive(PrimitiveType.Quad);
         shadowAsset.transform.parent = gameObject.transform;
         shadowAsset.SetActive(false);
+
+        // added by me
+        EnableAudioHapticFeedback();
+        renderer = GetComponent<Renderer>();
     }
 
     /// <summary>
@@ -144,25 +148,29 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             bool canBePlaced = ValidatePlacement(out targetPosition, out surfaceNormal);
             DisplayBounds(canBePlaced);
             DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
+            
         }
         else {
+
             if (!placingComplete) {
+                renderer.enabled = true;
                 // Disable the visual elements.
                 boundsAsset.SetActive(false);
                 shadowAsset.SetActive(false);
-
                 // Gracefully place the object on the target surface.
+                // Animation-stuff so do not remove this Update loop
                 float dist = (gameObject.transform.position - targetPosition).magnitude;
                 if (dist > 0) {
                     gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
                 }
                 else {
-                    // Unhide the child object(s) to make placement easier.
+                    // Unhide the child object(s)
                     for (int i = 0; i < ChildrenToHide.Count; i++) {
                         ChildrenToHide[i].SetActive(true);
                     }
+                    
+                    placingComplete = true;
                 }
-                placingComplete = true;
             }
         }
     }
@@ -185,7 +193,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         if (PlacementSurface == PlacementSurfaces.Horizontal) {
             // Placing on horizontal surfaces.
             // Raycast from the bottom face of the box collider.
-            raycastDirection = -(Vector3.up);
+            raycastDirection = -(Vector3.up); //straight down
         }
 
         // Initialize out parameters.
@@ -199,7 +207,6 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         for (int i = 0; i < facePoints.Length; i++) {
             facePoints[i] = gameObject.transform.TransformVector(facePoints[i]) + gameObject.transform.position;
         }
-
         // Cast a ray from the center of the box collider face to the surface.
         RaycastHit centerHit;
         if (!Physics.Raycast(facePoints[0],
@@ -298,6 +305,8 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             ChildrenToHide[i].SetActive(false);
         }
 
+        // disable the mesh
+
         SurfaceMeshesToPlanes.Instance.activatePlanes();
 
         // Tell the gesture manager that it is to assume
@@ -307,6 +316,8 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         // Enter placement mode.
         IsPlacing = true;
         placingComplete = false;
+        playPlacementAudio();
+        renderer.enabled = false;
     }
 
     /// <summary>
@@ -327,6 +338,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             return;
         }
 
+        // added by me
         SurfaceMeshesToPlanes.Instance.deactivatePlanes();
 
         // The object is allowed to be placed.
@@ -340,12 +352,13 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             boxCollider.enabled = false;
         }
 
-        // Tell the gesture manager that it is to resume
-        // its normal behavior.
+        // Tell the gesture manager that it is to resume its normal behavior.
         InputManager.Instance.OverrideFocusedObject = null;
 
         // Exit placement mode.
         IsPlacing = false;
+
+        playPlacementAudio();
     }
 
     /// <summary>
@@ -506,5 +519,24 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         boundsAsset = null;
         Destroy(shadowAsset);
         shadowAsset = null;
+    }
+
+    private void EnableAudioHapticFeedback() {
+        // If this hologram has an audio clip, add an AudioSource with this clip.
+        if (PlacementSound == null)
+            return;
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = PlacementSound;
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 1;
+        audioSource.dopplerLevel = 0;
+    }
+
+    private void playPlacementAudio() {
+        if (audioSource != null && !audioSource.isPlaying)
+            audioSource.Play();
     }
 }

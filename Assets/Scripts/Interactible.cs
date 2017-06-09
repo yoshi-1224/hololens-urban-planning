@@ -13,15 +13,13 @@ public class Interactible : MonoBehaviour, IFocusable {
     }
 
     public void OnFocusExit() {
-        cursorScriptCache.hideMan();
+        cursorScriptCache.hideManipulationFeedback();
     }
 
-    // Use this for initialization
     void Start() {
         cursorScriptCache = cursor.GetComponent<CustomObjectCursor>();
     }
 
-    // Update is called once per frame
     void Update() {
 
     }
