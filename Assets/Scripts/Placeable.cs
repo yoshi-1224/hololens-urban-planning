@@ -127,6 +127,8 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     /// </summary>
     public void OnInputClicked(InputClickedEventData eventData) {
         if (!IsPlacing) {
+            makeSiblingsChildren();
+            Debug.Log("Making siblings children");
             OnPlacementStart();
         } else {
             OnPlacementStop();
@@ -156,19 +158,22 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
                 mapRenderer.enabled = true;
                 boundsAsset.SetActive(false);
                 shadowAsset.SetActive(false);
-
+                Debug.Log("placing the object");
                 // Gracefully place the object on the target surface.
                 // Animation-stuff so do not remove this Update loop
                 float dist = (gameObject.transform.position - targetPosition).magnitude;
                 if (dist > 0) {
                     gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
                 } else {
+                    Debug.Log("placing complete");
                     for (int i = 0; i < ChildrenToHide.Count; i++) {
                         ChildrenToHide[i].SetActive(true);
                     }
                     // transform.position has been confirmed in a new location
                     // we no longer have to perform the above statements
                     placingComplete = true;
+                    makeChildrenSiblings();
+                    Debug.Log("Making children siblings");
                 }
             }
         }
@@ -537,5 +542,17 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     private void playPlacementAudio() {
         if (audioSource != null && !audioSource.isPlaying)
             audioSource.Play();
+    }
+
+    private void makeSiblingsChildren() {
+        foreach(GameObject child in ChildrenToHide) {
+            child.transform.parent = transform;
+        }
+    }
+
+    private void makeChildrenSiblings() {
+        foreach(GameObject sibling in ChildrenToHide) {
+            sibling.transform.parent = transform.parent;
+        }
     }
 }

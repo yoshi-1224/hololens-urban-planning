@@ -4,7 +4,7 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
 
-public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler {
+public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     [Tooltip("The table object to show on show details")]
     public GameObject tablePrefab;
 
@@ -12,14 +12,16 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler {
     public AudioClip tableSound;
     private AudioSource audioSource;
 
-    private GameObject instantiatedTable;
+    private GameObject tableObject;
     private bool isTableAlreadyExists;
 
     /// <summary>
     /// recognised commands. Make sure they are all in lower case
     /// </summary>
-    private const string showDetailsCommand = "show details";
-    private const string hideDetailsCommand = "hide details";
+    private const string COMMAND_SHOW_DETAILS = "show details";
+    private const string COMMAND_HIDE_DETAILS = "hide details";
+    private const string COMMAND_MOVE = "move";
+    private const string COMMAND_ROTATE = "rotate";
     
     private CustomObjectCursor cursorScriptCache;
 
@@ -43,14 +45,18 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler {
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
         switch (eventData.RecognizedText.ToLower()) {
-            case showDetailsCommand:
+            case COMMAND_SHOW_DETAILS:
                 showDetails();
                 break;
 
-            case hideDetailsCommand:
+            case COMMAND_HIDE_DETAILS:
                 hideDetails();
                 break;
 
+            case COMMAND_MOVE:
+                break;
+            case COMMAND_ROTATE:
+                break;
             default:
                 // just ignore
                 break;
@@ -65,7 +71,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler {
         if (isTableAlreadyExists)
             return;
 
-        instantiatedTable = Instantiate(tablePrefab);
+        tableObject = Instantiate(tablePrefab);
+        positionTableObject();
         isTableAlreadyExists = true;
         playTableSound();
     }
@@ -75,8 +82,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler {
         if (!isTableAlreadyExists)
             return;
 
-        Destroy(instantiatedTable);
-        instantiatedTable = null;
+        Destroy(tableObject);
+        tableObject = null;
         isTableAlreadyExists = false;
         playTableSound();
     }
@@ -97,5 +104,15 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler {
     private void playTableSound() {
         if (audioSource != null && !audioSource.isPlaying)
             audioSource.Play();
+    }
+
+    public void OnInputClicked(InputClickedEventData eventData) {
+        Debug.Log("Input clicked");
+    }
+
+    private void positionTableObject() {
+        float ratio = 0.4f;
+        tableObject.transform.position = ratio * Camera.main.transform.position + (1 - ratio) * transform.position;
+        tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
     }
 }
