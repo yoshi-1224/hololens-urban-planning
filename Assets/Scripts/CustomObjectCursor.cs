@@ -29,8 +29,8 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// <summary>
     /// for feedbacks for manipulation and navigation
     /// </summary>
-    public GameObject manipulationFeedbackObject;
-    public GameObject navigationFeedbackObject;
+    public GameObject translationFeedbackObject;
+    public GameObject rotationFeedbackObject;
 
     /// <summary>
     /// On enable look for a sprite renderer on children
@@ -88,27 +88,30 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// The below codes are for navigation and manipulation feedback
     /// To be called by objects that implement IFocusable
 
-    public void showNavigationFeedback() {
-        if (navigationFeedbackObject == null || navigationFeedbackObject.activeSelf)
+    public void ShowRotationFeedback() {
+        if (rotationFeedbackObject == null || rotationFeedbackObject.activeSelf)
             return;
-        navigationFeedbackObject.SetActive(true);
+        rotationFeedbackObject.SetActive(true);
+        Debug.Log("rotation feedback enabled");
     }
 
-    public void hideNavigationFeedback() {
-        if (navigationFeedbackObject == null || !navigationFeedbackObject.activeSelf)
+    public void HideRotationFeedback() {
+        if (rotationFeedbackObject == null || !rotationFeedbackObject.activeSelf)
             return;
-        navigationFeedbackObject.SetActive(false);
+        rotationFeedbackObject.SetActive(false);
     }
 
-    public void showManipulationFeedback() {
-        if (manipulationFeedbackObject == null || manipulationFeedbackObject.activeSelf)
+    public void ShowTranslationFeedback() {
+        Debug.Log("Cursor supposed to show translation feedback");
+        if (translationFeedbackObject == null || translationFeedbackObject.activeSelf)
             return;
-        manipulationFeedbackObject.SetActive(true);
+        translationFeedbackObject.SetActive(true);
+        Debug.Log("translation feedback enabled");
     }
 
-    public void hideManipulationFeedback() {
-        if(manipulationFeedbackObject == null || !manipulationFeedbackObject.activeSelf)
+    public void HideTranslationFeedback() {
+        if(translationFeedbackObject == null || !translationFeedbackObject.activeSelf)
             return;
-        manipulationFeedbackObject.SetActive(false);
+        translationFeedbackObject.SetActive(false);
     }
 }

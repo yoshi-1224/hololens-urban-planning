@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tablePrefab: {fileID: 1036290405156230, guid: e149096f5ec29624e8e271b4e568cf2c,
+  tablePrefab: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
     type: 2}
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
 --- !u!114 &114338472486523884
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tablePrefab: {fileID: 1036290405156230, guid: e149096f5ec29624e8e271b4e568cf2c,
+  tablePrefab: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
     type: 2}
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
 --- !u!114 &114620518031376452
@@ -1473,6 +1473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tablePrefab: {fileID: 1036290405156230, guid: e149096f5ec29624e8e271b4e568cf2c,
+  tablePrefab: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
     type: 2}
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}

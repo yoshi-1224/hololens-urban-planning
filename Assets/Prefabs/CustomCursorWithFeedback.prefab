@@ -871,8 +871,8 @@ MonoBehaviour:
     CursorState: 4
     CursorObject: {fileID: 1054117994992306}
   ParentTransform: {fileID: 0}
-  manipulationFeedbackObject: {fileID: 1245117329599618}
-  navigationFeedbackObject: {fileID: 1775579967413190}
+  translationFeedbackObject: {fileID: 1245117329599618}
+  rotationFeedbackObject: {fileID: 1775579967413190}
 --- !u!114 &114799991269594554
 MonoBehaviour:
   m_ObjectHideFlags: 1

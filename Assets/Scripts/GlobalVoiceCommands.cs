@@ -5,6 +5,7 @@ using HoloToolkit.Unity.InputModule;
 using System;
 
 public class GlobalVoiceCommands : MonoBehaviour {
+    private GameObject map;
 
     void Start () {
         if (InputManager.Instance == null) {
@@ -31,5 +32,15 @@ public class GlobalVoiceCommands : MonoBehaviour {
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// handler for "move map" voice command. Has the same effect as selecting the map
+    /// </summary>
+    public void moveMap() {
+        if (map == null)
+            map = GameObject.Find("CustomizedMap");
+
+        map.SendMessage("OnInputClicked", null);
     }
 }
