@@ -80,10 +80,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
     }
 
     public bool RegisterGameObjectForTranslation(GameObject objectToRegister) {
-        Debug.Log("this is called");
         if (currentObjectInMotion != null || IsTranslating || IsRotating)
             return false;
-        Debug.Log("has reached here ");
         IsTranslating = true;
         currentObjectInMotion = objectToRegister;
         // register this as what receives the gestures in prescedence
@@ -108,7 +106,4 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
         IsRotating = false;
         IsTranslating = false;
     }
-
-
-    // overriding the inputmanager might be necessary
 }

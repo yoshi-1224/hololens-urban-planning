@@ -126,7 +126,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// <param name="cumulativeDelta"></param>
     public void PerformRotationUpdate(Vector3 cumulativeDelta) {
         float rotationFactor = cumulativeDelta.x * RotationSensitivity; // may be wrong by doing this.
-        transform.Rotate(new Vector3(0, -1 * rotationFactor, 0));
+        transform.Rotate(new Vector3(0,  rotationFactor, 0));
     }
 
 #endregion
@@ -161,14 +161,13 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     }
 
     private void positionTableObject() {
-        float ratio = 0.4f;
-        tableObject.transform.position = ratio * Camera.main.transform.position + (1 - ratio) * transform.position;
+        float distanceRatio = 0.4f;
+        tableObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
         tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
     }
 
     private void fillTableData() {
         /// use Unity's RichText format to enable diverse fonts, colours etc.
-
     }
 
     #endregion
@@ -195,7 +194,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 #endregion
 
     public void OnInputClicked(InputClickedEventData eventData) {
-        Debug.Log("Input clicked");
+        ShowDetails();
     }
 
 #region visual feedbacks

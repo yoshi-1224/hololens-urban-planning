@@ -192,7 +192,7 @@ Prefab:
     - target: {fileID: 114846153931771154, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
         type: 2}
       propertyPath: scanTime
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114796537841796742, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
         type: 2}
@@ -304,6 +304,71 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d379ed0a5618c9f479f58bd83a2d0ad3, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &564212079 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
+    type: 2}
+  m_PrefabInternal: {fileID: 1521616322}
+--- !u!114 &564212080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 564212079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be8bd2ebd8277c448d6d81c75517fee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagalongDistance: 2
+  EnforceDistance: 1
+  PositionUpdateSpeed: 9.8
+  SmoothMotion: 1
+  SmoothingFactor: 0.75
+--- !u!114 &564212081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 564212079}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnscaledTime: 1
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
+--- !u!65 &564212082
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 564212079}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 45, y: 6.0009766, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &564212086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 564212079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PivotAxis: 1
 --- !u!1001 &721412081
 Prefab:
   m_ObjectHideFlags: 0
@@ -374,7 +439,6 @@ GameObject:
   m_Component:
   - component: {fileID: 808940855}
   - component: {fileID: 808940857}
-  - component: {fileID: 808940856}
   m_Layer: 0
   m_Name: GlobalVoiceCommands
   m_TagString: Untagged
@@ -395,35 +459,6 @@ Transform:
   m_Father: {fileID: 1084457990}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &808940856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 808940854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d6513c2cdf97f409654a2a4114d9b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keywords:
-  - Keyword: planning one
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 808940857}
-          m_MethodName: changeMapLayout
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: plan1
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
 --- !u!114 &808940857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,6 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2033a700ae0234f8d3c56828821b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScalingFactor: 0.0001
 --- !u!1 &1084457989
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b07bd38caa83cf4f9a922ac9d101bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursor: {fileID: 1000010024638574, guid: 90749889d87976143a9e21072d2434b4, type: 2}
+  cursor: {fileID: 1245641121}
 --- !u!1 &1233838330
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +581,67 @@ Transform:
   m_Father: {fileID: 1084457990}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1245641121 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1758984668724236, guid: 15d2a7146c21e37418a05b1fb7f259a5,
+    type: 2}
+  m_PrefabInternal: {fileID: 136423221}
+--- !u!1001 &1521616322
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.0617
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.0474
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585854469043100, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 102542709049315966, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
+        type: 2}
+      propertyPath: m_Text
+      value: Scanning the room...
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_Name
+      value: ScanningMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114785689038145190, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1600390745
 Prefab:
   m_ObjectHideFlags: 0
@@ -644,11 +741,15 @@ MonoBehaviour:
   - Keyword: planning two
     KeyCode: 0
   - Keyword: move map
-    KeyCode: 0
+    KeyCode: 112
   - Keyword: move
     KeyCode: 109
   - Keyword: rotate
     KeyCode: 110
+  - Keyword: map bigger
+    KeyCode: 98
+  - Keyword: map smaller
+    KeyCode: 118
 --- !u!1001 &1850604528
 Prefab:
   m_ObjectHideFlags: 0

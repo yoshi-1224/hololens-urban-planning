@@ -27,7 +27,7 @@ public enum PlacementSurfaces {
 /// * A transparent cube representing the object's box collider.
 /// * Shadow on the target surface indicating whether or not placement is valid.
 /// </summary>
-public class Placeable : MonoBehaviour, IInputClickHandler {
+public class InteractibleMap : MonoBehaviour, IInputClickHandler {
     [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
     public Material PlaceableBoundsMaterial = null;
 
@@ -75,7 +75,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     private float maximumPlacementDistance = 5.0f;
 
     // Speed (1.0 being fastest) at which the object settles to the surface upon placement.
-    private float placementVelocity = 0.03f;
+    private float placementVelocity = 0.1f;
 
     // Indicates whether or not this script manages the object's box collider.
     private bool managingBoxCollider = false;
@@ -100,8 +100,6 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
         // Get the object's collider.
         boxCollider = gameObject.GetComponent<BoxCollider>();
         if (boxCollider == null) {
-            // The object does not have a collider, create one and remember that
-            // we are managing it.
             managingBoxCollider = true;
             boxCollider = gameObject.AddComponent<BoxCollider>();
             boxCollider.enabled = false;
@@ -127,7 +125,7 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
     /// </summary>
     public void OnInputClicked(InputClickedEventData eventData) {
         if (!IsPlacing) {
-            makeSiblingsChildren();
+            MakeSiblingsChildren();
             OnPlacementStart();
         } else {
             OnPlacementStop();
@@ -167,9 +165,9 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
                         ChildrenToHide[i].SetActive(true);
                     }
                     // transform.position has been confirmed in a new location
-                    // we no longer have to perform the above statements
+                    // we no longer have to perform the above statements so set placingComplete to true
                     placingComplete = true;
-                    makeChildrenSiblings();
+                    MakeChildrenSiblings();
                 }
             }
         }
@@ -540,13 +538,13 @@ public class Placeable : MonoBehaviour, IInputClickHandler {
             audioSource.Play();
     }
 
-    private void makeSiblingsChildren() {
+    public void MakeSiblingsChildren() {
         foreach(GameObject child in ChildrenToHide) {
             child.transform.parent = transform;
         }
     }
 
-    private void makeChildrenSiblings() {
+    public void MakeChildrenSiblings() {
         foreach(GameObject sibling in ChildrenToHide) {
             sibling.transform.parent = transform.parent;
         }
