@@ -304,71 +304,48 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d379ed0a5618c9f479f58bd83a2d0ad3, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &564212079 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
-    type: 2}
-  m_PrefabInternal: {fileID: 1521616322}
---- !u!114 &564212080
-MonoBehaviour:
+--- !u!1001 &587433719
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 564212079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2be8bd2ebd8277c448d6d81c75517fee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TagalongDistance: 2
-  EnforceDistance: 1
-  PositionUpdateSpeed: 9.8
-  SmoothMotion: 1
-  SmoothingFactor: 0.75
---- !u!114 &564212081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 564212079}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseUnscaledTime: 1
-  PositionPerSecond: 30
-  RotationDegreesPerSecond: 720
-  RotationSpeedScaler: 0
-  ScalePerSecond: 5
-  SmoothLerpToTarget: 0
-  SmoothPositionLerpRatio: 0.5
-  SmoothRotationLerpRatio: 0.5
-  SmoothScaleLerpRatio: 0.5
---- !u!65 &564212082
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 564212079}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 45, y: 6.0009766, z: 0}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &564212086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 564212079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PivotAxis: 1
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634588824060068, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c2bd4a5d243bd744596b9735f268ae88, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &721412081
 Prefab:
   m_ObjectHideFlags: 0
@@ -586,7 +563,7 @@ GameObject:
   m_PrefabParentObject: {fileID: 1758984668724236, guid: 15d2a7146c21e37418a05b1fb7f259a5,
     type: 2}
   m_PrefabInternal: {fileID: 136423221}
---- !u!1001 &1521616322
+--- !u!1001 &1594578600
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -625,21 +602,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 102542709049315966, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
+    - target: {fileID: 114608395536733924, guid: a9c3d81ca5bbcf249b00cf4fdd222773,
         type: 2}
-      propertyPath: m_Text
-      value: Scanning the room...
+      propertyPath: PivotAxis
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
-      propertyPath: m_Name
-      value: ScanningMessage
-      objectReference: {fileID: 0}
-    - target: {fileID: 1313389321250656, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114785689038145190, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a9c3d81ca5bbcf249b00cf4fdd222773, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1600390745
@@ -738,8 +706,6 @@ MonoBehaviour:
     KeyCode: 116
   - Keyword: hide details
     KeyCode: 104
-  - Keyword: planning two
-    KeyCode: 0
   - Keyword: move map
     KeyCode: 112
   - Keyword: move

@@ -42,10 +42,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         EnableAudioHapticFeedback();
     }
 
-    void Update() {
-
-    }
-
     public void OnFocusEnter() {
         EnableEmission();
     }

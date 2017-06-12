@@ -3,6 +3,7 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
 using HoloToolkit.Unity.InputModule;
+using System;
 
 /// <summary>
 /// Enumeration containing the surfaces on which a GameObject
@@ -20,14 +21,19 @@ public enum PlacementSurfaces {
 /// <summary>
 /// The Placeable class implements the logic used to determine if a GameObject
 /// can be placed on a target surface. Constraints for placement include:
+/// 
 /// * No part of the GameObject's box collider impacts with another object in the scene
 /// * The object lays flat (within specified tolerances) against the surface
 /// * The object would not fall off of the surface if gravity were enabled.
+/// 
 /// This class also provides the following visualizations.
 /// * A transparent cube representing the object's box collider.
 /// * Shadow on the target surface indicating whether or not placement is valid.
+/// 
+/// Credit: Microsoft Hololens Academy SpatialMapping Tutorial
+/// Modified by: Yoshiaki Nishimura
 /// </summary>
-public class InteractibleMap : MonoBehaviour, IInputClickHandler {
+public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
     public Material PlaceableBoundsMaterial = null;
 
@@ -91,9 +97,15 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
     // The location at which the object will be placed.
     private Vector3 targetPosition;
 
+    /// <summary>
+    /// Used to avoid unnecesary Update() statements once object has been placed successfully
+    /// </summary>
     private bool placingComplete;
 
+    private GameObject surfacePlanes;
+    private Material[] defaultMaterials;
     private Renderer mapRenderer;
+
     private void Awake() {
         targetPosition = gameObject.transform.position;
 
@@ -116,6 +128,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
         shadowAsset.SetActive(false);
 
         // added by me
+        defaultMaterials = GetComponent<Renderer>().materials;
         EnableAudioHapticFeedback();
         mapRenderer = GetComponent<Renderer>();
     }
@@ -189,7 +202,6 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
         Vector3 raycastDirection = gameObject.transform.forward;
 
         if (PlacementSurface == PlacementSurfaces.Horizontal) {
-            // Placing on horizontal surfaces.
             // Raycast from the bottom face of the box collider.
             raycastDirection = -(Vector3.up); //straight down
         }
@@ -238,6 +250,18 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
                 // The raycast failed to intersect with the target layer.
                 return false;
             }
+        }
+
+        // checking there is no vertical intersection by the wall
+        // one way is to have reference to all the surface planes created, iterate through
+        // each of their colliders.bounds and check if any of them intesect with 
+        // this collider
+        if (surfacePlanes == null)
+            surfacePlanes = GameObject.Find("SurfacePlanes");
+
+        foreach (BoxCollider collider in surfacePlanes.GetComponentsInChildren<BoxCollider>()) {
+            if (collider.bounds.Intersects(boxCollider.bounds))
+                return false;
         }
 
         return true;
@@ -297,7 +321,6 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
         if (managingBoxCollider) {
             boxCollider.enabled = true;
         }
-
         // Hide the child object(s) to make placement easier.
         for (int i = 0; i < ChildrenToHide.Count; i++) {
             ChildrenToHide[i].SetActive(false);
@@ -519,8 +542,11 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
         shadowAsset = null;
     }
 
+    /// <summary>
+    /// sets up the audio feedback on this object. The clip attached will then be able to play
+    /// by calling playPlacementAudio()
+    /// </summary>
     private void EnableAudioHapticFeedback() {
-        // If this hologram has an audio clip, add an AudioSource with this clip.
         if (PlacementSound == null)
             return;
 
@@ -538,15 +564,53 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler {
             audioSource.Play();
     }
 
+    /// <summary>
+    /// This should be called right before the placing starts so that the buildings follow
+    /// the transform of map
+    /// </summary>
     public void MakeSiblingsChildren() {
         foreach(GameObject child in ChildrenToHide) {
             child.transform.parent = transform;
         }
     }
 
+    /// <summary>
+    /// This should be called right after the placing ends so that the buildings become 
+    /// independent from the map and can receive their own select event handlers
+    /// </summary>
     public void MakeChildrenSiblings() {
         foreach(GameObject sibling in ChildrenToHide) {
             sibling.transform.parent = transform.parent;
         }
     }
+
+    public void OnFocusEnter() {
+        EnableEmission();
+    }
+
+    public void OnFocusExit() {
+        DisableEmission();
+    }
+
+    #region visual feedbacks
+    /// <summary>
+    /// enable emission so that when this building is focused the material lights up
+    /// to give the user visual feedback
+    /// </summary>
+    public void EnableEmission() {
+        for (int i = 0; i < defaultMaterials.Length; i++) {
+            defaultMaterials[i].EnableKeyword("_EMISSION");
+        }
+    }
+
+    /// <summary>
+    /// disable emission when gaze is exited from this building
+    /// </summary>
+    public void DisableEmission() {
+        for (int i = 0; i < defaultMaterials.Length; i++) {
+            defaultMaterials[i].DisableKeyword("_EMISSION");
+        }
+    }
+
+    #endregion
 }
