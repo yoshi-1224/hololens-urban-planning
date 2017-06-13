@@ -56,7 +56,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     }
 
     public void OnFocusEnter() {
-        Debug.Log("Focus enter");
         gazeStartedTime = Time.unscaledTime;
         EnableEmission();
     }
@@ -64,7 +63,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     public void OnFocusExit() {
         gazeStartedTime = -1;
         DisableEmission();
-        Debug.Log("Focus exit");
         hideGuideObject();
     }
 

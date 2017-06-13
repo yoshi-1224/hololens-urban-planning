@@ -92,7 +92,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         if (rotationFeedbackObject == null || rotationFeedbackObject.activeSelf)
             return;
         rotationFeedbackObject.SetActive(true);
-        Debug.Log("rotation feedback enabled");
     }
 
     public void HideRotationFeedback() {
@@ -102,16 +101,31 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     }
 
     public void ShowTranslationFeedback() {
-        Debug.Log("Cursor supposed to show translation feedback");
         if (translationFeedbackObject == null || translationFeedbackObject.activeSelf)
             return;
         translationFeedbackObject.SetActive(true);
-        Debug.Log("translation feedback enabled");
     }
 
     public void HideTranslationFeedback() {
         if(translationFeedbackObject == null || !translationFeedbackObject.activeSelf)
             return;
         translationFeedbackObject.SetActive(false);
+    }
+
+    public void ShowScalingFeedback() {
+        if (rotationFeedbackObject == null || rotationFeedbackObject.activeSelf)
+            return;
+        // make the rotation feedback vertical
+        rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, 90));
+        rotationFeedbackObject.transform.localScale += new Vector3(1, 1, 1);
+        rotationFeedbackObject.SetActive(true);
+    }
+
+    public void HideScalingFeedback() {
+        if (rotationFeedbackObject == null || !rotationFeedbackObject.activeSelf)
+            return;
+        rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, -90));
+        rotationFeedbackObject.transform.localScale += new Vector3(-1, -1, -1);
+        rotationFeedbackObject.SetActive(false);
     }
 }

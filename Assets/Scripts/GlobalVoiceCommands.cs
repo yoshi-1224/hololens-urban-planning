@@ -12,6 +12,7 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
     public const string COMMAND_MOVE_MAP = "move map";
     public const string COMMAND_MAP_BIGGER = "map bigger";
     public const string COMMAND_MAP_SMALLER = "map smaller";
+    public const string COMMAND_SCALE_MAP = "scale map";
 
     void Start () {
         if (InputManager.Instance == null) {
@@ -60,6 +61,9 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
             case COMMAND_MAP_SMALLER:
                 shrinkMap();
                 break;
+            case COMMAND_SCALE_MAP:
+                scaleMap();
+                break;
             default:
                 // just ignore
                 break;
@@ -91,5 +95,13 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
         map.transform.localScale -= new Vector3(ScalingFactor, ScalingFactor, ScalingFactor);
         if (!isPlacing)
             map.SendMessage("MakeChildrenSiblings");
+    }
+
+    private void scaleMap() {
+        Debug.Log("scalemap called");
+        if (map == null)
+            map = GameObject.Find("CustomizedMap");
+
+        GestureManager.Instance.RegisterGameObjectForScaling(map);
     }
 }

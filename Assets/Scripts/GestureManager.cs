@@ -23,6 +23,11 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
         get; private set;
     }
 
+    public bool IsScaling {
+        get; private set;
+    }
+
+    [Tooltip("Reference to cursor object in order to show motion feedbacks")]
     public GameObject cursor;
 
     /// <summary>
@@ -35,32 +40,35 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
     private void Start() {
         IsRotating = false;
         IsTranslating = false;
+        IsScaling = false;
         currentObjectInMotion = null;
     }
 
     public void OnManipulationCanceled(ManipulationEventData eventData) {
-        Debug.Log("manipulation completed");
-        if (IsTranslating || IsRotating)
+        if (IsTranslating || IsRotating || IsScaling)
             Unregister();
     }
 
     public void OnManipulationCompleted(ManipulationEventData eventData) {
-        Debug.Log("manipulation completed");
-        if (IsTranslating || IsRotating)
+        if (IsTranslating || IsRotating || IsScaling)
             Unregister();
     }
 
     public void OnManipulationStarted(ManipulationEventData eventData) {
-        Debug.Log("manipulation started");
-        currentObjectInMotion.SendMessage("PerformTranslationStarted", eventData.CumulativeDelta);
+        if (IsTranslating)
+            currentObjectInMotion.SendMessage("PerformTranslationStarted", eventData.CumulativeDelta);
+        if (IsScaling)
+            currentObjectInMotion.SendMessage("PerformScalingStarted");
+        // just to get rid of the guide from the map
     }
 
     public void OnManipulationUpdated(ManipulationEventData eventData) {
-        Debug.Log("manipulation updated");
         if (IsRotating) {
             currentObjectInMotion.SendMessage("PerformRotationUpdate", eventData.CumulativeDelta);
         } else if (IsTranslating) {
             currentObjectInMotion.SendMessage("PerformTranslationUpdate", eventData.CumulativeDelta);
+        } else if (IsScaling){
+            currentObjectInMotion.SendMessage("PerformScalingUpdate", eventData.CumulativeDelta);
         } else {
             // ignore
         }
@@ -68,7 +76,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
     }
 
     public bool RegisterGameObjectForRotation(GameObject objectToRegister) {
-        if (currentObjectInMotion != null || IsTranslating || IsRotating)
+        if (currentObjectInMotion != null || IsTranslating || IsRotating || IsScaling)
             return false;
 
         IsRotating = true;
@@ -80,13 +88,23 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
     }
 
     public bool RegisterGameObjectForTranslation(GameObject objectToRegister) {
-        if (currentObjectInMotion != null || IsTranslating || IsRotating)
+        if (currentObjectInMotion != null || IsTranslating || IsRotating || IsScaling)
             return false;
         IsTranslating = true;
         currentObjectInMotion = objectToRegister;
         // register this as what receives the gestures in prescedence
         InputManager.Instance.PushModalInputHandler(gameObject);
         cursor.SendMessage("ShowTranslationFeedback");
+        return true;
+    }
+
+    public bool RegisterGameObjectForScaling(GameObject objectToRegister) {
+        if (currentObjectInMotion != null || IsTranslating || IsRotating || IsScaling)
+            return false;
+        IsScaling = true;
+        currentObjectInMotion = objectToRegister;
+        InputManager.Instance.PushModalInputHandler(gameObject);
+        cursor.SendMessage("ShowScalingFeedback");
         return true;
     }
 
@@ -98,6 +116,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
             cursor.SendMessage("HideRotationFeedback");
         } else if (IsTranslating) {
             cursor.SendMessage("HideTranslationFeedback");
+        } else if (IsScaling) {
+            cursor.SendMessage("HideScalingFeedback");
         }
         // clear the stack so that other gameobjects can receive gesture inputs
         // it might actually be necessary to have the manipulation handler on the object itself
@@ -106,5 +126,6 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
         
         IsRotating = false;
         IsTranslating = false;
+        IsScaling = false;
     }
 }

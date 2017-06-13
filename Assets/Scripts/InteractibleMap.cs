@@ -65,6 +65,9 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     [Tooltip("The sound to play when the map is placed")]
     public AudioClip PlacementSound;
 
+    [Tooltip("scaling sensitivity when the map is being scaled")]
+    public float ScalingSensitivity = 0.0001f;
+
     private AudioSource audioSource;
 
     /// <summary>
@@ -111,7 +114,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     /// Used to avoid unnecesary Update() statements once object has been placed successfully
     /// </summary>
     private bool placingComplete;
-
+    private bool isBeingScaled;
     private GameObject surfacePlanes;
     private Material[] defaultMaterials;
     private Renderer mapRenderer;
@@ -143,12 +146,12 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         mapRenderer = GetComponent<Renderer>();
         shouldShowGuide = true;
         gazeStartedTime = -1;
+        isBeingScaled = false;
     }
 
-    /// <summary>
-    /// Called when our object is clicked.
-    /// </summary>
     public void OnInputClicked(InputClickedEventData eventData) {
+        if (isBeingScaled)
+            return;
         if (!IsPlacing) {
             MakeSiblingsChildren();
             OnPlacementStart();
@@ -157,9 +160,6 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         }
     }
 
-    /// <summary>
-    /// Called once per frame.
-    /// </summary>
     private void Update() {
         if (IsPlacing) { // being selected by the user
             // Move the object.
@@ -211,6 +211,78 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
             }
         }
     }
+
+    /// <summary>
+    /// Put the object into placement mode.
+    /// </summary>
+    public void OnPlacementStart() {
+        // If we are managing the collider, enable it. 
+        if (managingBoxCollider) {
+            boxCollider.enabled = true;
+        }
+        // Hide the child object(s) to make placement easier.
+        for (int i = 0; i < ChildrenToHide.Count; i++) {
+            ChildrenToHide[i].SetActive(false);
+        }
+
+        // show the planes during placement and hide the map renderer
+        SurfaceMeshesToPlanes.Instance.activatePlanes();
+        mapRenderer.enabled = false;
+
+        // Tell the gesture manager that it is to assume
+        // all input is to be given to this object.
+        InputManager.Instance.OverrideFocusedObject = gameObject;
+
+        // Enter placement mode.
+        IsPlacing = true;
+        placingComplete = false;
+        playPlacementAudio();
+        shouldShowGuide = false;
+        hideGuideObject();
+    }
+
+    /// <summary>
+    /// Take the object out of placement mode.
+    /// </summary>
+    /// <remarks>
+    /// This method will leave the object in placement mode if called while
+    /// the object is in an invalid location.  To determine whether or not
+    /// the object has been placed, check the value of the IsPlacing property.
+    /// </remarks>
+    public void OnPlacementStop() {
+        // ValidatePlacement requires a normal as an out parameter.
+        Vector3 position;
+        Vector3 surfaceNormal;
+
+        // Check to see if we can exit placement mode.
+        if (!ValidatePlacement(out position, out surfaceNormal)) {
+            return;
+        }
+
+        // added by me
+        SurfaceMeshesToPlanes.Instance.deactivatePlanes();
+
+        // The object is allowed to be placed.
+        // We are placing at a small buffer away from the surface.
+        targetPosition = position + (0.01f * surfaceNormal);
+
+        OrientObject(true, surfaceNormal);
+
+        // If we are managing the collider, disable it. 
+        if (managingBoxCollider) {
+            boxCollider.enabled = false;
+        }
+
+        // Tell the gesture manager that it is to resume its normal behavior.
+        InputManager.Instance.OverrideFocusedObject = null;
+
+        // Exit placement mode.
+        IsPlacing = false;
+        playPlacementAudio();
+    }
+
+#region positioning-related
+
 
     /// <summary>
     /// Verify whether or not the object can be placed.
@@ -294,7 +366,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         //Vector3 aboveCenter = facePoints[0] + new Vector3(0, 0.5f, 0); // shift the center up by 2m
         //Debug.Log(" above center " + aboveCenter);
         //Vector3 extents = (boxCollider.size / 4);
-        
+
         //extents.y = 0.00001f; // something really thin
         //Debug.Log(" extents " + extents);
         //if (Physics.CheckBox(aboveCenter, extents)) {
@@ -352,76 +424,6 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         return new Vector3[] { center, corner0, corner1, corner2, corner3 };
     }
 
-    /// <summary>
-    /// Put the object into placement mode.
-    /// </summary>
-    public void OnPlacementStart() {
-        // If we are managing the collider, enable it. 
-        if (managingBoxCollider) {
-            boxCollider.enabled = true;
-        }
-        // Hide the child object(s) to make placement easier.
-        for (int i = 0; i < ChildrenToHide.Count; i++) {
-            ChildrenToHide[i].SetActive(false);
-        }
-
-        // show the planes during placement and hide the map renderer
-        SurfaceMeshesToPlanes.Instance.activatePlanes();
-        mapRenderer.enabled = false;
-
-        // Tell the gesture manager that it is to assume
-        // all input is to be given to this object.
-        InputManager.Instance.OverrideFocusedObject = gameObject;
-
-        // Enter placement mode.
-        IsPlacing = true;
-        placingComplete = false;
-        playPlacementAudio();
-        shouldShowGuide = false;
-        hideGuideObject();
-    }
-
-    /// <summary>
-    /// Take the object out of placement mode.
-    /// </summary>
-    /// <remarks>
-    /// This method will leave the object in placement mode if called while
-    /// the object is in an invalid location.  To determine whether or not
-    /// the object has been placed, check the value of the IsPlacing property.
-    /// </remarks>
-    public void OnPlacementStop() {
-        // ValidatePlacement requires a normal as an out parameter.
-        Vector3 position;
-        Vector3 surfaceNormal;
-
-        // Check to see if we can exit placement mode.
-        if (!ValidatePlacement(out position, out surfaceNormal)) {
-            return;
-        }
-
-        // added by me
-        SurfaceMeshesToPlanes.Instance.deactivatePlanes();
-
-        // The object is allowed to be placed.
-        // We are placing at a small buffer away from the surface.
-        targetPosition = position + (0.01f * surfaceNormal);
-
-        OrientObject(true, surfaceNormal);
-
-        // If we are managing the collider, disable it. 
-        if (managingBoxCollider) {
-            boxCollider.enabled = false;
-        }
-
-        // Tell the gesture manager that it is to resume its normal behavior.
-        InputManager.Instance.OverrideFocusedObject = null;
-
-        // Exit placement mode.
-        IsPlacing = false;
-        playPlacementAudio();
-    }
-
-#region positioning-related
     /// <summary>
     /// Positions the object along the surface toward which the user is gazing.
     /// </summary>
@@ -582,6 +584,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         boundsAsset = null;
         Destroy(shadowAsset);
         shadowAsset = null;
+        hideGuideObject();
     }
 
 #region audio-related
@@ -677,13 +680,37 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
 
     private void positionGuideObject() {
         float distanceRatio = 0.2f;
-        guideObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
-        guideObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+        guideObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * GazeManager.Instance.HitPosition;
+        guideObject.transform.rotation = Quaternion.LookRotation(GazeManager.Instance.HitPosition - Camera.main.transform.position, Vector3.up);
     }
 
     private void resetShowStatus() {
         shouldShowGuide = true;
         gazeStartedTime = -1;
+    }
+
+#endregion
+
+#region scaling-related
+    public void PerformScalingStarted() {
+        if (!IsPlacing)
+            MakeSiblingsChildren();
+        shouldShowGuide = false;
+        hideGuideObject();
+        isBeingScaled = true;
+    }
+
+    public void PerformScalingUpdate(Vector3 cumulativeDelta) {
+        float yMovement = cumulativeDelta.y;
+        float scalingFactor = yMovement * ScalingSensitivity;
+        transform.localScale += new Vector3(scalingFactor, scalingFactor, scalingFactor);
+    }
+
+    public void UnregisterCallBack() {
+        resetShowStatus();
+        isBeingScaled = false;
+        if (!IsPlacing)
+            MakeChildrenSiblings();
     }
 
 #endregion

@@ -1431,6 +1431,7 @@ MonoBehaviour:
   gazeDurationTillGuideDisplay: 0
   ChildrenToHide: []
   PlacementSound: {fileID: 0}
+  ScalingSensitivity: 5
 --- !u!114 &114402357396067796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1477,6 +1478,7 @@ MonoBehaviour:
   - {fileID: 1621370837384006}
   - {fileID: 1805074656876386}
   PlacementSound: {fileID: 8300000, guid: a474f298debcdca499c2c78e0df05829, type: 3}
+  ScalingSensitivity: 0.0001
 --- !u!114 &114797100988372402
 MonoBehaviour:
   m_ObjectHideFlags: 1
