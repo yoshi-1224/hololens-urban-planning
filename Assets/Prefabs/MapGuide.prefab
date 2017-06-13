@@ -85,6 +85,10 @@ TextMesh:
 
     Scale Map
 
+    Map bigger
+
+    Map smaller
+
     Move Map'
   m_OffsetZ: 0
   m_CharacterSize: 1

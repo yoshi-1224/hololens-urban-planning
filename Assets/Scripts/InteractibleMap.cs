@@ -69,6 +69,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     public float ScalingSensitivity = 0.0001f;
 
     private AudioSource audioSource;
+    private GameObject scaleIndicator;
 
     /// <summary>
     /// Indicates if the object is in the process of being placed.
@@ -695,8 +696,6 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     public void PerformScalingStarted() {
         if (!IsPlacing)
             MakeSiblingsChildren();
-        shouldShowGuide = false;
-        hideGuideObject();
         isBeingScaled = true;
     }
 
@@ -704,6 +703,13 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         float yMovement = cumulativeDelta.y;
         float scalingFactor = yMovement * ScalingSensitivity;
         transform.localScale += new Vector3(scalingFactor, scalingFactor, scalingFactor);
+        UpdateMapInfo();
+    }
+
+    public void RegisterForScaling() {
+        shouldShowGuide = false;
+        hideGuideObject();
+        GestureManager.Instance.RegisterGameObjectForScaling(gameObject);
     }
 
     public void UnregisterCallBack() {
@@ -715,4 +721,13 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
 
 #endregion
 
+    /// <summary>
+    /// call this whenever the scaling for the map has been changed so that we can 
+    /// update the number displayed to the user using mapInfo object
+    /// </summary>
+    public void UpdateMapInfo() {
+        if (scaleIndicator == null)
+            scaleIndicator = GameObject.Find("ScaleIndicator");
+        scaleIndicator.SendMessage("UpdateCurrentScaling", transform.localScale.x);
+    }
 }

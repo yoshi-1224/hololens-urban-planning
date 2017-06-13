@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tablePrefab: {fileID: 1673678327178682, guid: e149096f5ec29624e8e271b4e568cf2c,
+  tablePrefab: {fileID: 1761780268493972, guid: aae4824e44c2a674085ed09d441edf2d,
     type: 2}
   guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
     type: 2}
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tablePrefab: {fileID: 1673678327178682, guid: e149096f5ec29624e8e271b4e568cf2c,
+  tablePrefab: {fileID: 1761780268493972, guid: aae4824e44c2a674085ed09d441edf2d,
     type: 2}
   guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
     type: 2}
@@ -1490,7 +1490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tablePrefab: {fileID: 1673678327178682, guid: e149096f5ec29624e8e271b4e568cf2c,
+  tablePrefab: {fileID: 1761780268493972, guid: aae4824e44c2a674085ed09d441edf2d,
     type: 2}
   guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
     type: 2}

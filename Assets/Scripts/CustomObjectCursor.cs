@@ -27,10 +27,11 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     public Transform ParentTransform;
 
     /// <summary>
-    /// for feedbacks for manipulation and navigation
+    /// for feedbacks for rotation, translation and scaling
     /// </summary>
     public GameObject translationFeedbackObject;
     public GameObject rotationFeedbackObject;
+    public GameObject scaleIndicator;
 
     /// <summary>
     /// On enable look for a sprite renderer on children
@@ -118,14 +119,19 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         // make the rotation feedback vertical
         rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, 90));
         rotationFeedbackObject.transform.localScale += new Vector3(1, 1, 1);
+        SurfaceCursorDistance += 0.4f;
         rotationFeedbackObject.SetActive(true);
+        scaleIndicator.SetActive(true);
     }
 
     public void HideScalingFeedback() {
         if (rotationFeedbackObject == null || !rotationFeedbackObject.activeSelf)
             return;
+        //put everything back to before state
         rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, -90));
         rotationFeedbackObject.transform.localScale += new Vector3(-1, -1, -1);
+        SurfaceCursorDistance -= 0.4f;
         rotationFeedbackObject.SetActive(false);
+        scaleIndicator.SetActive(false);
     }
 }

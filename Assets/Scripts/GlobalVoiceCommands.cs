@@ -7,18 +7,25 @@ using System;
 public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
     [Tooltip("Adjust the scaling sensitivity applied on voice commands")]
     public float ScalingFactor;
+    [Tooltip("The prefab for the tool menu to show for planning")]
+    public GameObject toolMenuPrefab;
+    private GameObject toolMenuObject;
 
     private GameObject map;
     public const string COMMAND_MOVE_MAP = "move map";
     public const string COMMAND_MAP_BIGGER = "map bigger";
     public const string COMMAND_MAP_SMALLER = "map smaller";
     public const string COMMAND_SCALE_MAP = "scale map";
+    public const string COMMAND_SHOW_TOOLS = "show tools";
+    public const string COMMAND_HIDE_TOOLS = "hide tools";
+    public const bool IS_ENLARGE = true;
 
     void Start () {
         if (InputManager.Instance == null) {
             return;
         }
         InputManager.Instance.AddGlobalListener(gameObject);
+        toolMenuObject = null;
 	}
 	
 	void Update () {
@@ -26,19 +33,9 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
 	}
 
     private void OnDestroy() {
-        if (InputManager.Instance == null) {
+        if (InputManager.Instance == null)
             return;
-        }
         InputManager.Instance.RemoveGlobalListener(gameObject);
-    }
-
-    public void changeMapLayout(string layoutType) {
-        switch (layoutType) {
-            case "":
-
-            default:
-                break;
-        }
     }
 
     /// <summary>
@@ -56,13 +53,19 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
                 moveMap();
                 break;
             case COMMAND_MAP_BIGGER:
-                enlargeMap();
+                enlargeMap(IS_ENLARGE);
                 break;
             case COMMAND_MAP_SMALLER:
-                shrinkMap();
+                enlargeMap(!IS_ENLARGE);
                 break;
             case COMMAND_SCALE_MAP:
                 scaleMap();
+                break;
+            case COMMAND_SHOW_TOOLS:
+                showTools();
+                break;
+            case COMMAND_HIDE_TOOLS:
+                hideTools();
                 break;
             default:
                 // just ignore
@@ -70,38 +73,45 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
         }
     }
 
-    private void enlargeMap() {
+    /// <summary>
+    /// scales the map together with the buildings by ScalingFactor directly via voice commands
+    /// </summary>
+    private void enlargeMap(bool enlarge) {
         if (map == null)
             map = GameObject.Find("CustomizedMap");
         bool isPlacing = map.GetComponent<InteractibleMap>().IsPlacing;
-        
+
+        // if enlarge == true, make the map bigger. else smaller
+        int sign = enlarge ? 1 : -1;
         if (!isPlacing)
             // make the buildings follow the same scaling as the parent map
             map.SendMessage("MakeSiblingsChildren");
-        map.transform.localScale += new Vector3(ScalingFactor, ScalingFactor, ScalingFactor);
+        map.transform.localScale += new Vector3(sign * ScalingFactor, sign * ScalingFactor, sign * ScalingFactor);
         if (!isPlacing)
             map.SendMessage("MakeChildrenSiblings");
     }
 
-    private void shrinkMap() {
-        if (map == null)
-            map = GameObject.Find("CustomizedMap");
-
-        bool isPlacing = map.GetComponent<InteractibleMap>().IsPlacing;
-        
-        if (!isPlacing)
-            // make the buildings follow the same scaling as the parent map
-            map.SendMessage("MakeSiblingsChildren");
-        map.transform.localScale -= new Vector3(ScalingFactor, ScalingFactor, ScalingFactor);
-        if (!isPlacing)
-            map.SendMessage("MakeChildrenSiblings");
-    }
-
+    /// <summary>
+    /// enable manipulation gesture to scale the map together with the buildings
+    /// </summary>
     private void scaleMap() {
-        Debug.Log("scalemap called");
         if (map == null)
             map = GameObject.Find("CustomizedMap");
+        map.SendMessage("RegisterForScaling");
+    }
 
-        GestureManager.Instance.RegisterGameObjectForScaling(map);
+    /// <summary>
+    /// activates the tools menu
+    /// </summary>
+    private void showTools() {
+        if (toolMenuObject.activeSelf)
+            return;
+        toolMenuObject.SetActive(true);
+    }
+    
+    private void hideTools() {
+        if (!toolMenuObject.activeSelf)
+            return;
+        toolMenuObject.SetActive(false);
     }
 }
