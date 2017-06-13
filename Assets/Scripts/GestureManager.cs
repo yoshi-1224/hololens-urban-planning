@@ -92,6 +92,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
 
     public void Unregister() {
         Debug.Log("unregistering object for the motion");
+        currentObjectInMotion.SendMessage("UnregisterCallBack");
         currentObjectInMotion = null;
         if (IsRotating) {
             cursor.SendMessage("HideRotationFeedback");
@@ -102,7 +103,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
         // it might actually be necessary to have the manipulation handler on the object itself
         // or just register this as global listener!
         InputManager.Instance.ClearModalInputStack();
-
+        
         IsRotating = false;
         IsTranslating = false;
     }

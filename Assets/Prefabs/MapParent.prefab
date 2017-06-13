@@ -1401,6 +1401,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tablePrefab: {fileID: 1673678327178682, guid: e149096f5ec29624e8e271b4e568cf2c,
     type: 2}
+  guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
+    type: 2}
+  gazeDurationTillGuideDisplay: 4
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
   RotationSensitivity: 10
   TranslationSensitivity: 5
@@ -1424,6 +1427,8 @@ MonoBehaviour:
   NotPlaceableShadowMaterial: {fileID: 2100000, guid: 6a07a5d4c6829c1499b7a8b907b75e33,
     type: 2}
   PlacementSurface: 1
+  guidePrefab: {fileID: 0}
+  gazeDurationTillGuideDisplay: 0
   ChildrenToHide: []
   PlacementSound: {fileID: 0}
 --- !u!114 &114402357396067796
@@ -1439,6 +1444,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tablePrefab: {fileID: 1673678327178682, guid: e149096f5ec29624e8e271b4e568cf2c,
     type: 2}
+  guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
+    type: 2}
+  gazeDurationTillGuideDisplay: 4
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
   RotationSensitivity: 10
   TranslationSensitivity: 5
@@ -1462,6 +1470,9 @@ MonoBehaviour:
   NotPlaceableShadowMaterial: {fileID: 2100000, guid: ca6d4215d30dd1d4fb473ff9a009765d,
     type: 2}
   PlacementSurface: 1
+  guidePrefab: {fileID: 1015999048711060, guid: c0fa61224255db64a9fff0b26bb6a1a0,
+    type: 2}
+  gazeDurationTillGuideDisplay: 4
   ChildrenToHide:
   - {fileID: 1621370837384006}
   - {fileID: 1805074656876386}
@@ -1479,6 +1490,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tablePrefab: {fileID: 1673678327178682, guid: e149096f5ec29624e8e271b4e568cf2c,
     type: 2}
+  guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
+    type: 2}
+  gazeDurationTillGuideDisplay: 4
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
   RotationSensitivity: 10
   TranslationSensitivity: 5

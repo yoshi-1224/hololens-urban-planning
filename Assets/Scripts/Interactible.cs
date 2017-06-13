@@ -10,8 +10,19 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     [Tooltip("The table object to show on show details")]
     public GameObject tablePrefab;
 
+    [Tooltip("The user guide to show when gazed at for some time")]
+    public GameObject guidePrefab;
+    private GameObject guideObject;
+
+    [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
+    public float gazeDurationTillGuideDisplay;
+
+    private float gazeStartedTime;
+    private bool shouldShowGuide;
+
     [Tooltip("Sound to play upon table instantiate and destroy")]
     public AudioClip tableSound;
+
     private AudioSource audioSource;
 
     private GameObject tableObject;
@@ -39,15 +50,37 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     void Start() {
         defaultMaterials = GetComponent<Renderer>().materials;
         isTableAlreadyExists = false;
+        shouldShowGuide = true;
         EnableAudioHapticFeedback();
+        gazeStartedTime = -1;
     }
 
     public void OnFocusEnter() {
+        Debug.Log("Focus enter");
+        gazeStartedTime = Time.unscaledTime;
         EnableEmission();
     }
 
     public void OnFocusExit() {
+        gazeStartedTime = -1;
         DisableEmission();
+        Debug.Log("Focus exit");
+        hideGuideObject();
+    }
+
+    private void Update() {
+        if (!shouldShowGuide || guideObject != null)
+            // for any gaze session if the user is doing something
+            // or the guideObject already exists then
+            return;
+
+        if (gazeStartedTime != -1) { // the user is currently gazing at this object
+            if (Time.unscaledTime - gazeStartedTime >= gazeDurationTillGuideDisplay) {
+                // the user has been gazing at this object for gazeDurationTillGuideDisplay
+                Debug.Log("Instantiating one after time ");
+                showGuideObject();
+            }
+        }
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
@@ -74,6 +107,31 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         }
     }
 
+#region guide-related
+    private void showGuideObject() {
+        if (guideObject == null)
+            guideObject = Instantiate(guidePrefab);
+        positionGuideObject();
+    }
+
+    private void hideGuideObject() {
+        if (guideObject != null)
+            Destroy(guideObject);
+        guideObject = null;
+    }
+
+    private void positionGuideObject() {
+        float distanceRatio = 0.2f;
+        guideObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
+        guideObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+    }
+
+    private void resetShowStatus() {
+        shouldShowGuide = true;
+        gazeStartedTime = -1;
+    }
+
+#endregion
 
 #region translation-related
     /// <summary>
@@ -82,6 +140,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private void registerForTranslation() {
         Debug.Log("registered for translation");
         GestureManager.Instance.RegisterGameObjectForTranslation(gameObject);
+        shouldShowGuide = false;
+        hideGuideObject();
     }
     
     /// <summary>
@@ -111,9 +171,11 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// <summary>
     /// register this object as the one in focus for rotation
     /// </summary>
-    private void registerForRotation () {
+    private void registerForRotation() {
         Debug.Log("registered for rotation");
         GestureManager.Instance.RegisterGameObjectForRotation(gameObject);
+        shouldShowGuide = false;
+        hideGuideObject();
     }
 
     /// <summary>
@@ -123,6 +185,14 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     public void PerformRotationUpdate(Vector3 cumulativeDelta) {
         float rotationFactor = cumulativeDelta.x * RotationSensitivity; // may be wrong by doing this.
         transform.Rotate(new Vector3(0,  rotationFactor, 0));
+    }
+
+    /// <summary>
+    /// shouldShowGuide is set to true so that next time the user gaze enters the help guide
+    /// will show. At the END of the user action this should be set to true.
+    /// </summary>
+    public void UnregisterCallBack() {
+        resetShowStatus();
     }
 
 #endregion
@@ -143,7 +213,9 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         // add box collider at run time so that it fits the dynamically-set text sizes
         tableObject.AddComponent<BoxCollider>();
         isTableAlreadyExists = true;
-        //playTableSound();
+
+        shouldShowGuide = false;
+        hideGuideObject();
     }
 
     public void HideDetails() {
@@ -154,6 +226,9 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         tableObject = null;
         isTableAlreadyExists = false;
         playTableSound();
+
+        // at the end of user action
+        resetShowStatus();
     }
 
     private void positionTableObject() {
@@ -166,7 +241,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         /// use Unity's RichText format to enable diverse fonts, colours etc.
     }
 
-    #endregion
+#endregion
 
 #region audio-related
     private void EnableAudioHapticFeedback() {

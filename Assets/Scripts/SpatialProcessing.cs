@@ -67,7 +67,7 @@ public class SpatialProcessing : Singleton<SpatialProcessing> {
 
             // After scanning is over, switch to the secondary (occlusion) material.
             SpatialMappingManager.Instance.SetSurfaceMaterial(secondaryMaterial);
-                
+            disableRoomMesh();
             // hide the scanning message and instantiate the map
             MapPlacement.Instance.InstantiateMap();
         } else {
@@ -101,5 +101,11 @@ public class SpatialProcessing : Singleton<SpatialProcessing> {
             SurfaceMeshesToPlanes.Instance.MakePlanesComplete -= SurfaceMeshesToPlanes_MakePlanesComplete;
 
         base.OnDestroy();
+    }
+
+    private void disableRoomMesh() {
+        foreach(Transform child in GameObject.Find("SpatialMapping").transform) {
+            child.gameObject.SetActive(false);
+        }
     }
 }

@@ -49,6 +49,16 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     [Tooltip("The type of surface on which the object can be placed.")]
     public PlacementSurfaces PlacementSurface = PlacementSurfaces.Horizontal;
 
+    [Tooltip("The user guide to show when gazed at for some time")]
+    public GameObject guidePrefab;
+    private GameObject guideObject;
+
+    [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
+    public float gazeDurationTillGuideDisplay;
+
+    private float gazeStartedTime;
+    private bool shouldShowGuide;
+
     [Tooltip("The child object(s) to hide during placement.")]
     public List<GameObject> ChildrenToHide = new List<GameObject>();
 
@@ -71,7 +81,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     private float hoverDistance = 0.15f;
 
     // Threshold (the closer to 0, the stricter the standard) used to determine if a surface is flat.
-    private float distanceThreshold = 0.02f;
+    private float distanceThreshold = 0.3f;
 
     // Threshold (the closer to 1, the stricter the standard) used to determine if a surface is vertical.
     private float upNormalThreshold = 0.9f;
@@ -81,7 +91,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     private float maximumPlacementDistance = 5.0f;
 
     // Speed (1.0 being fastest) at which the object settles to the surface upon placement.
-    private float placementVelocity = 0.1f;
+    private float placementVelocity = 0.09f;
 
     // Indicates whether or not this script manages the object's box collider.
     private bool managingBoxCollider = false;
@@ -131,6 +141,8 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         defaultMaterials = GetComponent<Renderer>().materials;
         EnableAudioHapticFeedback();
         mapRenderer = GetComponent<Renderer>();
+        shouldShowGuide = true;
+        gazeStartedTime = -1;
     }
 
     /// <summary>
@@ -174,13 +186,27 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
                 if (dist > 0) {
                     gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
                 } else {
+                    // transform.position has been confirmed in a new location
+                    // we no longer have to perform the above statements so set placingComplete to true
+                    // and exit the looping condition
                     for (int i = 0; i < ChildrenToHide.Count; i++) {
                         ChildrenToHide[i].SetActive(true);
                     }
-                    // transform.position has been confirmed in a new location
-                    // we no longer have to perform the above statements so set placingComplete to true
                     placingComplete = true;
                     MakeChildrenSiblings();
+                    resetShowStatus();
+                }
+            } else {
+                if (!shouldShowGuide || guideObject != null)
+                    // for any gaze session if the user is doing something
+                    // or the guideObject already exists then
+                    return;
+
+                if (gazeStartedTime != -1) { // the user is currently gazing at this object
+                    if (Time.unscaledTime - gazeStartedTime >= gazeDurationTillGuideDisplay) {
+                        // the user has been gazing at this object for gazeDurationTillGuideDisplay
+                        showGuideObject();
+                    }
                 }
             }
         }
@@ -253,16 +279,29 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         }
 
         // checking there is no vertical intersection by the wall
-        // one way is to have reference to all the surface planes created, iterate through
+        // method 1) have reference to all the surface planes created, iterate through
         // each of their colliders.bounds and check if any of them intesect with 
-        // this collider
+        // this collider:
         if (surfacePlanes == null)
             surfacePlanes = GameObject.Find("SurfacePlanes");
-
         foreach (BoxCollider collider in surfacePlanes.GetComponentsInChildren<BoxCollider>()) {
             if (collider.bounds.Intersects(boxCollider.bounds))
                 return false;
         }
+        // CONCLUSION: the bounds are NOT accurate so does not work as expected
+
+        //// method 2: using Physics.Checkbox slightly above the map object
+        //Vector3 aboveCenter = facePoints[0] + new Vector3(0, 0.5f, 0); // shift the center up by 2m
+        //Debug.Log(" above center " + aboveCenter);
+        //Vector3 extents = (boxCollider.size / 4);
+        
+        //extents.y = 0.00001f; // something really thin
+        //Debug.Log(" extents " + extents);
+        //if (Physics.CheckBox(aboveCenter, extents)) {
+        //    return false;
+        //}
+
+        // CONCLUSION: doesn't work anyways.
 
         return true;
     }
@@ -338,7 +377,8 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         IsPlacing = true;
         placingComplete = false;
         playPlacementAudio();
-
+        shouldShowGuide = false;
+        hideGuideObject();
     }
 
     /// <summary>
@@ -378,10 +418,10 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
 
         // Exit placement mode.
         IsPlacing = false;
-
         playPlacementAudio();
     }
 
+#region positioning-related
     /// <summary>
     /// Positions the object along the surface toward which the user is gazing.
     /// </summary>
@@ -531,6 +571,8 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         return (dist <= distanceThreshold);
     }
 
+#endregion
+
     /// <summary>
     /// Called when the GameObject is unloaded.
     /// </summary>
@@ -542,6 +584,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         shadowAsset = null;
     }
 
+#region audio-related
     /// <summary>
     /// sets up the audio feedback on this object. The clip attached will then be able to play
     /// by calling playPlacementAudio()
@@ -564,6 +607,8 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
             audioSource.Play();
     }
 
+#endregion
+
     /// <summary>
     /// This should be called right before the placing starts so that the buildings follow
     /// the transform of map
@@ -585,14 +630,17 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     }
 
     public void OnFocusEnter() {
+        gazeStartedTime = Time.unscaledTime;
         EnableEmission();
     }
 
     public void OnFocusExit() {
+        gazeStartedTime = -1;
         DisableEmission();
+        hideGuideObject();
     }
 
-    #region visual feedbacks
+#region visual feedbacks
     /// <summary>
     /// enable emission so that when this building is focused the material lights up
     /// to give the user visual feedback
@@ -612,5 +660,32 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         }
     }
 
-    #endregion
+#endregion
+
+#region guide-related
+    private void showGuideObject() {
+        if (guideObject == null)
+            guideObject = Instantiate(guidePrefab);
+        positionGuideObject();
+    }
+
+    private void hideGuideObject() {
+        if (guideObject != null)
+            Destroy(guideObject);
+        guideObject = null;
+    }
+
+    private void positionGuideObject() {
+        float distanceRatio = 0.2f;
+        guideObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
+        guideObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+    }
+
+    private void resetShowStatus() {
+        shouldShowGuide = true;
+        gazeStartedTime = -1;
+    }
+
+#endregion
+
 }
