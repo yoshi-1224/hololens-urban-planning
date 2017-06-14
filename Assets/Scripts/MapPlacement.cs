@@ -11,6 +11,7 @@ public class MapPlacement : Singleton<MapPlacement> {
         dismissScanMessage();
         // let the user choose the location to place first
         map.GetComponentInChildren<InteractibleMap>().OnInputClicked(null);
+        //GameObject.Find("Toolbar").SendMessage("UpdateCollection");
 
     }
 
