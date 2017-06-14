@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity;
 using System;
 
-public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
+public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandler {
     [Tooltip("Adjust the scaling sensitivity applied on voice commands")]
     public float ScalingFactor;
-    [Tooltip("The prefab for the tool menu to show for planning")]
-    public GameObject toolMenuPrefab;
+
     private GameObject toolMenuObject;
 
     private GameObject map;
@@ -19,20 +19,22 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
     public const string COMMAND_SHOW_TOOLS = "show tools";
     public const string COMMAND_HIDE_TOOLS = "hide tools";
     public const bool IS_ENLARGE = true;
+    private float toolsDistanceFromCamera = 1f;
 
-    void Start () {
+    void Start() {
         if (InputManager.Instance == null) {
             return;
         }
         InputManager.Instance.AddGlobalListener(gameObject);
-        toolMenuObject = null;
-	}
-	
-	void Update () {
-		
-	}
+        toolMenuObject = GameObject.Find("Toolbar");
+        toolMenuObject.SetActive(false);
+    }
 
-    private void OnDestroy() {
+    void Update() {
+
+    }
+
+    protected override void OnDestroy() {
         if (InputManager.Instance == null)
             return;
         InputManager.Instance.RemoveGlobalListener(gameObject);
@@ -65,7 +67,7 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
                 showTools();
                 break;
             case COMMAND_HIDE_TOOLS:
-                hideTools();
+                HideTools();
                 break;
             default:
                 // just ignore
@@ -104,14 +106,31 @@ public class GlobalVoiceCommands : MonoBehaviour, ISpeechHandler {
     /// activates the tools menu
     /// </summary>
     private void showTools() {
-        if (toolMenuObject.activeSelf)
-            return;
-        toolMenuObject.SetActive(true);
+        if (!toolMenuObject.activeSelf)
+            toolMenuObject.SetActive(true);
+        positionTools();
     }
-    
-    private void hideTools() {
+
+    public void HideTools() {
         if (!toolMenuObject.activeSelf)
             return;
         toolMenuObject.SetActive(false);
+    }
+
+    private void positionTools() {
+        Vector3 moveDirection = Camera.main.transform.forward;
+        Vector3 destPoint = Camera.main.transform.position + moveDirection * toolsDistanceFromCamera;
+        toolMenuObject.transform.position = destPoint;
+        Vector3 lookDirection = Camera.main.transform.position;
+        toolMenuObject.transform.LookAt(lookDirection);
+
+        // keep it upright
+        Quaternion upRotation = Quaternion.FromToRotation(toolMenuObject.transform.up, Vector3.up);
+        toolMenuObject.transform.rotation = upRotation * toolMenuObject.transform.rotation;
+
+        //float maximumOffFloorDistance = 1.8f;
+        //if (toolMenuObject.transform.position.y > maximumOffFloorDistance)
+        //    toolMenuObject.transform.position.
+          
     }
 }

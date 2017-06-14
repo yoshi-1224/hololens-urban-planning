@@ -262,24 +262,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1805074656876386
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4855821838745368}
-  - component: {fileID: 33997085860141002}
-  - component: {fileID: 23248867040388562}
-  - component: {fileID: 65833433661665908}
-  m_Layer: 0
-  m_Name: SCCC
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1816872556047390
 GameObject:
   m_ObjectHideFlags: 1
@@ -463,7 +445,6 @@ Transform:
   - {fileID: 4781781824919126}
   - {fileID: 4649456140388234}
   - {fileID: 4017367253095424}
-  - {fileID: 4855821838745368}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -531,19 +512,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4017367253095424}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4855821838745368
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1805074656876386}
-  m_LocalRotation: {x: -0.6164227, y: -0.34644347, z: -0.3464435, w: 0.61642265}
-  m_LocalPosition: {x: -0.23556806, y: 0.093969226, z: -0.0020413063}
-  m_LocalScale: {x: 0.002000001, y: 0.0020000003, z: 0.002}
-  m_Children: []
-  m_Father: {fileID: 4634588824060068}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4943172727237326
 Transform:
@@ -694,38 +662,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 1c56512e46ad88e4394cdd02f90eef6f, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!23 &23248867040388562
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1805074656876386}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: f127be725a4be104790af75543be5e0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1201,13 +1137,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1319565628253270}
   m_Mesh: {fileID: 4300024, guid: 2a2b3124fedbf4848a206143b1d67b84, type: 3}
---- !u!33 &33997085860141002
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1805074656876386}
-  m_Mesh: {fileID: 4300030, guid: 2a2b3124fedbf4848a206143b1d67b84, type: 3}
 --- !u!65 &65008855652784280
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1376,18 +1305,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 112.00195, y: 193.565, z: 147.7539}
   m_Center: {x: -0.00097084045, y: 0, z: 0}
---- !u!65 &65833433661665908
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1805074656876386}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 79.58952, y: 62.473225, z: 54.06145}
-  m_Center: {x: -0.0000002207749, y: -0.055733763, z: 27.030724}
 --- !u!114 &114152245619874338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1476,7 +1393,6 @@ MonoBehaviour:
   gazeDurationTillGuideDisplay: 4
   ChildrenToHide:
   - {fileID: 1621370837384006}
-  - {fileID: 1805074656876386}
   PlacementSound: {fileID: 8300000, guid: a474f298debcdca499c2c78e0df05829, type: 3}
   ScalingSensitivity: 0.0001
 --- !u!114 &114797100988372402

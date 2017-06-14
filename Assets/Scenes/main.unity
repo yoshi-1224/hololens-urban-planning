@@ -108,6 +108,48 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &111148986
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.06923011
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.047655843
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125370355170694, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: df2f9da9ea63b714da14322f51739e8b, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &136423221
 Prefab:
   m_ObjectHideFlags: 0
@@ -480,7 +522,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScalingFactor: 0.0004
-  toolMenuPrefab: {fileID: 0}
 --- !u!1 &1084457989
 GameObject:
   m_ObjectHideFlags: 0

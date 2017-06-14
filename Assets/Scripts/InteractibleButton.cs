@@ -18,22 +18,16 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
 
     private MeshRenderer faceRenderer;
 
+    // counts the number of building objects instantiated
+    private uint objectCount = 0;
+
     [Tooltip("The sound to play when the button is clicked")]
     public AudioClip ClickSound;
 
     private AudioSource audioSource;
 
-    private string colorString = "_Color";
 
-    public void OnFocusEnter() {
-        Debug.Log("Focus entered");
-        faceRenderer.material.SetColor(colorString, FocusedColor);
-    }
-
-    public void OnFocusExit() {
-        Debug.Log("Focus exited");
-        faceRenderer.material.SetColor(colorString, originalColor);
-    }
+    private static string colorString = "_Color";
 
     void Start () {
         faceRenderer = RendererHolder.GetComponent<MeshRenderer>();
@@ -42,15 +36,29 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
 	}
     
     public void InstantiatePrefab() {
+        if (objectCount >= 1)
+            return;
         instantiated = Instantiate(prefabToInstantiate);
         // set the parent transform of the instantiated prefab to the transform of building collection
         // AFTER it has been placed somewhere
+        float distanceUpFromHub = 0.2f;
+        instantiated.transform.position = GameObject.Find("EnergyHub").transform.position + new Vector3(0, distanceUpFromHub ,0);
+        objectCount++;
+    }
+
+    public void OnFocusEnter() {
+        faceRenderer.material.SetColor(colorString, FocusedColor);
+    }
+
+    public void OnFocusExit() {
+        faceRenderer.material.SetColor(colorString, originalColor);
     }
 
     public void OnInputClicked(InputClickedEventData eventData) {
         playButtonClickSound();
         // if the prefab does not yet exist, then instantiate
         // else point to the prefab?
+        InstantiatePrefab();
     }
 
 #region audio-related
