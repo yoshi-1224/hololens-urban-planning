@@ -1374,7 +1374,7 @@ MonoBehaviour:
   NotPlaceableShadowMaterial: {fileID: 2100000, guid: ca6d4215d30dd1d4fb473ff9a009765d,
     type: 2}
   PlacementSurface: 1
-  guidePrefab: {fileID: 1015999048711060, guid: c0fa61224255db64a9fff0b26bb6a1a0,
+  guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
     type: 2}
   gazeDurationTillGuideDisplay: 4
   ChildrenToHide:

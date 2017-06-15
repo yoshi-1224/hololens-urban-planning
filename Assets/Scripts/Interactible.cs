@@ -137,7 +137,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// register this object as the one in focus for rotation
     /// </summary>
     private void registerForTranslation() {
-        Debug.Log("registered for translation");
+        HideDetails();
         GestureManager.Instance.RegisterGameObjectForTranslation(gameObject);
         shouldShowGuide = false;
         hideGuideObject();
@@ -147,7 +147,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// This message is sent from GestureManager instance.
     /// </summary>
     public void PerformTranslationStarted(Vector3 cumulativeDelta) {
-        Debug.Log("Translation starting");
         previousManipulationPosition = cumulativeDelta;
     }
 
@@ -171,7 +170,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// register this object as the one in focus for rotation
     /// </summary>
     private void registerForRotation() {
-        Debug.Log("registered for rotation");
+        HideDetails();
         GestureManager.Instance.RegisterGameObjectForRotation(gameObject);
         shouldShowGuide = false;
         hideGuideObject();

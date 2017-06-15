@@ -199,6 +199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2b8618f39fb964da8d08ec1afcfa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineColour: {r: 0.39705884, g: 0.47606486, b: 1, a: 0}
+  lineWidth: 0.001
 --- !u!224 &224953909808783886
 RectTransform:
   m_ObjectHideFlags: 1

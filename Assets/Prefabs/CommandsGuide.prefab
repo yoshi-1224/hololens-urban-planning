@@ -9,45 +9,45 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1015999048711060}
+  m_RootGameObject: {fileID: 1785017360494800}
   m_IsPrefabParent: 1
---- !u!1 &1015999048711060
+--- !u!1 &1785017360494800
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4930289887918340}
-  - component: {fileID: 23445616676527750}
-  - component: {fileID: 102221448890416620}
-  - component: {fileID: 114110480974732066}
+  - component: {fileID: 4109780015581272}
+  - component: {fileID: 23659273600316060}
+  - component: {fileID: 102333579272960092}
+  - component: {fileID: 114335647032294758}
   m_Layer: 0
-  m_Name: MapGuide
+  m_Name: CommandsGuide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4930289887918340
+--- !u!4 &4109780015581272
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015999048711060}
+  m_GameObject: {fileID: 1785017360494800}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: -0.0617, y: -0.0474, z: 0}
-  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23445616676527750
+--- !u!23 &23659273600316060
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015999048711060}
+  m_GameObject: {fileID: 1785017360494800}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -74,41 +74,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!102 &102221448890416620
+--- !u!102 &102333579272960092
 TextMesh:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015999048711060}
+  m_GameObject: {fileID: 1785017360494800}
   m_Text: '<b>Valid commands:</b>
 
-    Scale Map
+    Show info
 
-    Map bigger
+    Hide info
 
-    Map smaller
+    Move
 
-    Move Map'
+    Rotate'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1.1
   m_Anchor: 4
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 52
+  m_FontSize: 55
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 86574c70442309b45be5a1c37a37a40b, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4293717228
---- !u!114 &114110480974732066
+    rgba: 4294967295
+--- !u!114 &114335647032294758
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015999048711060}
+  m_GameObject: {fileID: 1785017360494800}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
