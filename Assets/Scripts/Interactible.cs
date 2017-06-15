@@ -238,6 +238,17 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
     private void fillTableData() {
         /// use Unity's RichText format to enable diverse fonts, colours etc.
+        TextMesh textMesh = tableObject.GetComponent<TextMesh>();
+        TableDataHolder.TableData data;
+        if (TableDataHolder.Instance.dataDict.TryGetValue(gameObject.name, out data)) {
+            string name = "<b>Name</b> : " + data.building_name;
+            string _class = "<b>Class</b> : " + data.building_class;
+            string GPR = "<b>GPR</b> : " + data.GPR;
+            string numStoreys = "<b># of storeys</b> : " + data.storeys_above_ground;
+            textMesh.text = name + "\n" + _class + "\n" + GPR + "\n" + numStoreys;
+        } else {
+            textMesh.text = "status unknown";
+        }
     }
 
 #endregion

@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 23630903387733368}
   - component: {fileID: 65772017647288610}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_50_m
+  m_Name: Singapore_conference_hall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 65362864243282388}
   - component: {fileID: 114152245619874338}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_2_m
+  m_Name: AXA_tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 65046861607382694}
   - component: {fileID: 114402357396067796}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_56_m
+  m_Name: Asia_square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 65371478359750096}
   - component: {fileID: 114797100988372402}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_57_m
+  m_Name: Capital_tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 23171697556881656}
   - component: {fileID: 65008855652784280}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_55_m
+  m_Name: OUE_downtown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 23443898543514170}
   - component: {fileID: 65594815096348428}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_52_m
+  m_Name: CPF_building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 23471742738919296}
   - component: {fileID: 65242567531610610}
   m_Layer: 0
-  m_Name: CityEngineShapeMaterial_53_m
+  m_Name: Robinson_77
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -228,20 +228,17 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             transform.parent = GameObject.Find("LOD2").transform;
             // set this so that the bottom surface of this object would be directly on the map
             positionBottomOnTheMap();
-            Debug.Log("Set to be a child of LOD2");
             gameObject.GetComponent<Interactible>().enabled = true;
             // remove this component
             Destroy(this);
             InteractibleButton.AllowNewObjectCreated();
         } else {
             transform.localPosition = originalLocalPosition;
-            Debug.Log("Moved to the original position");
         }
     }
 
     private void positionBottomOnTheMap() {
         float halfHeight = GetComponentInChildren<MeshFilter>().mesh.bounds.extents.y;
-        Debug.Log("Height is " + halfHeight);
         Vector3 tempPosition = transform.localPosition;
         tempPosition.y = halfHeight;
         transform.localPosition = tempPosition;
@@ -298,9 +295,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     /// the transform can be set to be the children of map transform etc.
     /// </summary>
     private bool isOverMapObject() {
-        // how about just doing drag and drop into the map
-        // if the user fails to place on the map (directly above) then just return the object
-        // to the position of hub
         Vector3 mapTransform = mapObject.transform.position; // world coordinate
         RaycastHit hitInfo;
         float maxDistance = 1f;
@@ -310,7 +304,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             if (hitObject.name == "CustomizedMap")
                 return true;
         }
-        Debug.Log("The object is not over the map");
         // no object collider hit with this raycast or hitObject is not the map
         return false;
     }

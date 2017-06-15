@@ -490,6 +490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808940855}
   - component: {fileID: 808940857}
+  - component: {fileID: 808940856}
   m_Layer: 0
   m_Name: GlobalVoiceCommands
   m_TagString: Untagged
@@ -510,6 +511,19 @@ Transform:
   m_Father: {fileID: 1084457990}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &808940856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 808940854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a391cc6990f39a4a8505383b92caf1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursor: {fileID: 1245641121}
+  UserCameraHeight: 1.5
 --- !u!114 &808940857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,6 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScalingFactor: 0.0004
+  IsInStreetMode: 0
 --- !u!1 &1084457989
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1084457990}
   - component: {fileID: 1084457991}
+  - component: {fileID: 1084457992}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -569,6 +585,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 1245641121}
+--- !u!114 &1084457992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1084457989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1c86435f1ba7a4394dfa4b5feb51e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  classes:
+  - mixed-use development
+  - civic & community insitution
+  - business, trade
 --- !u!1 &1233838330
 GameObject:
   m_ObjectHideFlags: 0
