@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4318984703662910}
   - component: {fileID: 65359690502840280}
+  - component: {fileID: 114859995964612466}
   m_Layer: 5
   m_Name: HideButton
   m_TagString: Untagged
@@ -6207,7 +6208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RendererHolder: {fileID: 1311141058043002}
-  prefabToInstantiate: {fileID: 1365035163212442, guid: bda42c6d82430e446b3d62fb0b942f3a,
+  prefabToInstantiate: {fileID: 1713499157964468, guid: a577ae92e78a5fc468b7b2e77f06cd75,
     type: 2}
   FocusedColor: {r: 1, g: 1, b: 1, a: 1}
   ClickSound: {fileID: 8300000, guid: 20460afb792994a4bac491e311729c11, type: 3}
@@ -6255,9 +6256,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RendererHolder: {fileID: 1249014042911934}
-  prefabToInstantiate: {fileID: 0}
+  prefabToInstantiate: {fileID: 1180412917405796, guid: 4461ed7cae952324ca46bae9083e4eac,
+    type: 2}
   FocusedColor: {r: 1, g: 1, b: 1, a: 1}
   ClickSound: {fileID: 8300000, guid: 20460afb792994a4bac491e311729c11, type: 3}
+--- !u!114 &114859995964612466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1153031367640692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9afe95531902f846b622b21704bbfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114903931640608268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6270,7 +6283,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RendererHolder: {fileID: 1417635902406650}
-  prefabToInstantiate: {fileID: 0}
+  prefabToInstantiate: {fileID: 1837869752690252, guid: 07dcbc3a3c7b0eb4daed0a7e161e0620,
+    type: 2}
   FocusedColor: {r: 1, g: 1, b: 1, a: 1}
   ClickSound: {fileID: 8300000, guid: 20460afb792994a4bac491e311729c11, type: 3}
 --- !u!198 &198104958195815486

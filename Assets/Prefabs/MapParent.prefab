@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 65065256120445722}
   - component: {fileID: 65362864243282388}
   - component: {fileID: 114152245619874338}
-  - component: {fileID: 114338472486523884}
   m_Layer: 0
   m_Name: CityEngineShapeMaterial_2_m
   m_TagString: Untagged
@@ -222,6 +221,7 @@ GameObject:
   - component: {fileID: 23953710069189694}
   - component: {fileID: 114620518031376452}
   - component: {fileID: 65120706256629274}
+  - component: {fileID: 114391147134198476}
   m_Layer: 0
   m_Name: CustomizedMap
   m_TagString: Untagged
@@ -322,7 +322,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1621370837384006}
   m_LocalRotation: {x: 0.00000006657903, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.23801917, y: 0.093969226, z: 0.041760147}
+  m_LocalPosition: {x: -0.23801917, y: -0.003, z: 0.041760147}
   m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
   m_Children:
   - {fileID: 4119328300918588}
@@ -374,7 +374,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1933313673909214}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 129.2461, y: 98.96953, z: -142.54686}
+  m_LocalPosition: {x: 129.2461, y: 97.8, z: -142.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4017367253095424}
@@ -387,7 +387,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1149794689890260}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -144.7109, y: 114.16002, z: -292.62885}
+  m_LocalPosition: {x: -144.7109, y: 112.3, z: -292.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4017367253095424}
@@ -400,7 +400,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1514409746962480}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 72.17582, y: 22.523005, z: 74.86914}
+  m_LocalPosition: {x: 72.17582, y: 21.3, z: 74.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4017367253095424}
@@ -481,7 +481,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1046017675840914}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.167973, y: 15.999002, z: -64.26951}
+  m_LocalPosition: {x: 58.167973, y: 15.6, z: -64.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4017367253095424}
@@ -494,7 +494,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1554396403485208}
   m_LocalRotation: {x: 0.00000006657903, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.349, y: 0.076, z: -0.397}
+  m_LocalPosition: {x: -0.349, y: 0, z: -0.397}
   m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
   m_Children: []
   m_Father: {fileID: 4634588824060068}
@@ -520,7 +520,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1593432860231850}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 172.27344, y: 88.328514, z: -158.60155}
+  m_LocalPosition: {x: 172.27344, y: 87, z: -158.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4017367253095424}
@@ -1324,31 +1324,17 @@ MonoBehaviour:
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
   RotationSensitivity: 10
   TranslationSensitivity: 5
---- !u!114 &114338472486523884
+--- !u!114 &114391147134198476
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140877410815916}
-  m_Enabled: 0
+  m_GameObject: {fileID: 1554396403485208}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f59e8e2e3673b4241a4ee8d81a30bb5d, type: 3}
+  m_Script: {fileID: 11500000, guid: e1a0349bc6cf17f428605b33cae2d32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceableBoundsMaterial: {fileID: 2100000, guid: d36438e93d8cebc45af745f035b60969,
-    type: 2}
-  NotPlaceableBoundsMaterial: {fileID: 2100000, guid: 6a07a5d4c6829c1499b7a8b907b75e33,
-    type: 2}
-  PlaceableShadowMaterial: {fileID: 2100000, guid: a25dd465874dfa54799f6e094507ccff,
-    type: 2}
-  NotPlaceableShadowMaterial: {fileID: 2100000, guid: 6a07a5d4c6829c1499b7a8b907b75e33,
-    type: 2}
-  PlacementSurface: 1
-  guidePrefab: {fileID: 0}
-  gazeDurationTillGuideDisplay: 0
-  ChildrenToHide: []
-  PlacementSound: {fileID: 0}
-  ScalingSensitivity: 5
 --- !u!114 &114402357396067796
 MonoBehaviour:
   m_ObjectHideFlags: 1

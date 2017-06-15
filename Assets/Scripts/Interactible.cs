@@ -48,7 +48,9 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private Material[] defaultMaterials;
 
     void Start() {
-        defaultMaterials = GetComponent<Renderer>().materials;
+        Renderer tempRenderer = GetComponent<Renderer>();
+        if (tempRenderer != null)
+            defaultMaterials = tempRenderer.materials;
         isTableAlreadyExists = false;
         shouldShowGuide = true;
         EnableAudioHapticFeedback();
@@ -75,7 +77,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         if (gazeStartedTime != -1) { // the user is currently gazing at this object
             if (Time.unscaledTime - gazeStartedTime >= gazeDurationTillGuideDisplay) {
                 // the user has been gazing at this object for gazeDurationTillGuideDisplay
-                Debug.Log("Instantiating one after time ");
                 showGuideObject();
             }
         }
@@ -272,6 +273,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// to give the user visual feedback
     /// </summary>
     public void EnableEmission() {
+        if (defaultMaterials == null)
+            return;
         for (int i = 0; i < defaultMaterials.Length; i++) {
             defaultMaterials[i].EnableKeyword("_EMISSION");
         }
@@ -281,6 +284,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// disable emission when gaze is exited from this building
     /// </summary>
     public void DisableEmission() {
+        if (defaultMaterials == null)
+            return;
         for (int i = 0; i < defaultMaterials.Length; i++) {
             defaultMaterials[i].DisableKeyword("_EMISSION");
         }

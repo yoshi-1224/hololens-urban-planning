@@ -745,6 +745,12 @@ MonoBehaviour:
     KeyCode: 108
   - Keyword: hide tools
     KeyCode: 107
+  - Keyword: delete
+    KeyCode: 111
+  - Keyword: street view
+    KeyCode: 117
+  - Keyword: exit street view
+    KeyCode: 121
 --- !u!1001 &1850604528
 Prefab:
   m_ObjectHideFlags: 0

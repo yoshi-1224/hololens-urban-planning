@@ -18,9 +18,10 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public const string COMMAND_SCALE_MAP = "scale map";
     public const string COMMAND_SHOW_TOOLS = "show tools";
     public const string COMMAND_HIDE_TOOLS = "hide tools";
+
     public const bool IS_ENLARGE = true;
     private float toolsDistanceFromCamera = 1f;
-
+    public bool IsInStreetMode = false;
     void Start() {
         if (InputManager.Instance == null) {
             return;
@@ -69,6 +70,12 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
             case COMMAND_HIDE_TOOLS:
                 HideTools();
                 break;
+            
+            // only need global listener for the exit command
+            case StreetView.COMMAND_EXIT_STREET_VIEW:
+                StreetView.Instance.ExitStreetView();
+                break;
+
             default:
                 // just ignore
                 break;
