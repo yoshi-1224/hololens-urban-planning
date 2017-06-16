@@ -59,16 +59,18 @@ To activate a tool menu, use <b>"show tools"</b> voice command. To hide the tool
 - Use <b>"exit"</b> voice command
 - User will then be able to place the map as he/she did at the start of the application
 
-Summary of voice commands
+# Summary of voice commands
 
 Command | Use
 ------------ | -------------
-Move Map | allows the user to specify the position on which the map is placed
+Move Map | allows user to specify the position on which the map is placed
 Scale Map | scales the map with hand gesture together with the buildings
 Show Tools | shows the tool menu
-Hide Tools | hides teh tool menu
+Hide Tools | hides the tool menu
 Move | allows the user to move the position of the building
 Rotate | allows the user to rotate the building
+Show info | shows a table with information about the building
+Hide info | hides the table
 Street View | enters into the street view, with the user initially placed at the gazed position on the map
 Exit | exits the street view
 Delete | deletes the currently-gazed building, if this building was instantiated by the user
