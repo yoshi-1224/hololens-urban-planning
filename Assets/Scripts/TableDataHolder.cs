@@ -24,7 +24,7 @@ public class TableDataHolder : Singleton<TableDataHolder> {
         }
     }
 
-    public string[] classes = { "mixed-use development", "civic & community insitution",
+    private string[] classes = { "mixed-use development", "civic & community",
                                 "business, trade"};
 
     public Dictionary<string, TableData> dataDict;
@@ -38,6 +38,8 @@ public class TableDataHolder : Singleton<TableDataHolder> {
         dataDict["Robinson_77"] = new TableData("Robinson 77", classes[2], 11.41f, 181.9f, 61);
         dataDict["SBF_centre"] = new TableData("SBF Centre", classes[0], 12.31f, 98.2f, 33);
         dataDict["Asia_square"] = new TableData("Asia Square", classes[2], 13.9f, 222.9f, 74);
-
+        dataDict["SCCC_S1_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 1);
+        dataDict["SCCC_S2_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 2);
+        dataDict["SCCC_S3_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 3);
     }
 }

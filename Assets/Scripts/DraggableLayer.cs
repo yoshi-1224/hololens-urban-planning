@@ -100,7 +100,7 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
         if (isDragging) {
             return;
         }
-        InteractibleButton.onToolbarMove();
+        InteractibleButton.onToolbarMoveOrDisable();
 
         // Add self as a modal input handler, to get all inputs during the manipulation
         InputManager.Instance.PushModalInputHandler(gameObject);

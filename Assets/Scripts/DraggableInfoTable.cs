@@ -258,7 +258,6 @@ public class DraggableInfoTable : MonoBehaviour,
         SendMessageUpwards("DisableEmission");
         if (!IsDraggingEnabled)
             return;
-        
         isGazed = false;
     }
 

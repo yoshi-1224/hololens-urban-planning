@@ -311,7 +311,7 @@ Prefab:
     - target: {fileID: 114846153931771154, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
         type: 2}
       propertyPath: minimumWalls
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b8ebb43b49a3124584a5381fd4f4b63, type: 2}
@@ -463,7 +463,7 @@ Prefab:
         type: 2}
       propertyPath: RoomModel
       value: 
-      objectReference: {fileID: 100006, guid: 5ddb22d31400c9a46afe24946cd5c838, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -596,10 +596,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1c86435f1ba7a4394dfa4b5feb51e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  classes:
-  - mixed-use development
-  - civic & community insitution
-  - business, trade
 --- !u!1 &1233838330
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,9 +752,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RecognizerStart: 0
   Keywords:
-  - Keyword: show details
+  - Keyword: show info
     KeyCode: 116
-  - Keyword: hide details
+  - Keyword: hide info
     KeyCode: 104
   - Keyword: move map
     KeyCode: 112
@@ -780,7 +776,7 @@ MonoBehaviour:
     KeyCode: 111
   - Keyword: street view
     KeyCode: 117
-  - Keyword: exit street view
+  - Keyword: exit
     KeyCode: 121
 --- !u!1001 &1850604528
 Prefab:

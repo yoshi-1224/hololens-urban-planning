@@ -37,8 +37,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// <summary>
     /// recognised voice commands. Make sure they are all in lower case
     /// </summary>
-    private const string COMMAND_SHOW_DETAILS = "show details";
-    private const string COMMAND_HIDE_DETAILS = "hide details";
+    private const string COMMAND_SHOW_DETAILS = "show info";
+    private const string COMMAND_HIDE_DETAILS = "hide info";
     private const string COMMAND_MOVE = "move";
     private const string COMMAND_ROTATE = "rotate";
     
@@ -257,6 +257,11 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
             string name = "<size=60><b>" + data.building_name + "</b></size>";
             string _class = "<b>Class</b> : " + data.building_class;
             string GPR = "<b>Gross Plot Ratio</b> : " + data.GPR;
+            if (data.building_name == "Chinese Culture Centre") {
+                string type = "(Prefab Type " + data.storeys_above_ground + ")";
+                textMesh.text = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
+                return;
+            }
             string measured_height = "<b>Measured Height</b> : " + data.measured_height + "m";
             string numStoreys = "<b>Number of Storeys</b> : " + data.storeys_above_ground;
             textMesh.text = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys;

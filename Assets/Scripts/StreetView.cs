@@ -12,7 +12,7 @@ using System;
 public class StreetView : Singleton<StreetView> {
 
     public const string COMMAND_STREET_VIEW = "street view";
-    public const string COMMAND_EXIT_STREET_VIEW = "exit street view";
+    public const string COMMAND_EXIT_STREET_VIEW = "exit";
 
     public GameObject cursor;
     public float UserCameraHeight = 1.5f;

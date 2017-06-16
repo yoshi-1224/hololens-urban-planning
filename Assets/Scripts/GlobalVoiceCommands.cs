@@ -20,7 +20,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public const string COMMAND_HIDE_TOOLS = "hide tools";
 
     public const bool IS_ENLARGE = true;
-    private float toolsDistanceFromCamera = 1f;
+    private float toolsDistanceFromCamera = 1.3f;
     public bool IsInStreetViewMode = false;
 
     void Start() {
@@ -42,12 +42,14 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     /// handler for "move map" voice command. Has the same effect as selecting the map
     /// </summary>
     public void moveMap() {
-        if (map == null)
-            map = GameObject.Find("CustomizedMap");
         map.SendMessage("OnInputClicked", new InputClickedEventData(null));
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
+        if (map == null)
+            map = GameObject.Find("CustomizedMap");
+        if (map == null) // still null then it has not yet been instantiated
+            return;
         string keyword = eventData.RecognizedText.ToLower();
         if (IsInStreetViewMode) {
             // allowable voice commands in streetviewmode
@@ -97,8 +99,6 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     /// scales the map together with the buildings by ScalingFactor directly via voice commands
     /// </summary>
     private void enlargeMap(bool enlarge) {
-        if (map == null)
-            map = GameObject.Find("CustomizedMap");
         bool isPlacing = map.GetComponent<InteractibleMap>().IsPlacing;
 
         // if enlarge == true, make the map bigger. else smaller
@@ -115,8 +115,6 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     /// enable manipulation gesture to scale the map together with the buildings
     /// </summary>
     private void scaleMap() {
-        if (map == null)
-            map = GameObject.Find("CustomizedMap");
         map.SendMessage("RegisterForScaling");
     }
 
@@ -132,6 +130,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public void HideTools() {
         if (!toolMenuObject.activeSelf)
             return;
+        InteractibleButton.onToolbarMoveOrDisable();
         toolMenuObject.SetActive(false);
     }
 
@@ -145,6 +144,5 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         // keep it upright
         Quaternion upRotation = Quaternion.FromToRotation(toolMenuObject.transform.up, Vector3.up);
         toolMenuObject.transform.rotation = upRotation * toolMenuObject.transform.rotation;
-          
     }
 }
