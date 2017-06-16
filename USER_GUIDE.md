@@ -33,7 +33,7 @@ hide info | hides the table if the table exists in the scene.
 
 ## Tool menu
 To activate a tool menu, use <b>"show tools"</b> voice command. To hide the tool menu, either click on the close button or use <b>"hide tools"</b> voice command.
-
+- tool menu is draggable. Simply choose an area other than the buttons, tap and hold in order to position it.
 ### Using the tool menu
 - From the tool menu, user is able to choose from three different types of prefabs to place onto the map.
 - Tap on one of the buttons to instantiate a prefab. The prefab will show up just below the buttons.
