@@ -21,7 +21,8 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
 
     public const bool IS_ENLARGE = true;
     private float toolsDistanceFromCamera = 1f;
-    public bool IsInStreetMode = false;
+    public bool IsInStreetViewMode = false;
+
     void Start() {
         if (InputManager.Instance == null) {
             return;
@@ -29,10 +30,6 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         InputManager.Instance.AddGlobalListener(gameObject);
         toolMenuObject = GameObject.Find("Toolbar");
         toolMenuObject.SetActive(false);
-    }
-
-    void Update() {
-
     }
 
     protected override void OnDestroy() {
@@ -51,35 +48,49 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
-        switch (eventData.RecognizedText.ToLower()) {
-            case COMMAND_MOVE_MAP:
-                moveMap();
-                break;
-            case COMMAND_MAP_BIGGER:
-                enlargeMap(IS_ENLARGE);
-                break;
-            case COMMAND_MAP_SMALLER:
-                enlargeMap(!IS_ENLARGE);
-                break;
-            case COMMAND_SCALE_MAP:
-                scaleMap();
-                break;
-            case COMMAND_SHOW_TOOLS:
-                showTools();
-                break;
-            case COMMAND_HIDE_TOOLS:
-                HideTools();
-                break;
-            
-            // only need global listener for the exit command
-            case StreetView.COMMAND_EXIT_STREET_VIEW:
-                StreetView.Instance.ExitStreetView();
-                break;
+        string keyword = eventData.RecognizedText.ToLower();
+        if (IsInStreetViewMode) {
+            // allowable voice commands in streetviewmode
+            switch (keyword) {
+                case StreetView.COMMAND_EXIT_STREET_VIEW:
+                    StreetView.Instance.ExitStreetView();
+                    break;
+            } // end switch
 
-            default:
-                // just ignore
-                break;
+        } else {
+            // allowable voice commands in normal mode
+            switch (keyword) {
+                case COMMAND_MOVE_MAP:
+                    moveMap();
+                    break;
+                case COMMAND_MAP_BIGGER:
+                    enlargeMap(IS_ENLARGE);
+                    break;
+                case COMMAND_MAP_SMALLER:
+                    enlargeMap(!IS_ENLARGE);
+                    break;
+                case COMMAND_SCALE_MAP:
+                    scaleMap();
+                    break;
+                case COMMAND_SHOW_TOOLS:
+                    showTools();
+                    break;
+                case COMMAND_HIDE_TOOLS:
+                    HideTools();
+                    break;
+                default:
+                    // just ignore
+                    break;
+            } // end switch
         }
+    }
+
+    public void EnterStreetViewMode() {
+        IsInStreetViewMode = true;
+    }
+
+    public void ExitStreetViewMode() {
+        IsInStreetViewMode = false;
     }
 
     /// <summary>
@@ -134,10 +145,6 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         // keep it upright
         Quaternion upRotation = Quaternion.FromToRotation(toolMenuObject.transform.up, Vector3.up);
         toolMenuObject.transform.rotation = upRotation * toolMenuObject.transform.rotation;
-
-        //float maximumOffFloorDistance = 1.8f;
-        //if (toolMenuObject.transform.position.y > maximumOffFloorDistance)
-        //    toolMenuObject.transform.position.
           
     }
 }

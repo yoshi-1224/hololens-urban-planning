@@ -32,6 +32,9 @@ public class StreetView : Singleton<StreetView> {
         SaveGazePosition();
         CreateScene();
         isInStreetViewMode = true;
+        GlobalVoiceCommands.Instance.EnterStreetViewMode();
+        switchMapCapabilityForStreetView();
+
     }
 
     /// <summary>
@@ -83,16 +86,33 @@ public class StreetView : Singleton<StreetView> {
     public void ExitStreetView() {
         if (!isInStreetViewMode)
             return;
-        mapObject.transform.localScale = beforeStreetViewScale;
+        restoreScaleAndPosition();
 
         if (cursor != null)
             cursor.SetActive(true);
-
-        // translate map's position instantly so that it won't take a long time to return to the user's gaze
-        mapObject.transform.position = Camera.main.transform.position;
-
+        switchMapCapabilityForNormalMode();
         mapObject.GetComponent<InteractibleMap>().OnInputClicked(null);
         isInStreetViewMode = false;
+        GlobalVoiceCommands.Instance.ExitStreetViewMode();
+        
+    }
 
+    private void restoreScaleAndPosition() {
+        mapObject.transform.localScale = beforeStreetViewScale;
+        // translate map's position instantly so that it won't take a long time to return to the user's gaze
+        mapObject.transform.position = Camera.main.transform.position;
+    }
+
+    private void switchMapCapabilityForStreetView() {
+        mapObject.AddComponent<StreetViewMovement>();
+        mapObject.GetComponent<InteractibleMap>().enabled = false;
+        GlobalVoiceCommands.Instance.HideTools();
+    }
+
+    private void switchMapCapabilityForNormalMode() {
+        StreetViewMovement movement = mapObject.GetComponent<StreetViewMovement>();
+        if (movement != null)
+            Destroy(movement);
+        mapObject.GetComponent<InteractibleMap>().enabled = true;
     }
 }

@@ -287,7 +287,7 @@ Prefab:
     - target: {fileID: 114846153931771154, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
         type: 2}
       propertyPath: scanTime
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114796537841796742, guid: 5b8ebb43b49a3124584a5381fd4f4b63,
         type: 2}
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScalingFactor: 0.0004
-  IsInStreetMode: 0
+  IsInStreetViewMode: 0
 --- !u!1 &1084457989
 GameObject:
   m_ObjectHideFlags: 0

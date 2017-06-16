@@ -23,7 +23,7 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
     private AudioSource audioSource;
 
     private static string colorString = "_Color";
-    private static GameObject objectReadyToPlace = null;
+    public static GameObject objectReadyToPlace = null;
 
     void Start () {
         faceRenderer = RendererHolder.GetComponent<MeshRenderer>();
@@ -37,10 +37,10 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
         instantiated = Instantiate(prefabToInstantiate);
         // set the parent transform of the instantiated prefab to the transform of building collection
         // AFTER it has been placed somewhere
-        float distanceUpFromHub = 0.3f;
-        GameObject hub = GameObject.Find("EnergyHub");
-        instantiated.transform.position = hub.transform.position + new Vector3(0, distanceUpFromHub ,0);
-        instantiated.transform.parent = hub.transform;
+        float distanceUpToolbarCentre = -0.15f;
+        GameObject Toolbar = GameObject.Find("Toolbar");
+        instantiated.transform.position = Toolbar.transform.position + new Vector3(0, distanceUpToolbarCentre ,0);
+        instantiated.transform.parent = Toolbar.transform;
         objectReadyToPlace = instantiated;
     }
 
@@ -58,6 +58,12 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
     }
 
     public static void AllowNewObjectCreated() {
+        objectReadyToPlace = null;
+    }
+
+    public static void onToolbarMove() {
+        if (objectReadyToPlace != null)
+            Destroy(objectReadyToPlace);
         objectReadyToPlace = null;
     }
 

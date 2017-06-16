@@ -1,16 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
-using System;
 
 /// <summary>
 /// Component that allows dragging an object with your hand on HoloLens.
 /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
 /// and then repositioning the object based on that.
 /// </summary>
-public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
+public class DraggableInfoTable : MonoBehaviour,
+                                IFocusable,
+                                IInputHandler,
+                                ISourceStateHandler,
+                                IInputClickHandler {
     /// <summary>
     /// Event triggered when dragging starts.
     /// </summary>
@@ -26,9 +28,6 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
 
     [Tooltip("Scale by which hand movement in z is multipled to move the dragged object.")]
     public float DistanceScale = 2f;
-
-    [Tooltip("The parent of all the contents this toolbar contains")]
-    public GameObject ToolbarContents;
 
     public enum RotationModeEnum {
         Default,
@@ -64,6 +63,9 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
 
     private IInputSource currentInputSource = null;
     private uint currentInputSourceId;
+    public Color lineColour;
+    public float lineWidth;
+    private LineRenderer line;
 
     private void Start() {
         if (HostTransform == null) {
@@ -71,6 +73,19 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
         }
 
         mainCamera = Camera.main;
+
+        line = gameObject.AddComponent<LineRenderer>();
+        line.startWidth = lineWidth;
+        line.endWidth = lineWidth;
+
+        // Set the number of vertex fo the Line Renderer
+        line.positionCount = 2;
+        line.SetPosition(0, transform.parent.position); //table position
+        line.SetPosition(1, transform.position);
+        
+        //set the material here
+        line.startColor = lineColour;
+        line.endColor = lineColour;
     }
 
     private void OnDestroy() {
@@ -86,6 +101,8 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
     private void Update() {
         if (IsDraggingEnabled && isDragging) {
             UpdateDragging();
+            line.SetPosition(0, transform.parent.position); //building position
+            line.SetPosition(1, transform.position);
         }
     }
 
@@ -100,11 +117,10 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
         if (isDragging) {
             return;
         }
-        InteractibleButton.onToolbarMove();
 
         // Add self as a modal input handler, to get all inputs during the manipulation
         InputManager.Instance.PushModalInputHandler(gameObject);
-        MakeSiblingsChildren();
+
         isDragging = true;
         //GazeCursor.Instance.SetState(GazeCursor.State.Move);
         //GazeCursor.Instance.SetTargetObject(HostTransform);
@@ -223,23 +239,26 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
 
         // Remove self as a modal input handler
         InputManager.Instance.PopModalInputHandler();
-        MakeChildrenSiblings();
+
         isDragging = false;
         currentInputSource = null;
         StoppedDragging.RaiseEvent();
     }
 
     public void OnFocusEnter() {
+        SendMessageUpwards("EnableEmission");
         if (!IsDraggingEnabled)
             return;
+        
+
         isGazed = true;
     }
 
     public void OnFocusExit() {
+        SendMessageUpwards("DisableEmission");
         if (!IsDraggingEnabled)
             return;
-        if (!isDragging)
-
+        
         isGazed = false;
     }
 
@@ -276,11 +295,9 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
         }
     }
 
-    public void MakeSiblingsChildren() {
-        ToolbarContents.transform.parent = transform;
-    }
-
-    public void MakeChildrenSiblings() {
-        ToolbarContents.transform.parent = transform.parent;
+    public void OnInputClicked(InputClickedEventData eventData) {
+        SendMessageUpwards("HideDetails");
+        SendMessageUpwards("DisableEmission");
     }
 }
+

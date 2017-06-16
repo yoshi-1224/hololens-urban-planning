@@ -677,7 +677,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     private void fillGuideDetails() {
         TextMesh textMesh = guideObject.GetComponent<TextMesh>();
         textMesh.text =
-            "<b>Valid commands:</b>\nScale Map\nMap bigger\nMap smaller\nMove Map";
+            "<b>Valid commands:</b>\nScale Map\nMap bigger\nMap smaller\nMove Map\nStreet View";
         textMesh.fontSize = 52;
         float scale = 0.005f;
         guideObject.transform.localScale = new Vector3(scale, scale, scale);

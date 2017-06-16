@@ -110,6 +110,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private void showGuideObject() {
         if (guideObject == null)
             guideObject = Instantiate(guidePrefab);
+        fillGuideDetails();
         positionGuideObject();
     }
 
@@ -117,6 +118,19 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         if (guideObject != null)
             Destroy(guideObject);
         guideObject = null;
+    }
+
+    private void fillGuideDetails() {
+        TextMesh textMesh = guideObject.GetComponent<TextMesh>();
+        textMesh.text =
+            "<b>Valid commands:</b>\n" + COMMAND_SHOW_DETAILS + "\n" + 
+            COMMAND_HIDE_DETAILS + "\n" + COMMAND_MOVE + "\n" + COMMAND_ROTATE;
+        // should put commands in an array or dictionary as # of commands grow
+        if (GetComponent<DeleteOnVoice>() != null)
+            textMesh.text += "\n" + DeleteOnVoice.COMMAND_DELETE;
+        textMesh.fontSize = 55;
+        float scale = 0.003f;
+        guideObject.transform.localScale = new Vector3(scale, scale, scale);
     }
 
     private void positionGuideObject() {
@@ -181,7 +195,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// </summary>
     /// <param name="cumulativeDelta"></param>
     public void PerformRotationUpdate(Vector3 cumulativeDelta) {
-        float rotationFactor = cumulativeDelta.x * RotationSensitivity; // may be wrong by doing this.
+        float rotationFactor = - cumulativeDelta.x * RotationSensitivity; // may be wrong by doing this.
         transform.Rotate(new Vector3(0,  rotationFactor, 0));
     }
 
@@ -240,11 +254,12 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         TextMesh textMesh = tableObject.GetComponent<TextMesh>();
         TableDataHolder.TableData data;
         if (TableDataHolder.Instance.dataDict.TryGetValue(gameObject.name, out data)) {
-            string name = "<b>Name</b> : " + data.building_name;
+            string name = "<size=60><b>" + data.building_name + "</b></size>";
             string _class = "<b>Class</b> : " + data.building_class;
-            string GPR = "<b>GPR</b> : " + data.GPR;
-            string numStoreys = "<b># of storeys</b> : " + data.storeys_above_ground;
-            textMesh.text = name + "\n" + _class + "\n" + GPR + "\n" + numStoreys;
+            string GPR = "<b>Gross Plot Ratio</b> : " + data.GPR;
+            string measured_height = "<b>Measured Height</b> : " + data.measured_height + "m";
+            string numStoreys = "<b>Number of Storeys</b> : " + data.storeys_above_ground;
+            textMesh.text = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys;
         } else {
             textMesh.text = "status unknown";
         }

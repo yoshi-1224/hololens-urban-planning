@@ -26,6 +26,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     public float DistanceScale = 2f;
 
     private GameObject mapObject;
+    private Vector3 originalScale;
 
     public enum RotationModeEnum {
         Default,
@@ -101,6 +102,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             return;
         }
 
+        matchMapScale();
         // Add self as a modal input handler, to get all inputs during the manipulation
         InputManager.Instance.PushModalInputHandler(gameObject);
 
@@ -136,6 +138,15 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         draggingPosition = gazeHitPosition;
 
         StartedDragging.RaiseEvent();
+    }
+
+    public void matchMapScale() {
+        originalScale = transform.localScale;
+        transform.localScale = mapObject.transform.localScale;
+    }
+
+    public void revertToOriginalScale() {
+        transform.localScale = originalScale;
     }
 
     /// <summary>
@@ -229,11 +240,13 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             // set this so that the bottom surface of this object would be directly on the map
             positionBottomOnTheMap();
             gameObject.GetComponent<Interactible>().enabled = true;
+            gameObject.GetComponent<DeleteOnVoice>().enabled = true;
             // remove this component
             Destroy(this);
             InteractibleButton.AllowNewObjectCreated();
         } else {
             transform.localPosition = originalLocalPosition;
+            revertToOriginalScale();
         }
     }
 
@@ -243,6 +256,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         tempPosition.y = halfHeight;
         transform.localPosition = tempPosition;
     }
+
     public void OnFocusEnter() {
         if (!IsDraggingEnabled)
             return;

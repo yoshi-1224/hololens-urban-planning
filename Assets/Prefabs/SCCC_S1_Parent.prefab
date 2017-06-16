@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 4519502273597308}
   - component: {fileID: 114151058039912242}
   - component: {fileID: 114118717841711120}
+  - component: {fileID: 114944687318850002}
   m_Layer: 0
   m_Name: SCCC_S1_Parent
   m_TagString: Untagged
@@ -54,7 +55,7 @@ Transform:
   m_GameObject: {fileID: 1713499157964468}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
   m_Children:
   - {fileID: 4713034010993508}
   m_Father: {fileID: 0}
@@ -67,8 +68,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1235516241604940}
   m_LocalRotation: {x: -0.6830127, y: 0.18301271, z: 0.18301271, w: 0.6830127}
-  m_LocalPosition: {x: 0, y: -0.03, z: 0}
-  m_LocalScale: {x: 0.002, y: 0.0020000006, z: 0.002000001}
+  m_LocalPosition: {x: 0, y: -15.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4519502273597308}
   m_RootOrder: 0
@@ -196,3 +197,14 @@ MonoBehaviour:
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
   RotationSensitivity: 10
   TranslationSensitivity: 5
+--- !u!114 &114944687318850002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1713499157964468}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6ff7e68d5f10c4685b0caf35dfd1e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

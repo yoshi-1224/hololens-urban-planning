@@ -81,15 +81,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1785017360494800}
-  m_Text: '<b>Valid commands:</b>
-
-    Show info
-
-    Hide info
-
-    Move
-
-    Rotate'
+  m_Text: "Sample Commands\nmove \nrotate\ndance\netc."
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1.1
