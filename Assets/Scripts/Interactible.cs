@@ -22,7 +22,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
     [Tooltip("Sound to play upon table instantiate and destroy")]
     public AudioClip tableSound;
-
     private AudioSource audioSource;
 
     private GameObject tableObject;
@@ -39,7 +38,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// </summary>
     private const string COMMAND_SHOW_DETAILS = "show info";
     private const string COMMAND_HIDE_DETAILS = "hide info";
-    private const string COMMAND_MOVE = "move";
+    private const string COMMAND_POSITION = "position";
     private const string COMMAND_ROTATE = "rotate";
     
     /// <summary>
@@ -92,7 +91,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
                 HideDetails();
                 break;
 
-            case COMMAND_MOVE:
+            case COMMAND_POSITION:
                 registerForTranslation();
                 break;
 
@@ -112,6 +111,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
             guideObject = Instantiate(guidePrefab);
         fillGuideDetails();
         positionGuideObject();
+        guideObject.transform.parent = transform;
     }
 
     private void hideGuideObject() {
@@ -124,7 +124,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         TextMesh textMesh = guideObject.GetComponent<TextMesh>();
         textMesh.text =
             "<b>Valid commands:</b>\n" + COMMAND_SHOW_DETAILS + "\n" + 
-            COMMAND_HIDE_DETAILS + "\n" + COMMAND_MOVE + "\n" + COMMAND_ROTATE;
+            COMMAND_HIDE_DETAILS + "\n" + COMMAND_POSITION + "\n" + COMMAND_ROTATE;
         // should put commands in an array or dictionary as # of commands grow
         if (GetComponent<DeleteOnVoice>() != null)
             textMesh.text += "\n" + DeleteOnVoice.COMMAND_DELETE;
@@ -247,6 +247,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         float distanceRatio = 0.4f;
         tableObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
         tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+        tableObject.SendMessage("OnPositionChange");
     }
 
     private void fillTableData() {

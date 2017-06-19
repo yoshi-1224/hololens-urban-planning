@@ -239,7 +239,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         placingComplete = false;
         playPlacementAudio();
         shouldShowGuide = false;
-        hideGuideObject();
+        HideGuideObject();
     }
 
     /// <summary>
@@ -585,7 +585,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         boundsAsset = null;
         Destroy(shadowAsset);
         shadowAsset = null;
-        hideGuideObject();
+        HideGuideObject();
     }
 
 #region audio-related
@@ -641,7 +641,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     public void OnFocusExit() {
         gazeStartedTime = -1;
         DisableEmission();
-        hideGuideObject();
+        HideGuideObject();
     }
 
 #region visual feedbacks
@@ -683,7 +683,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
         guideObject.transform.localScale = new Vector3(scale, scale, scale);
     }
 
-    private void hideGuideObject() {
+    public void HideGuideObject() {
         if (guideObject != null)
             Destroy(guideObject);
         guideObject = null;
@@ -718,7 +718,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
 
     public void RegisterForScaling() {
         shouldShowGuide = false;
-        hideGuideObject();
+        HideGuideObject();
         GestureManager.Instance.RegisterGameObjectForScaling(gameObject);
     }
 

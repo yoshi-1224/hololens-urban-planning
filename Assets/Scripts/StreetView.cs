@@ -74,7 +74,7 @@ public class StreetView : Singleton<StreetView> {
         //// gazePointObject not required anymore
         Destroy(gazePointObject);
         gazePointObject = null;
-
+        mapObject.SendMessage("HideGuideObject");
         if (cursor != null)
             cursor.SetActive(false);
     }

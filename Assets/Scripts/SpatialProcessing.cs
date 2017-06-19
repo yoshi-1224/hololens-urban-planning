@@ -4,7 +4,7 @@ using HoloToolkit.Unity; //added to make it work
 using HoloToolkit.Unity.SpatialMapping; //added to make it work
 
 /// <summary>
-/// The SpatialProcessingTest class allows applications to scan the environment for a specified amount of time 
+/// The SpatialProcessing class allows applications to scan the environment for a specified amount of time 
 /// and then process the Spatial Mapping Mesh (find planes, remove vertices) after that time has expired.
 /// </summary>
 public class SpatialProcessing : Singleton<SpatialProcessing> {
@@ -22,6 +22,9 @@ public class SpatialProcessing : Singleton<SpatialProcessing> {
 
     [Tooltip("Minimum number of wall planes required in order to exit scanning/processing mode.")]
     public uint minimumWalls = 1;
+
+    [Tooltip("Minimum number of table planes required in order to exit scanning/processing mode.")]
+    public uint minimumTables = 1;
 
     private bool meshesProcessed = false;
 
@@ -57,12 +60,14 @@ public class SpatialProcessing : Singleton<SpatialProcessing> {
         // Collection of floor planes that we can use to set horizontal items on.
         List<GameObject> floors = new List<GameObject>();
         List<GameObject> walls = new List<GameObject>();
+        List<GameObject> tables = new List<GameObject>();
 
         // these are NOT instantiated here. The lists are used simply to check if we have enough walls and floors
         floors = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Floor);
         walls = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Wall);
+        tables = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Table);
 
-        if (floors.Count >= minimumFloors && walls.Count >= minimumWalls) {
+        if (floors.Count >= minimumFloors && walls.Count >= minimumWalls && tables.Count >= minimumTables) {
             RemoveVertices(SurfaceMeshesToPlanes.Instance.ActivePlanes);
 
             // After scanning is over, switch to the secondary (occlusion) material.

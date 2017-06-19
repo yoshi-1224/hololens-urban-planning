@@ -249,8 +249,6 @@ public class DraggableInfoTable : MonoBehaviour,
         SendMessageUpwards("EnableEmission");
         if (!IsDraggingEnabled)
             return;
-        
-
         isGazed = true;
     }
 
@@ -297,6 +295,13 @@ public class DraggableInfoTable : MonoBehaviour,
     public void OnInputClicked(InputClickedEventData eventData) {
         SendMessageUpwards("HideDetails");
         SendMessageUpwards("DisableEmission");
+    }
+
+    public void OnPositionChange() {
+        if (line == null)
+            return;
+        line.SetPosition(0, transform.parent.position); //building position
+        line.SetPosition(1, transform.position);
     }
 }
 
