@@ -177,8 +177,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 55.067352, y: 86.98834, z: 57.46804}
-  m_Center: {x: 2.1584399, y: 0.000019069497, z: 0.24999066}
+  m_Size: {x: 55.067352, y: 86.98834, z: 58.370335}
+  m_Center: {x: 2.1584404, y: 0.000018602512, z: 0.7011387}
 --- !u!114 &114388033931360650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -190,12 +190,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f0abfa9facfc0499b5a43871bb7e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlaceableBoundsMaterial: {fileID: 2100000, guid: a25dd465874dfa54799f6e094507ccff,
+    type: 2}
+  NotPlaceableBoundsMaterial: {fileID: 2100000, guid: ca6d4215d30dd1d4fb473ff9a009765d,
+    type: 2}
   HostTransform: {fileID: 0}
   DistanceScale: 2
   RotationMode: 3
   PositionLerpSpeed: 0.2
   RotationLerpSpeed: 0.2
   IsDraggingEnabled: 1
+  boundsAsset: {fileID: 0}
 --- !u!114 &114408168641870480
 MonoBehaviour:
   m_ObjectHideFlags: 1

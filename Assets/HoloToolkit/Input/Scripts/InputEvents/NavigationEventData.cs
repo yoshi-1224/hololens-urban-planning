@@ -15,16 +15,16 @@ namespace HoloToolkit.Unity.InputModule
         /// The amount of manipulation that has occurred. Usually in the form of
         /// delta position of a hand. 
         /// </summary>
-        public Vector3 CumulativeDelta { get; private set; }
+        public Vector3 NormalizedOffset { get; private set; }
 
         public NavigationEventData(EventSystem eventSystem) : base(eventSystem)
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        public void Initialize(IInputSource inputSource, uint sourceId, Vector3 normalizedOffset)
         {
             BaseInitialize(inputSource, sourceId);
-            CumulativeDelta = cumulativeDelta;
+            NormalizedOffset = normalizedOffset;
         }
     }
 }

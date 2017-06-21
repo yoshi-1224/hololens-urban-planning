@@ -195,8 +195,19 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// </summary>
     /// <param name="cumulativeDelta"></param>
     public void PerformRotationUpdate(Vector3 cumulativeDelta) {
-        float rotationFactor = - cumulativeDelta.x * RotationSensitivity; // may be wrong by doing this.
-        transform.Rotate(new Vector3(0,  rotationFactor, 0));
+        Vector3 moveVector = Vector3.zero;
+        Vector3 cumulativeDeltaInCameraSpace = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
+        moveVector = cumulativeDeltaInCameraSpace - previousManipulationPosition;
+        previousManipulationPosition = cumulativeDeltaInCameraSpace;
+
+        float rotationFactor = -moveVector.x * RotationSensitivity * 20; // may be wrong by doing this.
+        transform.Rotate(new Vector3(0, rotationFactor, 0));
+    }
+
+    public void PerformRotationStarted(Vector3 cumulativeDelta) {
+        /// This part is VERY IMPORTANT, as cumulativeDelta is the absolute position of the hand
+        /// and NOT the movement.
+        previousManipulationPosition = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
     }
 
     /// <summary>

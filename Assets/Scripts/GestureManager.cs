@@ -57,9 +57,11 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
     public void OnManipulationStarted(ManipulationEventData eventData) {
         if (IsTranslating)
             currentObjectInMotion.SendMessage("PerformTranslationStarted", eventData.CumulativeDelta);
-        if (IsScaling)
-            currentObjectInMotion.SendMessage("PerformScalingStarted");
+        else if (IsScaling)
+            currentObjectInMotion.SendMessage("PerformScalingStarted", eventData.CumulativeDelta);
         // just to get rid of the guide from the map
+        else if (IsRotating)
+            currentObjectInMotion.SendMessage("PerformRotationStarted", eventData.CumulativeDelta);
     }
 
     public void OnManipulationUpdated(ManipulationEventData eventData) {
@@ -128,4 +130,5 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler {
         IsTranslating = false;
         IsScaling = false;
     }
+
 }

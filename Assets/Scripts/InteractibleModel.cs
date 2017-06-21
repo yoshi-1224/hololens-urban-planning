@@ -8,6 +8,11 @@ using HoloToolkit.Unity;
 /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
 /// and then repositioning the object based on that.
 /// </summary>
+///
+
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Interactible))]
+[RequireComponent(typeof(DeleteOnVoice))]
 public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
     /// <summary>
     /// Event triggered when dragging starts.
@@ -19,14 +24,23 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     /// </summary>
     public event Action StoppedDragging;
 
-    [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
-    public Transform HostTransform;
+    [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
+    public Material PlaceableBoundsMaterial = null;
+
+    [Tooltip("The base material used to render the bounds asset when placement is not allowed.")]
+    public Material NotPlaceableBoundsMaterial = null;
 
     [Tooltip("Scale by which hand movement in z is multipled to move the dragged object.")]
     public float DistanceScale = 2f;
 
     private GameObject mapObject;
     private Vector3 originalScale;
+    private BoxCollider boxCollider;
+    private Transform HostTransform;
+    private string mapObjectName = "CustomizedMap";
+    private float currentMapHeight;
+    private float heightAboveMapForBottomClipping = 0.1f;
+    private bool canBePlaced;
 
     public enum RotationModeEnum {
         Default,
@@ -64,14 +78,24 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private uint currentInputSourceId;
 
     private Vector3 originalLocalPosition;
+    public GameObject boundsAsset;
+    private int layerToAvoidRaycast;
 
     private void Start() {
-        if (HostTransform == null) {
-            HostTransform = transform;
-        }
+        HostTransform = transform;
+        
         originalLocalPosition = transform.localPosition;
         mainCamera = Camera.main;
-        mapObject = GameObject.Find("CustomizedMap");
+        mapObject = GameObject.Find(mapObjectName);
+        boxCollider = GetComponentInChildren<BoxCollider>(); // TODO: children?
+                                                             
+        boundsAsset = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        boundsAsset.transform.parent = gameObject.transform;
+        boundsAsset.SetActive(false);
+
+        layerToAvoidRaycast = LayerMask.NameToLayer("ObjectToPlace");
+        MapPlacement.SetLayerRecursively(gameObject, layerToAvoidRaycast);
+        currentMapHeight = 1; // dummy
     }
 
     private void OnDestroy() {
@@ -90,9 +114,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         }
     }
 
-    /// <summary>
-    /// Starts dragging the object.
-    /// </summary>
     public void StartDragging() {
         if (!IsDraggingEnabled) {
             return;
@@ -102,7 +123,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             return;
         }
 
-        matchMapScale();
+        TrackTransforms();
         // Add self as a modal input handler, to get all inputs during the manipulation
         InputManager.Instance.PushModalInputHandler(gameObject);
 
@@ -140,9 +161,10 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         StartedDragging.RaiseEvent();
     }
 
-    public void matchMapScale() {
+    public void TrackTransforms() {
         originalScale = transform.localScale;
         transform.localScale = mapObject.transform.localScale;
+        currentMapHeight = mapObject.transform.position.y;
     }
 
     public void revertToOriginalScale() {
@@ -161,7 +183,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     /// <summary>
     /// Enables or disables dragging.
     /// </summary>
-    /// <param name="isEnabled">Indicates whether dragging shoudl be enabled or disabled.</param>
     public void SetDragging(bool isEnabled) {
         if (IsDraggingEnabled == isEnabled) {
             return;
@@ -219,6 +240,22 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);
             HostTransform.rotation = upRotation * HostTransform.rotation;
         }
+
+        bool isHeightAdjusted = false;
+        // do not allow the object to be placed below the map
+        //// clip to the bottom if necessary
+        Vector3 bottomCentre = GetColliderFacePoints()[0];
+        float heightGap = bottomCentre.y - currentMapHeight;
+        if (heightGap < 0 || heightGap < heightAboveMapForBottomClipping) {
+            // want to clip it to the map surface
+            Vector3 tempVector = HostTransform.position;
+            tempVector.y = currentMapHeight + transform.position.y - bottomCentre.y;
+            HostTransform.position = tempVector;
+            isHeightAdjusted = true;
+        }
+        bool isOverMap = isOverMapObject();
+        canBePlaced = isOverMap && isHeightAdjusted;
+        DisplayBounds(canBePlaced);
     }
 
     /// <summary>
@@ -235,12 +272,13 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         currentInputSource = null;
         StoppedDragging.RaiseEvent();
 
-        if (isOverMapObject()) {
+        if (canBePlaced) {
             transform.parent = GameObject.Find("LOD2").transform;
             // set this so that the bottom surface of this object would be directly on the map
             positionBottomOnTheMap();
             gameObject.GetComponent<Interactible>().enabled = true;
             gameObject.GetComponent<DeleteOnVoice>().enabled = true;
+            MapPlacement.SetLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
             // remove this component
             Destroy(this);
             InteractibleButton.AllowNewObjectCreated();
@@ -248,11 +286,16 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             transform.localPosition = originalLocalPosition;
             revertToOriginalScale();
         }
+
+        boundsAsset.SetActive(false);
     }
 
+    /// <summary>
+    /// call this AFTER the object transform has become child of map transform
+    /// </summary>
     private void positionBottomOnTheMap() {
-        float halfHeight = GetComponentInChildren<MeshFilter>().mesh.bounds.extents.y;
         Vector3 tempPosition = transform.localPosition;
+        float halfHeight = GetComponentInChildren<MeshFilter>().mesh.bounds.extents.y;
         tempPosition.y = halfHeight;
         transform.localPosition = tempPosition;
     }
@@ -281,9 +324,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         if (isDragging)
             return;
 
-        /// modification starts from here
-
-
         if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position)) {
             // The input source must provide positional data for this script to be usable
             return;
@@ -309,16 +349,69 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     /// the transform can be set to be the children of map transform etc.
     /// </summary>
     private bool isOverMapObject() {
-        Vector3 mapTransform = mapObject.transform.position; // world coordinate
+        int layerMask = 1 << layerToAvoidRaycast;
+        layerMask = ~layerMask;
         RaycastHit hitInfo;
-        float maxDistance = 1f;
+        float maxDistance = 4f;
+        float rayCastYPosition = maxDistance / 2;
         Vector3 raycastDirection = Vector3.down;
-        if (Physics.Raycast(transform.position, raycastDirection, out hitInfo, maxDistance)) {
-            GameObject hitObject = hitInfo.collider.gameObject;
-            if (hitObject.name == "CustomizedMap")
-                return true;
+        Vector3[] facePoints = GetColliderFacePoints();
+        for (int i = 0; i < facePoints.Length; i++) {
+            facePoints[i].y += rayCastYPosition; // make it cast from 2m above
+            if (Physics.Raycast(facePoints[i], raycastDirection, out hitInfo, maxDistance, layerMask)) {
+                GameObject hitObject = hitInfo.collider.gameObject;
+                if (hitObject == mapObject)
+                        continue;
+            }
+            // if it reaches here, then neither raycat hit nor not the mapObject
+            return false;
         }
-        // no object collider hit with this raycast or hitObject is not the map
-        return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Visualizes the box collider as well as the condition as to whether the current object
+    /// is placeable on the map or not.
+    /// </summary>
+    private void DisplayBounds(bool canBePlaced) {
+        // Ensure the bounds asset is sized and positioned correctly.
+        // this is customized to adjust for the wrong pivot point and the parent object.
+        boundsAsset.transform.localPosition = boxCollider.center + gameObject.transform.GetChild(0).localPosition;
+        boundsAsset.transform.localScale = boxCollider.size;
+        boundsAsset.transform.rotation = gameObject.transform.GetChild(0).rotation;
+
+        if (canBePlaced)
+            boundsAsset.GetComponent<Renderer>().sharedMaterial = PlaceableBoundsMaterial;
+        else
+            boundsAsset.GetComponent<Renderer>().sharedMaterial = NotPlaceableBoundsMaterial;
+
+        boundsAsset.SetActive(true);
+    }
+
+    private Vector3[] GetColliderFacePoints() {
+        // Get the collider extents.  
+        // The size values are twice the extents.
+        Vector3 extents = boxCollider.size / 2;
+
+        // Calculate the min and max values for each coordinate.
+        float minX = boxCollider.center.x - extents.x;
+        float maxX = boxCollider.center.x + extents.x;
+        float minY = boxCollider.center.y - extents.y;
+        float minZ = boxCollider.center.z - extents.z;
+        float maxZ = boxCollider.center.z + extents.z;
+
+        Vector3 center = new Vector3(boxCollider.center.x, minY, boxCollider.center.z);
+        Vector3 corner0 = new Vector3(minX, minY, minZ);
+        Vector3 corner1 = new Vector3(minX, minY, maxZ);
+        Vector3 corner2 = new Vector3(maxX, minY, minZ);
+        Vector3 corner3 = new Vector3(maxX, minY, maxZ);
+
+        Vector3[] facePoints = { center, corner0, corner1, corner2, corner3 };
+
+        for (int i = 0; i < facePoints.Length; i++) {
+            facePoints[i] = gameObject.transform.TransformVector(facePoints[i]) + gameObject.transform.position;
+        }
+        return facePoints;
     }
 }

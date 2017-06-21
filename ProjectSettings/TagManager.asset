@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - SurfacePlanes
-  - cursor
   layers:
   - Default
   - TransparentFX
@@ -36,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - ObjectToPlace
+  - MapObjects
   - SpatialMapping
   m_SortingLayers:
   - name: Default

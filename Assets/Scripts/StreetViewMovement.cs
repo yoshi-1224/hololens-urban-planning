@@ -25,7 +25,6 @@ public class StreetViewMovement : MonoBehaviour, IManipulationHandler {
         previousManipulationPosition = cumulativeDelta;
     }
 
-
     public void OnManipulationCanceled(ManipulationEventData eventData) {
     }
 

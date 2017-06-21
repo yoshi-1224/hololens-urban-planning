@@ -4,6 +4,7 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandler {
     [Tooltip("Adjust the scaling sensitivity applied on voice commands")]
@@ -18,6 +19,8 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public const string COMMAND_SCALE_MAP = "scale map";
     public const string COMMAND_SHOW_TOOLS = "show tools";
     public const string COMMAND_HIDE_TOOLS = "hide tools";
+    public const string COMMAND_ROTATE_MAP = "rotate map";
+    public const string COMMAND_RESET = "reset";
 
     public const bool IS_ENLARGE = true;
     private float toolsDistanceFromCamera = 1.3f;
@@ -51,6 +54,12 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         if (map == null) // still null then it has not yet been instantiated
             return;
         string keyword = eventData.RecognizedText.ToLower();
+        switch(keyword) {
+            case COMMAND_RESET:
+                resetScene();
+                break;
+        }
+
         if (IsInStreetViewMode) {
             // allowable voice commands in streetviewmode
             switch (keyword) {
@@ -65,12 +74,6 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
                 case COMMAND_MOVE_MAP:
                     moveMap();
                     break;
-                case COMMAND_MAP_BIGGER:
-                    enlargeMap(IS_ENLARGE);
-                    break;
-                case COMMAND_MAP_SMALLER:
-                    enlargeMap(!IS_ENLARGE);
-                    break;
                 case COMMAND_SCALE_MAP:
                     scaleMap();
                     break;
@@ -79,6 +82,9 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
                     break;
                 case COMMAND_HIDE_TOOLS:
                     HideTools();
+                    break;
+                case COMMAND_ROTATE_MAP:
+                    registerMapForRotation();
                     break;
                 default:
                     // just ignore
@@ -95,20 +101,8 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         IsInStreetViewMode = false;
     }
 
-    /// <summary>
-    /// scales the map together with the buildings by ScalingFactor directly via voice commands
-    /// </summary>
-    private void enlargeMap(bool enlarge) {
-        bool isPlacing = map.GetComponent<InteractibleMap>().IsPlacing;
-
-        // if enlarge == true, make the map bigger. else smaller
-        int sign = enlarge ? 1 : -1;
-        if (!isPlacing)
-            // make the buildings follow the same scaling as the parent map
-            map.SendMessage("MakeSiblingsChildren");
-        map.transform.localScale += new Vector3(sign * ScalingFactor, sign * ScalingFactor, sign * ScalingFactor);
-        if (!isPlacing)
-            map.SendMessage("MakeChildrenSiblings");
+    private void resetScene() {
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
     /// <summary>
@@ -144,5 +138,10 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         // keep it upright
         Quaternion upRotation = Quaternion.FromToRotation(toolMenuObject.transform.up, Vector3.up);
         toolMenuObject.transform.rotation = upRotation * toolMenuObject.transform.rotation;
+    }
+
+    private void registerMapForRotation() {
+        Debug.Log("Registering map for rotation");
+        map.SendMessage("RegisterForRotation");
     }
 }
