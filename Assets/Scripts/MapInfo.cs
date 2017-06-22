@@ -27,6 +27,9 @@ public class MapInfo : MonoBehaviour {
         } else {
             textMeshCache.color = Color.white;
         }
-
+        // TODO: make it more efficient in the future and check for inactive state
+        GameObject mapInfoPanel = GameObject.Find("MapInfo");
+        if (mapInfoPanel != null)
+            mapInfoPanel.GetComponent<TextMesh>().text = string.Format("<b>Map Scale</b>: {0:0.0000}", currentScaling);
     }
 }

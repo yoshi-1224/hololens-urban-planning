@@ -3,6 +3,7 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Interpolator))]
@@ -14,6 +15,7 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     private float RotationSensitivity = 10f;
     // used for translation to get the moveVector
     private Vector3 previousManipulationPosition;
+
     /// <summary>
     /// Keeps track of if the user is moving the object or not.
     /// Setting this to true will enable the user to move and place the object in the scene.
@@ -30,8 +32,14 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
     public float gazeDurationTillGuideDisplay;
 
-    private float gazeStartedTime;
-    private bool shouldShowGuide;
+    public static bool shouldShowGuide {
+        get {
+            return GuideStatus.ShouldShowGuide;
+        }
+        set {
+            GuideStatus.ShouldShowGuide = value;
+        }
+    }
 
     [Tooltip("The child object(s) to hide during placement.")]
     public List<GameObject> ChildrenToHide = new List<GameObject>();
@@ -53,8 +61,6 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
         interpolator.PositionPerSecond = 30f;
         defaultMaterials = GetComponent<Renderer>().materials;
         EnableAudioHapticFeedback();
-        shouldShowGuide = true;
-        gazeStartedTime = -1;
     }
 
     private void Update() {
@@ -78,12 +84,14 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
         playPlacementAudio();
         MakeSiblingsChildren();
         HideChildren();
+        DisallowGuideObject();
     }
 
     private void OnPlacementStop() {
         playPlacementAudio();
         MakeChildrenSiblings();
         ShowChildren();
+        AllowGuideObject();
     }
 
 
@@ -148,14 +156,14 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
 #endregion
 
     public void OnFocusEnter() {
-        gazeStartedTime = Time.unscaledTime;
+        StartCoroutine("ShowGuideCoroutine");
         EnableEmission();
     }
 
     public void OnFocusExit() {
-        gazeStartedTime = -1;
         DisableEmission();
         HideGuideObject();
+        StopCoroutine("ShowGuideCoroutine");
     }
 
 #region visual feedbacks
@@ -181,6 +189,18 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     #endregion
 
 #region guide-related
+
+    IEnumerator ShowGuideCoroutine() {
+        if (guideObject != null || !shouldShowGuide) //already exists
+            yield break;
+        // wait and then show
+        yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
+
+        if (shouldShowGuide) { // if any user action has taken during the wait
+            showGuideObject();
+        }
+    }
+
     private void showGuideObject() {
         if (guideObject == null)
             guideObject = Instantiate(guidePrefab);
@@ -211,7 +231,6 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
 
     private void AllowGuideObject() {
         shouldShowGuide = true;
-        gazeStartedTime = -1;
     }
     
     private void DisallowGuideObject() {
@@ -251,7 +270,6 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
 
     public void RegisterForScaling() {
         DisallowGuideObject();
-
         GestureManager.Instance.RegisterGameObjectForScaling(gameObject);
     }
 

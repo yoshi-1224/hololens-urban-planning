@@ -17,8 +17,13 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
     public float gazeDurationTillGuideDisplay;
 
-    private float gazeStartedTime;
-    private bool shouldShowGuide;
+    public static bool shouldShowGuide {
+        get {
+            return GuideStatus.ShouldShowGuide;
+        } set {
+            GuideStatus.ShouldShowGuide = value;
+        }
+    }
 
     [Tooltip("Sound to play upon table instantiate and destroy")]
     public AudioClip tableSound;
@@ -47,38 +52,28 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private Material[] defaultMaterials;
 
     void Start() {
-        Renderer tempRenderer = GetComponent<Renderer>();
+        Renderer tempRenderer = GetComponentInChildren<Renderer>();
         if (tempRenderer != null)
             defaultMaterials = tempRenderer.materials;
+        if (defaultMaterials != null) {
+            for (int i = 0; i < defaultMaterials.Length; i++) {
+                defaultMaterials[i].SetColor("_EmissionColor", new Color(0.1176471f, 0.1176471f, 0.1176471f));
+            }
+        }
         isTableAlreadyExists = false;
         shouldShowGuide = true;
         EnableAudioHapticFeedback();
-        gazeStartedTime = -1;
     }
 
     public void OnFocusEnter() {
-        gazeStartedTime = Time.unscaledTime;
+        StartCoroutine("ShowGuideCoroutine");
         EnableEmission();
     }
 
     public void OnFocusExit() {
-        gazeStartedTime = -1;
         DisableEmission();
         hideGuideObject();
-    }
-
-    private void Update() {
-        if (!shouldShowGuide || guideObject != null)
-            // for any gaze session if the user is doing something
-            // or the guideObject already exists then
-            return;
-
-        if (gazeStartedTime != -1) { // the user is currently gazing at this object
-            if (Time.unscaledTime - gazeStartedTime >= gazeDurationTillGuideDisplay) {
-                // the user has been gazing at this object for gazeDurationTillGuideDisplay
-                showGuideObject();
-            }
-        }
+        StopCoroutine("ShowGuideCoroutine");
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
@@ -106,12 +101,24 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     }
 
 #region guide-related
+
+    IEnumerator ShowGuideCoroutine() {
+        if (guideObject != null || !shouldShowGuide) //already exists
+            yield break;
+        // wait and then show
+        yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
+        if (shouldShowGuide)
+            showGuideObject();
+    }
+
     private void showGuideObject() {
-        if (guideObject == null)
+        if (guideObject == null) {
             guideObject = Instantiate(guidePrefab);
-        fillGuideDetails();
+            fillGuideDetails();
+            guideObject.transform.parent = transform;
+        }
+
         positionGuideObject();
-        guideObject.transform.parent = transform;
     }
 
     private void hideGuideObject() {
@@ -139,22 +146,25 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         guideObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
     }
 
-    private void resetShowStatus() {
+    private void AllowGuideObject() {
         shouldShowGuide = true;
-        gazeStartedTime = -1;
     }
 
-#endregion
+    private void DisallowGuideObject() {
+        shouldShowGuide = false;
+        hideGuideObject();
+    }
 
-#region translation-related
+    #endregion
+
+    #region translation-related
     /// <summary>
     /// register this object as the one in focus for rotation
     /// </summary>
     private void registerForTranslation() {
         HideDetails();
         GestureManager.Instance.RegisterGameObjectForTranslation(gameObject);
-        shouldShowGuide = false;
-        hideGuideObject();
+        DisallowGuideObject();
     }
     
     /// <summary>
@@ -186,8 +196,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private void registerForRotation() {
         HideDetails();
         GestureManager.Instance.RegisterGameObjectForRotation(gameObject);
-        shouldShowGuide = false;
-        hideGuideObject();
+        DisallowGuideObject();
     }
 
     /// <summary>
@@ -215,7 +224,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// will show. At the END of the user action this should be set to true.
     /// </summary>
     public void UnregisterCallBack() {
-        resetShowStatus();
+        AllowGuideObject();
     }
 
 #endregion
@@ -237,7 +246,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         tableObject.AddComponent<BoxCollider>();
         isTableAlreadyExists = true;
 
-        shouldShowGuide = false;
+        //DisallowGuideObject();
         hideGuideObject();
     }
 
@@ -248,10 +257,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         Destroy(tableObject);
         tableObject = null;
         isTableAlreadyExists = false;
-        playTableSound();
 
-        // at the end of user action
-        resetShowStatus();
+        //AllowGuideObject();
     }
 
     private void positionTableObject() {
@@ -334,5 +341,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     }
 
 #endregion
+
 
 }

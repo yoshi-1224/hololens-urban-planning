@@ -41,5 +41,7 @@ public class TableDataHolder : Singleton<TableDataHolder> {
         dataDict["SCCC_S1_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 1);
         dataDict["SCCC_S2_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 2);
         dataDict["SCCC_S3_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 3);
+        dataDict["Singapore_conference_hall"] = new TableData("Singapore Conference Hall", classes[2], 0f, 29.88f, 10);
+        dataDict["OUE_downtown"] = new TableData("OUE Downtown", classes[2], 13.88f, 193.56f, 65);
     }
 }

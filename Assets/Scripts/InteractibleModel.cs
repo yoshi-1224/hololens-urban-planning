@@ -4,24 +4,17 @@ using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
 
 /// <summary>
-/// Component that allows dragging an object with your hand on HoloLens.
-/// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
-/// and then repositioning the object based on that.
+/// Component that allows dragging the building prefab onto the map with hand gesture.
+/// On top of the HandDraggable.cs functionality, it has functionalies such as to make the object
+/// clip to the map surface.
 /// </summary>
-///
 
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Interactible))]
 [RequireComponent(typeof(DeleteOnVoice))]
 public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
-    /// <summary>
-    /// Event triggered when dragging starts.
-    /// </summary>
-    public event Action StartedDragging;
 
-    /// <summary>
-    /// Event triggered when dragging stops.
-    /// </summary>
+    public event Action StartedDragging;
     public event Action StoppedDragging;
 
     [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
@@ -36,10 +29,13 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private GameObject mapObject;
     private Vector3 originalScale;
     private BoxCollider boxCollider;
-    private string mapObjectName = "CustomizedMap";
     private float currentMapHeight;
     private float heightAboveMapForBottomClipping = 0.1f;
     private bool canBePlaced;
+
+    /// <summary>
+    ///  from handdraggable
+    /// </summary>
 
     public enum RotationModeEnum {
         Default,
@@ -84,7 +80,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private void Start() {
         originalLocalPosition = transform.localPosition;
         mainCamera = Camera.main;
-        mapObject = GameObject.Find(mapObjectName);
+        mapObject = GameObject.Find("CustomizedMap");
         boxCollider = GetComponentInChildren<BoxCollider>(); // TODO: children?
                                                              
         boundsAsset = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -126,6 +122,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         InputManager.Instance.PushModalInputHandler(gameObject);
 
         isDragging = true;
+        GuideStatus.ShouldShowGuide = false;
 
         Vector3 gazeHitPosition = GazeManager.Instance.HitInfo.point;
         Vector3 handPosition;
@@ -274,7 +271,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
 
         // Remove self as a modal input handler
         InputManager.Instance.PopModalInputHandler();
-
+        GuideStatus.ShouldShowGuide = true;
         isDragging = false;
         currentInputSource = null;
         StoppedDragging.RaiseEvent();
