@@ -61,12 +61,12 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
             }
         }
         isTableAlreadyExists = false;
-        shouldShowGuide = true;
         EnableAudioHapticFeedback();
     }
 
     public void OnFocusEnter() {
-        StartCoroutine("ShowGuideCoroutine");
+        if (shouldShowGuide)
+            StartCoroutine("ShowGuideCoroutine");
         EnableEmission();
     }
 

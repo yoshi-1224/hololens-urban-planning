@@ -12,7 +12,7 @@ using HoloToolkit.Unity;
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Interactible))]
 [RequireComponent(typeof(DeleteOnVoice))]
-public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
+public class DraggableOntoMap : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
 
     public event Action StartedDragging;
     public event Action StoppedDragging;
@@ -33,10 +33,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private float heightAboveMapForBottomClipping = 0.1f;
     private bool canBePlaced;
 
-    /// <summary>
-    ///  from handdraggable
-    /// </summary>
-
     public enum RotationModeEnum {
         Default,
         LockObjectRotation,
@@ -54,8 +50,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     [Range(0.01f, 1.0f)]
     public float RotationLerpSpeed = 0.2f;
 
-    public bool IsDraggingEnabled = true;
-
     private Camera mainCamera;
     private bool isDragging;
     private bool isGazed;
@@ -72,24 +66,27 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private IInputSource currentInputSource = null;
     private uint currentInputSourceId;
 
-    private Vector3 originalLocalPosition;
+    private Vector3 originalPosition;
     public GameObject boundsAsset;
     private int layerToAvoidRaycast;
     private const int OVER_MAP = 1, ON_MAP = 2, NOT_OVER_MAP = 3;
 
     private void Start() {
-        originalLocalPosition = transform.localPosition;
+        originalPosition = transform.localPosition;
         mainCamera = Camera.main;
         mapObject = GameObject.Find("CustomizedMap");
-        boxCollider = GetComponentInChildren<BoxCollider>(); // TODO: children?
-                                                             
-        boundsAsset = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        boundsAsset.transform.parent = gameObject.transform;
-        boundsAsset.SetActive(false);
+        boxCollider = GetComponentInChildren<BoxCollider>(); // children and this object
+
+        initializeBoundsObject();
 
         layerToAvoidRaycast = LayerMask.NameToLayer("ObjectToPlace");
         MapPlacement.SetLayerRecursively(gameObject, layerToAvoidRaycast);
-        currentMapHeight = 1; // dummy
+    }
+
+    private void initializeBoundsObject() {
+        boundsAsset = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        boundsAsset.transform.parent = gameObject.transform;
+        boundsAsset.SetActive(false);
     }
 
     private void OnDestroy() {
@@ -103,21 +100,17 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     }
 
     private void Update() {
-        if (IsDraggingEnabled && isDragging) {
+        if (isDragging) {
             UpdateDragging();
         }
     }
 
     public void StartDragging() {
-        if (!IsDraggingEnabled) {
-            return;
-        }
-
         if (isDragging) {
             return;
         }
 
-        TrackTransforms();
+        UpdateTransformValues();
         // Add self as a modal input handler, to get all inputs during the manipulation
         InputManager.Instance.PushModalInputHandler(gameObject);
 
@@ -156,7 +149,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         StartedDragging.RaiseEvent();
     }
 
-    public void TrackTransforms() {
+    public void UpdateTransformValues() {
         originalScale = transform.localScale;
         transform.localScale = mapObject.transform.localScale;
         currentMapHeight = mapObject.transform.position.y;
@@ -173,21 +166,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private Vector3 GetHandPivotPosition() {
         Vector3 pivot = Camera.main.transform.position + new Vector3(0, -0.2f, 0) - Camera.main.transform.forward * 0.2f; // a bit lower and behind
         return pivot;
-    }
-
-    /// <summary>
-    /// Enables or disables dragging.
-    /// </summary>
-    public void SetDragging(bool isEnabled) {
-        if (IsDraggingEnabled == isEnabled) {
-            return;
-        }
-
-        IsDraggingEnabled = isEnabled;
-
-        if (isDragging) {
-            StopDragging();
-        }
     }
 
     /// <summary>
@@ -287,7 +265,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
             Destroy(this);
             InteractibleButton.AllowNewObjectCreated();
         } else {
-            transform.localPosition = originalLocalPosition;
+            transform.localPosition = originalPosition;
             revertToOriginalScale();
         }
 
@@ -305,15 +283,10 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     }
 
     public void OnFocusEnter() {
-        if (!IsDraggingEnabled)
-            return;
         isGazed = true;
     }
 
     public void OnFocusExit() {
-        if (!IsDraggingEnabled)
-            return;
-       
         isGazed = false;
     }
 

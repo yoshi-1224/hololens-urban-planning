@@ -51,9 +51,10 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     public float ScalingSensitivity = 0.0002f;
 
     private AudioSource audioSource;
-    private GameObject scaleIndicator;
+    private GameObject cursor;
 
     private Material[] defaultMaterials;
+    private bool wasMapVisible;
 
     private void Start() {
         // Make sure we have all the components in the scene we need.
@@ -68,7 +69,35 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
             cameraTransform = Camera.main.transform;
             interpolator.SetTargetPosition(cameraTransform.position + (cameraTransform.forward * Distance));
             interpolator.SetTargetRotation(Quaternion.Euler(0, cameraTransform.localEulerAngles.y -180, 0));
+
+            /// whether or not to tell user that they should look lower
+            bool isMapVisibleNow = isMapVisible();
+            if (isMapVisibleNow != wasMapVisible) { // if state has changed
+                if (!isMapVisibleNow)
+                    showDirectionalIndicator();
+                else
+                    hideDirectionalIndicator();
+            }
+            wasMapVisible = isMapVisibleNow;
         }
+    }
+
+    private bool isMapVisible() {
+        if (transform.position.y - cameraTransform.position.y > 0)
+            return false;
+        return true;
+    }
+
+    private void showDirectionalIndicator() {
+        if (cursor == null)
+            cursor = GameObject.Find("CustomCursorWithFeedback");
+        cursor.SendMessage("TellUserToLookLower", "Look lower");
+    }
+
+    private void hideDirectionalIndicator() {
+        if (cursor == null)
+            cursor = GameObject.Find("CustomCursorWithFeedback");
+        cursor.SendMessage("DisableUserMessage");
     }
 
     public virtual void OnInputClicked(InputClickedEventData eventData) {
@@ -85,6 +114,7 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
         MakeSiblingsChildren();
         HideChildren();
         DisallowGuideObject();
+        wasMapVisible = true; // set to true at the start
     }
 
     private void OnPlacementStop() {
@@ -156,7 +186,8 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
 #endregion
 
     public void OnFocusEnter() {
-        StartCoroutine("ShowGuideCoroutine");
+        if (shouldShowGuide)
+            StartCoroutine("ShowGuideCoroutine");
         EnableEmission();
     }
 
@@ -191,7 +222,7 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
 #region guide-related
 
     IEnumerator ShowGuideCoroutine() {
-        if (guideObject != null || !shouldShowGuide) //already exists
+        if (guideObject != null) //already exists
             yield break;
         // wait and then show
         yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
@@ -271,6 +302,7 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     public void RegisterForScaling() {
         DisallowGuideObject();
         GestureManager.Instance.RegisterGameObjectForScaling(gameObject);
+        UpdateMapInfo(false);
     }
 
     /// <summary>
@@ -278,11 +310,11 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     /// update the number displayed to the user using mapInfo object
     /// </summary>
     public void UpdateMapInfo(bool isExceedingLimit) {
-        if (scaleIndicator == null)
-            scaleIndicator = GameObject.Find("ScaleIndicator");
+        if (cursor == null)
+            cursor = GameObject.Find("CustomCursorWithFeedback");
         // send any of its scaling component (x, y or z)
         object[] arguments = { transform.localScale.x, isExceedingLimit };
-        scaleIndicator.SendMessage("UpdateCurrentScaling", arguments);
+        cursor.SendMessage("UpdateCurrentScaling", arguments);
     }
 
 #endregion

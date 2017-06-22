@@ -31,7 +31,11 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     /// </summary>
     public GameObject translationFeedbackObject;
     public GameObject rotationFeedbackObject;
-    public GameObject scaleIndicator;
+    public GameObject MessageToUser;
+    public GameObject DirectionalIndicator;
+
+    private float currentScaling;
+    private TextMesh messageTextMesh;
 
     /// <summary>
     /// On enable look for a sprite renderer on children
@@ -46,6 +50,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         }
 
         base.OnEnable();
+        messageTextMesh = MessageToUser.GetComponent<TextMesh>();
     }
 
     /// <summary>
@@ -121,7 +126,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         rotationFeedbackObject.transform.localScale += new Vector3(1, 1, 1);
         SurfaceCursorDistance += 0.4f;
         rotationFeedbackObject.SetActive(true);
-        scaleIndicator.SetActive(true);
+        MessageToUser.SetActive(true);
     }
 
     public void HideScalingFeedback() {
@@ -132,6 +137,42 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         rotationFeedbackObject.transform.localScale += new Vector3(-1, -1, -1);
         SurfaceCursorDistance -= 0.4f;
         rotationFeedbackObject.SetActive(false);
-        scaleIndicator.SetActive(false);
+        MessageToUser.SetActive(false);
     }
-}
+
+    /// <summary>
+    /// shows the current scaling for the user. arguments array MUST BE an array
+    /// with first element being float value and second element boolean
+    /// </summary>
+    /// <param name="arguments"></param>
+    public void UpdateCurrentScaling(object[] arguments) {
+        currentScaling = (float)arguments[0];
+        if (messageTextMesh == null)
+            messageTextMesh = GetComponent<TextMesh>();
+        messageTextMesh.text = string.Format("Current Scale: {0:0.0000}", currentScaling);
+        bool isExceedingLimit = (bool)arguments[1];
+        if (isExceedingLimit) {
+            messageTextMesh.color = Color.red;
+        } else {
+            messageTextMesh.color = Color.white;
+        }
+
+        // TODO: make it more efficient in the future and check for inactive state
+        GameObject mapInfoPanel = GameObject.Find("MapInfo");
+        if (mapInfoPanel != null)
+            mapInfoPanel.GetComponent<TextMesh>().text = string.Format("<b>Map Scale</b>: {0:0.0000}", currentScaling);
+    }
+
+    public void TellUserToLookLower() {
+        if (MessageToUser.activeSelf) // this is a guess game. It should be inactive
+            return;
+        MessageToUser.SetActive(true);
+        DirectionalIndicator.SetActive(true);
+        messageTextMesh.text = "Look lower";
+    }
+
+    public void DisableUserMessage() {
+        MessageToUser.SetActive(false);
+        DirectionalIndicator.SetActive(false);
+    }
+} 
