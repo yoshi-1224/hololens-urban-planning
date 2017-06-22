@@ -21,6 +21,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public const string COMMAND_HIDE_TOOLS = "hide tools";
     public const string COMMAND_ROTATE_MAP = "rotate map";
     public const string COMMAND_RESET = "reset";
+    public const string COMMAND_QUIT_APP = "quit application";
 
     public const bool IS_ENLARGE = true;
     private float toolsDistanceFromCamera = 1.3f;
@@ -53,11 +54,15 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
             map = GameObject.Find("CustomizedMap");
         if (map == null) // still null then it has not yet been instantiated
             return;
+
         string keyword = eventData.RecognizedText.ToLower();
         switch(keyword) {
             case COMMAND_RESET:
                 resetScene();
-                break;
+                return;
+            case COMMAND_QUIT_APP:
+                quitApplication();
+                return;
         }
 
         if (IsInStreetViewMode) {
@@ -103,6 +108,10 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
 
     private void resetScene() {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void quitApplication() {
+        Application.Quit();
     }
 
     /// <summary>

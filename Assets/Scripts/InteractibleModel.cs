@@ -36,7 +36,6 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private GameObject mapObject;
     private Vector3 originalScale;
     private BoxCollider boxCollider;
-    private Transform HostTransform;
     private string mapObjectName = "CustomizedMap";
     private float currentMapHeight;
     private float heightAboveMapForBottomClipping = 0.1f;
@@ -80,10 +79,9 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     private Vector3 originalLocalPosition;
     public GameObject boundsAsset;
     private int layerToAvoidRaycast;
+    private const int OVER_MAP = 1, ON_MAP = 2, NOT_OVER_MAP = 3;
 
     private void Start() {
-        HostTransform = transform;
-        
         originalLocalPosition = transform.localPosition;
         mainCamera = Camera.main;
         mapObject = GameObject.Find(mapObjectName);
@@ -137,11 +135,11 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         handRefDistance = Vector3.Magnitude(handPosition - pivotPosition);
         objRefDistance = Vector3.Magnitude(gazeHitPosition - pivotPosition);
 
-        Vector3 objForward = HostTransform.forward;
-        Vector3 objUp = HostTransform.up;
+        Vector3 objForward = transform.forward;
+        Vector3 objUp = transform.up;
 
         // Store where the object was grabbed from
-        objRefGrabPoint = mainCamera.transform.InverseTransformDirection(HostTransform.position - gazeHitPosition);
+        objRefGrabPoint = mainCamera.transform.InverseTransformDirection(transform.position - gazeHitPosition);
 
         Vector3 objDirection = Vector3.Normalize(gazeHitPosition - pivotPosition);
         Vector3 handDirection = Vector3.Normalize(handPosition - pivotPosition);
@@ -219,10 +217,10 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         draggingPosition = pivotPosition + (targetDirection * targetDistance);
 
         if (RotationMode == RotationModeEnum.OrientTowardUser || RotationMode == RotationModeEnum.OrientTowardUserAndKeepUpright) {
-            draggingRotation = Quaternion.LookRotation(HostTransform.position - pivotPosition);
+            draggingRotation = Quaternion.LookRotation(transform.position - pivotPosition);
         }
         else if (RotationMode == RotationModeEnum.LockObjectRotation) {
-            draggingRotation = HostTransform.rotation;
+            draggingRotation = transform.rotation;
         }
         else // RotationModeEnum.Default
         {
@@ -232,30 +230,39 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         }
 
         // Apply Final Position
-        HostTransform.position = Vector3.Lerp(HostTransform.position, draggingPosition + mainCamera.transform.TransformDirection(objRefGrabPoint), PositionLerpSpeed);
+        transform.position = Vector3.Lerp(transform.position, draggingPosition + mainCamera.transform.TransformDirection(objRefGrabPoint), PositionLerpSpeed);
         // Apply Final Rotation
-        HostTransform.rotation = Quaternion.Lerp(HostTransform.rotation, draggingRotation, RotationLerpSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, draggingRotation, RotationLerpSpeed);
 
         if (RotationMode == RotationModeEnum.OrientTowardUserAndKeepUpright) {
-            Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);
-            HostTransform.rotation = upRotation * HostTransform.rotation;
+            Quaternion upRotation = Quaternion.FromToRotation(transform.up, Vector3.up);
+            transform.rotation = upRotation * transform.rotation;
         }
 
+        int state = getObjectPositionState();
         bool isHeightAdjusted = false;
-        // do not allow the object to be placed below the map
-        //// clip to the bottom if necessary
-        Vector3 bottomCentre = GetColliderFacePoints()[0];
+        // overwrite height and show bounds
+        // do not allow the object to be placed below the map and
+        //clip to the bottom if necessary
+        if (state == ON_MAP || state == OVER_MAP)
+            isHeightAdjusted = clipToMapSurfaceIfNeeded();
+
+        canBePlaced = isHeightAdjusted && (state == ON_MAP);
+        DisplayBounds(canBePlaced);
+    }
+
+    private bool clipToMapSurfaceIfNeeded() {
+        Vector3 bottomCentre = GetColliderBottomPointsInWorldSpace()[0];
         float heightGap = bottomCentre.y - currentMapHeight;
         if (heightGap < 0 || heightGap < heightAboveMapForBottomClipping) {
             // want to clip it to the map surface
-            Vector3 tempVector = HostTransform.position;
+            Vector3 tempVector = transform.position;
             tempVector.y = currentMapHeight + transform.position.y - bottomCentre.y;
-            HostTransform.position = tempVector;
-            isHeightAdjusted = true;
+            transform.position = tempVector;
+            return true;
+        } else {
+            return false;
         }
-        bool isOverMap = isOverMapObject();
-        canBePlaced = isOverMap && isHeightAdjusted;
-        DisplayBounds(canBePlaced);
     }
 
     /// <summary>
@@ -348,26 +355,30 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
     /// used to determine if this gameObject is anywhere near the map range. If so,
     /// the transform can be set to be the children of map transform etc.
     /// </summary>
-    private bool isOverMapObject() {
+    private int getObjectPositionState() {
         int layerMask = 1 << layerToAvoidRaycast;
+        int state = ON_MAP;
         layerMask = ~layerMask;
         RaycastHit hitInfo;
         float maxDistance = 4f;
         float rayCastYPosition = maxDistance / 2;
         Vector3 raycastDirection = Vector3.down;
-        Vector3[] facePoints = GetColliderFacePoints();
+        Vector3[] facePoints = GetColliderBottomPointsInWorldSpace();
         for (int i = 0; i < facePoints.Length; i++) {
             facePoints[i].y += rayCastYPosition; // make it cast from 2m above
             if (Physics.Raycast(facePoints[i], raycastDirection, out hitInfo, maxDistance, layerMask)) {
                 GameObject hitObject = hitInfo.collider.gameObject;
                 if (hitObject == mapObject)
-                        continue;
+                    continue;
+                else {
+                    return OVER_MAP;
+                }
             }
-            // if it reaches here, then neither raycat hit nor not the mapObject
-            return false;
+            // if it reaches here, then neither raycat hit nor not the mapObject for this point
+            state = NOT_OVER_MAP;
         }
 
-        return true;
+        return state;
     }
 
     /// <summary>
@@ -389,7 +400,7 @@ public class InteractibleModel : MonoBehaviour, IFocusable, IInputHandler, ISour
         boundsAsset.SetActive(true);
     }
 
-    private Vector3[] GetColliderFacePoints() {
+    private Vector3[] GetColliderBottomPointsInWorldSpace() {
         // Get the collider extents.  
         // The size values are twice the extents.
         Vector3 extents = boxCollider.size / 2;

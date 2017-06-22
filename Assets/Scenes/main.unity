@@ -13179,6 +13179,10 @@ Prefab:
       propertyPath: SurfaceCursorDistance
       value: 0.025
       objectReference: {fileID: 0}
+    - target: {fileID: 1758984668724236, guid: 15d2a7146c21e37418a05b1fb7f259a5, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 15d2a7146c21e37418a05b1fb7f259a5, type: 2}
   m_IsPrefabParent: 0
@@ -31679,6 +31683,8 @@ MonoBehaviour:
     KeyCode: 106
   - Keyword: reset
     KeyCode: 103
+  - Keyword: quit application
+    KeyCode: 0
 --- !u!1 &1813350416
 GameObject:
   m_ObjectHideFlags: 0

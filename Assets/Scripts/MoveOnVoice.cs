@@ -75,14 +75,12 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     }
 
     private void OnPlacementStart() {
-        Debug.Log("Isbeing placed");
         playPlacementAudio();
         MakeSiblingsChildren();
         HideChildren();
     }
 
     private void OnPlacementStop() {
-        Debug.Log("has been placed");
         playPlacementAudio();
         MakeChildrenSiblings();
         ShowChildren();
@@ -193,7 +191,7 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     private void fillGuideDetails() {
         TextMesh textMesh = guideObject.GetComponent<TextMesh>();
         textMesh.text =
-            "<b>Valid commands:</b>\nScale Map\nMove Map\nStreet View";
+            "<b>Valid commands:</b>\nRotate Map\nScale Map\nMove Map\nStreet View";
         textMesh.fontSize = 52;
         float scale = 0.005f;
         guideObject.transform.localScale = new Vector3(scale, scale, scale);
@@ -280,6 +278,9 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     }
 
     private void PerformRotationStarted(Vector3 cumulativeDelta) {
+        foreach (Interactible script in GetComponentsInChildren<Interactible>()) {
+            script.HideDetails();
+        }
         previousManipulationPosition = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
     }
 

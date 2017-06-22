@@ -18,13 +18,6 @@ public class StreetViewMovement : MonoBehaviour, IManipulationHandler {
         Debug.Log("Street view movement enabled");
     }
 
-    /// <summary>
-    /// This message is sent from GestureManager instance.
-    /// </summary>
-    public void PerformTranslationStarted(Vector3 cumulativeDelta) {
-        previousManipulationPosition = cumulativeDelta;
-    }
-
     public void OnManipulationCanceled(ManipulationEventData eventData) {
     }
 
@@ -33,14 +26,15 @@ public class StreetViewMovement : MonoBehaviour, IManipulationHandler {
 
     public void OnManipulationStarted(ManipulationEventData eventData) {
         Vector3 cumulativeDelta = eventData.CumulativeDelta;
-        previousManipulationPosition = cumulativeDelta;
+        previousManipulationPosition = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
     }
 
     public void OnManipulationUpdated(ManipulationEventData eventData) {
         Vector3 cumulativeDelta = eventData.CumulativeDelta;
         Vector3 moveVector = Vector3.zero;
-        moveVector = cumulativeDelta - previousManipulationPosition;
-        previousManipulationPosition = cumulativeDelta;
+        Vector3 cumulativeDeltaInCameraSpace = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
+        moveVector = cumulativeDeltaInCameraSpace - previousManipulationPosition;
+        previousManipulationPosition = cumulativeDeltaInCameraSpace;
 
         Vector3 towardsUser = -Camera.main.transform.forward;
         towardsUser.y = 0;
@@ -48,7 +42,7 @@ public class StreetViewMovement : MonoBehaviour, IManipulationHandler {
         Debug.Log("user looking at " + towardsUser);
 
         // y movement vector sets the z-vector
-        transform.position += towardsUser * verticalSensitivity * moveVector.y - toTheRight * horizontalSensitivity * moveVector.x;
+        transform.position += (-towardsUser * verticalSensitivity * moveVector.y - toTheRight * horizontalSensitivity * moveVector.x);
     }
 
     private void OnDestroy() {
