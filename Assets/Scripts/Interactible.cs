@@ -32,7 +32,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     private GameObject tableObject;
     private bool isTableAlreadyExists;
 
-    public float RotationSensitivity = 10f;
+    public float RotationSensitivity = 0.5f;
     public float TranslationSensitivity = 5f;
 
     // used for translation to get the moveVector
@@ -202,21 +202,12 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// <summary>
     /// This message is sent from GestureManager instance
     /// </summary>
-    /// <param name="cumulativeDelta"></param>
-    public void PerformRotationUpdate(Vector3 cumulativeDelta) {
-        Vector3 moveVector = Vector3.zero;
-        Vector3 cumulativeDeltaInCameraSpace = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
-        moveVector = cumulativeDeltaInCameraSpace - previousManipulationPosition;
-        previousManipulationPosition = cumulativeDeltaInCameraSpace;
-
-        float rotationFactor = -moveVector.x * RotationSensitivity * 20; // may be wrong by doing this.
+    public void PerformRotationUpdate(Vector3 normalizedOffset) {
+        float rotationFactor = -normalizedOffset.x * RotationSensitivity; // may be wrong by doing this.
         transform.Rotate(new Vector3(0, rotationFactor, 0));
     }
 
-    public void PerformRotationStarted(Vector3 cumulativeDelta) {
-        /// This part is VERY IMPORTANT, as cumulativeDelta is the absolute position of the hand
-        /// and NOT the movement.
-        previousManipulationPosition = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
+    public void PerformRotationStarted(Vector3 normalizedOffset) {
     }
 
     /// <summary>

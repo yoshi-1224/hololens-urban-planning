@@ -7,6 +7,7 @@ using System.Linq;
 /// <summary>
 /// this class holds information for each of the buildings. Maybe in the future this can be replaced
 /// by a web server or something.
+/// Also make this hold ALL the data such as map scale etc
 /// </summary>
 public class TableDataHolder : Singleton<TableDataHolder> {
     public class TableData {

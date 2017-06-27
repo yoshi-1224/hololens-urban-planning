@@ -22,10 +22,12 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public const string COMMAND_ROTATE_MAP = "rotate map";
     public const string COMMAND_RESET = "reset";
     public const string COMMAND_QUIT_APP = "quit application";
+    public const string COMMAND_DRAW_POLYGON = "polygon";
+    public const string COMMAND_CANCEL = "cancel";
 
-    public const bool IS_ENLARGE = true;
     private float toolsDistanceFromCamera = 1.3f;
     public bool IsInStreetViewMode = false;
+    public bool IsInDrawingMode = false;
 
     void Start() {
         if (InputManager.Instance == null) {
@@ -63,6 +65,9 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
             case COMMAND_QUIT_APP:
                 quitApplication();
                 return;
+            case COMMAND_CANCEL:
+                cancelDrawing();
+                break;
         }
 
         if (IsInStreetViewMode) {
@@ -91,6 +96,9 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
                 case COMMAND_ROTATE_MAP:
                     registerMapForRotation();
                     break;
+                case COMMAND_DRAW_POLYGON:
+                    enterDrawingMode();
+                    break;
                 default:
                     // just ignore
                     break;
@@ -112,6 +120,18 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
 
     private void quitApplication() {
         Application.Quit();
+    }
+
+    public void enterDrawingMode() {
+        if (!IsInDrawingMode)
+            DrawingManager.Instance.StartDrawing();
+        IsInDrawingMode = true;
+    }
+
+    public void cancelDrawing() {
+        if (IsInDrawingMode)
+            DrawingManager.Instance.StopDrawing();
+        IsInDrawingMode = false;
     }
 
     /// <summary>

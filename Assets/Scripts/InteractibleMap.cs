@@ -719,7 +719,7 @@ public class InteractibleMap : MonoBehaviour, IInputClickHandler, IFocusable {
     public void RegisterForScaling() {
         shouldShowGuide = false;
         HideGuideObject();
-        GestureManager.Instance.RegisterGameObjectForScaling(gameObject);
+        GestureManager.Instance.RegisterGameObjectForScalingUsingNavigation(gameObject);
     }
 
     public void UnregisterCallBack() {

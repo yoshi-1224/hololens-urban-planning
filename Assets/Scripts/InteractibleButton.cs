@@ -24,7 +24,7 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
 
     private static string colorString = "_Color";
     public static GameObject objectReadyToPlace = null;
-
+    public bool IsForDrawing;
     void Start () {
         faceRenderer = RendererHolder.GetComponent<MeshRenderer>();
         originalColor = faceRenderer.material.GetColor("_Color");
@@ -55,7 +55,10 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
 
     public void OnInputClicked(InputClickedEventData eventData) {
         playButtonClickSound();
-        InstantiatePrefab();
+        if (IsForDrawing)
+            GlobalVoiceCommands.Instance.enterDrawingMode();
+        else
+            InstantiatePrefab();
     }
 
     public static void AllowNewObjectCreated() {

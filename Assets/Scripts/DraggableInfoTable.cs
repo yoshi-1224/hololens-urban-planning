@@ -63,8 +63,6 @@ public class DraggableInfoTable : MonoBehaviour,
 
     private IInputSource currentInputSource = null;
     private uint currentInputSourceId;
-    public Color lineColour;
-    public float lineWidth;
     private LineRenderer line;
 
     private void Start() {
@@ -74,18 +72,12 @@ public class DraggableInfoTable : MonoBehaviour,
 
         mainCamera = Camera.main;
 
-        line = gameObject.AddComponent<LineRenderer>();
-        line.startWidth = lineWidth;
-        line.endWidth = lineWidth;
+        line = gameObject.GetComponent<LineRenderer>();
 
         // Set the number of vertex fo the Line Renderer
         line.positionCount = 2;
         line.SetPosition(0, transform.parent.position); //table position
         line.SetPosition(1, transform.position);
-        
-        //set the material here
-        line.startColor = lineColour;
-        line.endColor = lineColour;
     }
 
     private void OnDestroy() {

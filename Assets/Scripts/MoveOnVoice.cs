@@ -7,7 +7,7 @@ using System.Collections;
 
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Interpolator))]
-public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
+public class MoveOnVoice: Singleton<MoveOnVoice>, IInputClickHandler, IFocusable {
 
     private float Distance = 2.5f;
     private Transform cameraTransform;
@@ -15,6 +15,9 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     private float RotationSensitivity = 10f;
     // used for translation to get the moveVector
     private Vector3 previousManipulationPosition;
+    public bool IsDrawing {
+        get; set;
+    }
 
     /// <summary>
     /// Keeps track of if the user is moving the object or not.
@@ -188,6 +191,11 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     public void OnFocusEnter() {
         if (shouldShowGuide)
             StartCoroutine("ShowGuideCoroutine");
+        if (IsDrawing) {
+            if (cursor == null)
+                cursor = GameObject.Find("CustomCursorWithFeedback");
+            cursor.SendMessage("OnMapFocused");
+        }
         EnableEmission();
     }
 
@@ -195,6 +203,11 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
         DisableEmission();
         HideGuideObject();
         StopCoroutine("ShowGuideCoroutine");
+        if (IsDrawing) {
+            if (cursor == null)
+                cursor = GameObject.Find("CustomCursorWithFeedback");
+            cursor.SendMessage("OnMapFocusExit");
+        }
     }
 
 #region visual feedbacks
@@ -280,8 +293,8 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
         }
     }
 
-    public void PerformScalingUpdate(Vector3 cumulativeDelta) {
-        float yMovement = cumulativeDelta.y;
+    public void PerformScalingUpdate(Vector3 normalizedOffset) {
+        float yMovement = normalizedOffset.y;
         float scalingFactor = yMovement * ScalingSensitivity;
         float minimumScale = 0.0005f;
         float maximumScale = 0.005f;
@@ -301,7 +314,7 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
 
     public void RegisterForScaling() {
         DisallowGuideObject();
-        GestureManager.Instance.RegisterGameObjectForScaling(gameObject);
+        GestureManager.Instance.RegisterGameObjectForScalingUsingNavigation(gameObject);
         UpdateMapInfo(false);
     }
 
@@ -337,14 +350,8 @@ public class MoveOnVoice: MonoBehaviour, IInputClickHandler, IFocusable {
     /// <summary>
     /// This message is sent from GestureManager instance
     /// </summary>
-    /// <param name="cumulativeDelta"></param>
-    public void PerformRotationUpdate(Vector3 cumulativeDelta) {
-        Vector3 moveVector = Vector3.zero;
-        Vector3 cumulativeDeltaInCameraSpace = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
-        moveVector = cumulativeDeltaInCameraSpace - previousManipulationPosition;
-        previousManipulationPosition = cumulativeDeltaInCameraSpace;
-
-        float rotationFactor = -moveVector.x * RotationSensitivity* 20; // may be wrong by doing this.
+    public void PerformRotationUpdate(Vector3 normalizedOffset) {
+        float rotationFactor = -normalizedOffset.x * RotationSensitivity; // may be wrong by doing this.
         transform.Rotate(new Vector3(0, rotationFactor, 0));
     }
 
