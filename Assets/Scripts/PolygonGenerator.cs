@@ -9,48 +9,42 @@ public static class PolygonGenerator {
     /// <summary>
     /// generates a polygon from given vertices. should be called from DrawingManager
     /// </summary>
-	public static GameObject GeneratePolygonFromVertices(List<Vector3> bottomSurfacePoints, float height, Material polygonMat) {
-        GameObject polygon = new GameObject("Polygon");
-        int count = bottomSurfacePoints.Count;
+	public static GameObject GeneratePolygonFromVertices(List<Vector3> points, float height, Material polygonMat, out Dictionary<int, int> neighbouringVertexMapping) {
 
+        GameObject polygon = new GameObject("Polygon");
         MeshFilter mf = polygon.AddComponent<MeshFilter>();
         MeshRenderer mr = polygon.AddComponent<MeshRenderer>();
-        polygon.AddComponent<MeshCollider>();
         Mesh mesh = mf.mesh;
         mesh.Clear();
 
-        // these values are set in Triangulate method
-        List<int> bottomSurfaceTriangles = null;
+        // these values are set in Triangulate method.
         List<Vector3> bottomSurfaceVertices = null;
-        List<int> topSurfaceTriangles = null;
-        List<Vector3> topSurfaceVertices = null;
+        List<int> topSurfaceTriangles = null; // this is top not bottom as the triangles face up
 
-        //this does not do anything as we are ignoring the y-values of vertices anyways (so merely creates a copy)
-        List<Vector3> topSurfacePoints = generateVerticesAboveHeight(bottomSurfacePoints, 0);
-
-        List<Vector2> userGivenPoints2d = vector3Tovector2(bottomSurfacePoints);
-        List<Vector2> topSurfacePoints2d = vector3Tovector2(topSurfacePoints);
-
-        Triangulate(userGivenPoints2d, out bottomSurfaceTriangles, out bottomSurfaceVertices);
-        Triangulate(topSurfacePoints2d, out topSurfaceTriangles, out topSurfaceVertices);
+        List<Vector2> pointsIn2d = vector3Tovector2(points);
+        Triangulate(pointsIn2d, out topSurfaceTriangles, out bottomSurfaceVertices);
 
         correctHeightwrtMap(bottomSurfaceVertices);
-        topSurfaceVertices = generateVerticesAboveHeight(bottomSurfaceVertices, 0.1f);
+        List<Vector3> topSurfaceVertices = generateVerticesAboveHeight(bottomSurfaceVertices, 0.06f);
 
         Vector3[] finalVertices = concatTwoArrays(bottomSurfaceVertices.ToArray(), topSurfaceVertices.ToArray());
 
         mesh.vertices = finalVertices;
+        // use mesh.setVertices(List<Vector3>()) => fast!
 
         // reverse the triangles for the bottom one to make it visible from bottom
-        reverseTriangles(bottomSurfaceTriangles);
+        List<int> bottomSurfaceTriangles = createReversedTriangles(topSurfaceTriangles);
 
         // change the indexing of the triangles for the second array (shift)
         int bottomSurfaceVerticesLength = bottomSurfaceVertices.Count;
-        for (int i = 0; i < topSurfaceTriangles.Count; i++) {
-            bottomSurfaceTriangles.Add(topSurfaceTriangles[i] + bottomSurfaceVerticesLength);
+        int bottomSurfaceTrianglesLength = bottomSurfaceTriangles.Count;
+        for (int i = 0; i < bottomSurfaceTrianglesLength; i++) {
+                bottomSurfaceTriangles.Add(topSurfaceTriangles[i] + bottomSurfaceVerticesLength);
         }
 
-        mesh.triangles = concatTwoArrays(bottomSurfaceTriangles.ToArray(), generateWallsTriangles(finalVertices, generateNeighbouringVectorMapping(topSurfacePoints, topSurfaceVertices)));
+        neighbouringVertexMapping = GenerateNeighbouringVectorMapping(points, topSurfaceVertices);
+
+        mesh.triangles = concatTwoArrays(bottomSurfaceTriangles.ToArray(), generateWallsTriangles(finalVertices, neighbouringVertexMapping));
 
         mr.material = polygonMat;
         Vector2[] uvs = new Vector2[mesh.vertices.Length];
@@ -60,10 +54,16 @@ public static class PolygonGenerator {
     
         mesh.uv = uvs;
         correctPositionAtCentre(polygon);
+        polygon.AddComponent<MeshCollider>().convex = true;
         return polygon;
     }
 
-    private static Dictionary<int, int> generateNeighbouringVectorMapping(List<Vector3> original, List<Vector3> shuffled) {
+    /// <summary>
+    /// generates a dictionary that maps index of a vertex to the index of its neighbouring vertex (clockwise)
+    /// This is required because the vertices list created by Triangulate() method can be shuffled,
+    /// meaning that the predicate "vertex at index i is a neighbour to vertex at index i + 1" no longer holds
+    /// </summary>
+    public static Dictionary<int, int> GenerateNeighbouringVectorMapping(List<Vector3> original, List<Vector3> shuffled) {
         Dictionary<int, int> neighbourMap = new Dictionary<int, int>(original.Count);
 
         Dictionary<string, string> findNeighbour = new Dictionary<string, string>(original.Count);
@@ -97,20 +97,22 @@ public static class PolygonGenerator {
         return neighbourMap;
     }
 
-    private static void reverseTriangles(List<int> triangles) {
+    private static List<int> createReversedTriangles(List<int> triangles) {
         if (triangles.Count % 3 != 0)
-            return;
-        Debug.Log("reversing triangles");
+            return null;
+
+        List<int> reversedTriangles = new List<int>(triangles.Count);
         for (int i = 0; i < triangles.Count; i += 3) {
-            int secondIndex = triangles[i + 1];
-            triangles[i + 1] = triangles[i + 2];
-            triangles[i + 2] = secondIndex;
+            reversedTriangles.Add(triangles[i]);
+            reversedTriangles.Add(triangles[i + 2]);
+            reversedTriangles.Add(triangles[i + 1]);
         }
+
+        return reversedTriangles;
     }
 
     private static void correctHeightwrtMap(List<Vector3> points) {
         float mapHeight = GameObject.Find("CustomizedMap").transform.position.y;
-        Debug.Log("Map height = " + mapHeight);
         for (int i = 0; i < points.Count; i++) {
             Vector3 tempVector = points[i];
             tempVector.y = mapHeight;
@@ -137,24 +139,17 @@ public static class PolygonGenerator {
             vertices[i] -= moveVector;
         }
         mesh.vertices = vertices; // must be reassigned
-        Debug.Log("render center is at " + rendererCentre);
         polygon.transform.position = rendererCentre;
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
-
-        // optinal: correct the meshCollider if already attached
-        Object.Destroy(polygon.GetComponent<MeshCollider>());
-        polygon.AddComponent<MeshCollider>().convex = true;
     }
 
-    private static void generateTopSurfaceMesh() {
-
-    }
-
-    private static void generateBottomSurfaceMesh() {
-
-    }
-
+    /// <summary>
+    /// generates triangles to render the walls of the polygon. 
+    /// Precondition: the first half of the vertices array must contain the top surface vertices,
+    /// while the second half contains the bottom vertices whose indices correspond with the top ones.
+    /// (i.e. top-surface vertex at index i has a bottom-surface vertex at index (i + halfLength) )
+    /// </summary>
     private static int[] generateWallsTriangles(Vector3[] vertices, Dictionary<int, int> neighbourMap) {
         List<int> triangles = new List<int>(vertices.Length * 6);
         int halfWay = vertices.Length / 2;
@@ -169,12 +164,7 @@ public static class PolygonGenerator {
                 triangles.Add(i + halfWay);
         }
 
-        List<int> reversedTriangles = new List<int>(triangles.Count);
-        for (int i = 0; i < triangles.Count; i++) {
-            reversedTriangles.Add(triangles[i]);
-        } // just copy
-        reverseTriangles(reversedTriangles);
-
+        List<int> reversedTriangles = createReversedTriangles(triangles);
         return concatTwoArrays(triangles.ToArray(), reversedTriangles.ToArray());
     }
 
@@ -186,9 +176,6 @@ public static class PolygonGenerator {
         return vector2s;
     }
 
-    /// <summary>
-    /// use this to clone as well
-    /// </summary>
     private static List<Vector3> generateVerticesAboveHeight(List<Vector3> vertices, float height) {
         // capacity of a list is different to length/size.
         // capacity does not allocate null values
@@ -200,6 +187,9 @@ public static class PolygonGenerator {
         return newVertices;
     }
 
+    /// <summary>
+    /// triangulates any polygon-forming set of vertices. uses Triangle.NET
+    /// </summary>
     private static bool Triangulate(List<Vector2> points, out List<int> outPolygonTriangles, out List<Vector3> outPolygonVertices) {
         outPolygonTriangles = new List<int>();
         outPolygonVertices = new List<Vector3>();
@@ -243,21 +233,6 @@ public static class PolygonGenerator {
 
     }
 
-    /// <summary>
-    /// list of vertices of the plane surface. Must be in clockwise order
-    /// </summary>
-    /// <param name="vertices"></param>
-    private static void verticalPlaneGenerator(List<Vector3> vertices) {
-        /// Order of vertices: in clockwise
-        /// 3   0
-        ///   
-        /// 2   1 
-        ///
-
-
-
-    }
-
     private static T[] concatTwoArrays<T>(T[] first, T[] second) {
         T[] newArray = new T[first.Length + second.Length];
         int i = 0;
@@ -265,7 +240,7 @@ public static class PolygonGenerator {
             newArray[i] = first[i];
         }
 
-        for (int j= 0; i < newArray.Length; i++, j++) {
+        for (int j = 0; i < newArray.Length; i++, j++) {
             newArray[i] = second[j];
         }
 

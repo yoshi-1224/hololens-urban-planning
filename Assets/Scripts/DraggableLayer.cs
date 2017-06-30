@@ -30,6 +30,9 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
     [Tooltip("The parent of all the contents this toolbar contains")]
     public GameObject ToolbarContents;
 
+    private Vector3 originalLocalPosition;
+    private Quaternion originalLocalRotation;
+
     public enum RotationModeEnum {
         Default,
         LockObjectRotation,
@@ -71,6 +74,8 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
         }
 
         mainCamera = Camera.main;
+        originalLocalPosition = transform.localPosition;
+        originalLocalRotation = transform.localRotation;
     }
 
     private void OnDestroy() {
@@ -106,8 +111,6 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
         InputManager.Instance.PushModalInputHandler(gameObject);
         MakeSiblingsChildren();
         isDragging = true;
-        //GazeCursor.Instance.SetState(GazeCursor.State.Move);
-        //GazeCursor.Instance.SetTargetObject(HostTransform);
 
         Vector3 gazeHitPosition = GazeManager.Instance.HitInfo.point;
         Vector3 handPosition;
@@ -282,5 +285,12 @@ public class DraggableLayer : MonoBehaviour, IFocusable, IInputHandler, ISourceS
 
     public void MakeChildrenSiblings() {
         ToolbarContents.transform.parent = transform.parent;
+    }
+
+    public void OnHideToolbar() {
+        MakeSiblingsChildren();
+        transform.localPosition = originalLocalPosition;
+        transform.localRotation = originalLocalRotation;
+        MakeChildrenSiblings();
     }
 }

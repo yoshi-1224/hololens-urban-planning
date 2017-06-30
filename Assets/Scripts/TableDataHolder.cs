@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 /// <summary>
 /// this class holds information for each of the buildings. Maybe in the future this can be replaced
@@ -28,7 +29,24 @@ public class TableDataHolder : Singleton<TableDataHolder> {
     private string[] classes = { "mixed-use development", "civic & community",
                                 "business, trade"};
 
+    // actual member classes
     public Dictionary<string, TableData> dataDict;
+
+    private float mapScale = 0f; // backing store
+    public float MapScale {
+        get {
+            return mapScale;
+        }
+
+        set {
+            mapScale = value;
+            updateDataDisplayIfActive();
+        }
+    }
+    
+    public void updateDataDisplayIfActive() {
+        DataDisplay.Instance.UpdateMapInfo();
+    }
 
     public void Start() {
         dataDict = new Dictionary<string, TableData>();
@@ -45,4 +63,24 @@ public class TableDataHolder : Singleton<TableDataHolder> {
         dataDict["Singapore_conference_hall"] = new TableData("Singapore Conference Hall", classes[2], 0f, 29.88f, 10);
         dataDict["OUE_downtown"] = new TableData("OUE Downtown", classes[2], 13.88f, 193.56f, 65);
     }
+
+    public static void getMapExtents(out float xExtent, out float zExtent) {
+        GameObject map = GameObject.Find("CustomizedMap");
+
+        // we are using mesh.bounds since renderer.bounds have issues updating after scaling
+        Bounds mapBounds = map.GetComponent<MeshFilter>().mesh.bounds;
+        // assume that the pivot is really at the map centre
+        // and map size is symmetrical in both x- and z-directions
+        Vector3 extents = map.transform.TransformVector(mapBounds.extents);
+        xExtent = extents.x; // should be in metres
+        zExtent = extents.z; // should be in metres
+
+    }
+
+    public static void getCornerCoordinates(List<int> centreCoord, float xExtent, float zExtent) {
+        // either assume that singapore map is FLAT, or use
+        // spherical calculations if really required
+    }
+
+    //set table texture. need to know which vertices are which t
 }

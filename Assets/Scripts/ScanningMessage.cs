@@ -11,11 +11,6 @@ public class ScanningMessage : MonoBehaviour {
 
     private float Distance = 1.0f;
     private Interpolator interpolator;
-    // The offset from the Camera to the StartupObject when
-    // the app starts up. This is used to place the StartupObject
-    // in the correct relative position after the Fitbox is
-    // dismissed.
-    private Vector3 collectionStartingOffsetFromCamera;
 
     private void Start() {
         interpolator = GetComponent<Interpolator>();

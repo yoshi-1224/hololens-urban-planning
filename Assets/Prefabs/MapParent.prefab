@@ -1324,6 +1324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9191a36d01537d4d8da3769f5ad84fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axisPrefab: {fileID: 1994721312360596, guid: 6f8563ab3a2c8ce4b92a883b69690097, type: 2}
   IsBeingPlaced: 0
   guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
     type: 2}

@@ -91,7 +91,7 @@ public class StreetView : Singleton<StreetView> {
         if (cursor != null)
             cursor.SetActive(true);
         switchMapCapabilityForNormalMode();
-        mapObject.GetComponent<MoveOnVoice>().OnInputClicked(null);
+        mapObject.GetComponent<InteractibleMap>().OnInputClicked(null);
         isInStreetViewMode = false;
         GlobalVoiceCommands.Instance.ExitStreetViewMode();
         
@@ -105,7 +105,7 @@ public class StreetView : Singleton<StreetView> {
 
     private void switchMapCapabilityForStreetView() {
         mapObject.AddComponent<StreetViewMovement>();
-        mapObject.GetComponent<MoveOnVoice>().enabled = false;
+        mapObject.GetComponent<InteractibleMap>().enabled = false;
         GlobalVoiceCommands.Instance.HideTools();
     }
 
@@ -113,6 +113,6 @@ public class StreetView : Singleton<StreetView> {
         StreetViewMovement movement = mapObject.GetComponent<StreetViewMovement>();
         if (movement != null)
             Destroy(movement);
-        mapObject.GetComponent<MoveOnVoice>().enabled = true;
+        mapObject.GetComponent<InteractibleMap>().enabled = true;
     }
 }

@@ -40,7 +40,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     private float lineWidth = 0.002f;
 	
     public void StartDrawing() {
-        MoveOnVoice.Instance.IsDrawing = true;
+        InteractibleMap.Instance.IsDrawing = true;
         GuideStatus.ShouldShowGuide = false;
         isAnyPointDrawnYet = false;
         polygonVertices = new List<Vector3>();
@@ -52,7 +52,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
 
     public void StopDrawing() {
         GlobalVoiceCommands.Instance.IsInDrawingMode = false;
-        MoveOnVoice.Instance.IsDrawing = false;
+        InteractibleMap.Instance.IsDrawing = false;
         InputManager.Instance.PopModalInputHandler();
         clearPoints();
         changeCursorBack();
@@ -121,11 +121,12 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     /// args should take in pointsDrawn
     /// </summary>
     private void instantiatePolygon() {
-        Debug.Log("Instantiating polygon");
-
-        GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial);
+        Dictionary<int, int> neighbouringVertexMapping;
+        GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial, out neighbouringVertexMapping);
         polygon.transform.parent = GameObject.Find("LOD2").transform; // make map script more general: just do child stuff in script rather than assigning in editor
-        polygon.AddComponent<Scalable>();
+        Scalable script = polygon.AddComponent<Scalable>();
+        script.neighbouringVertexMapping = neighbouringVertexMapping;
+        polygon.AddComponent<DeleteOnVoice>();
         StopDrawing();
     }
 

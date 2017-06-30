@@ -138,7 +138,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         translationFeedbackObject.SetActive(false);
     }
 
-    public void ShowScalingFeedback() {
+    public void ShowScalingMapFeedback() {
         if (rotationFeedbackObject == null || rotationFeedbackObject.activeSelf)
             return;
         // make the rotation feedback vertical
@@ -149,7 +149,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         MessageToUser.SetActive(true);
     }
 
-    public void HideScalingFeedback() {
+    public void HideScalingMapFeedback() {
         if (rotationFeedbackObject == null || !rotationFeedbackObject.activeSelf)
             return;
         //put everything back to before state
@@ -159,6 +159,26 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         rotationFeedbackObject.SetActive(false);
         MessageToUser.SetActive(false);
     }
+
+    public void HideScalingFeedback() {
+        if (rotationFeedbackObject == null || !rotationFeedbackObject.activeSelf)
+            return;
+        //put everything back to before state
+        rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, -90));
+        rotationFeedbackObject.SetActive(false);
+        //MessageToUser.SetActive(false);
+        ScreenMessageManager.Instance.deactivateMessage();
+    }
+
+    public void ShowScalingFeedback() {
+        if (rotationFeedbackObject == null || rotationFeedbackObject.activeSelf)
+            return;
+        // make the rotation feedback vertical
+        rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, 90));
+        rotationFeedbackObject.SetActive(true);
+        //MessageToUser.SetActive(true);
+    }
+
 
     /// <summary>
     /// shows the current scaling for the user. arguments array MUST BE an array
@@ -176,11 +196,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         } else {
             messageTextMesh.color = Color.white;
         }
-
-        // TODO: make it more efficient in the future and check for inactive state
-        GameObject mapInfoPanel = GameObject.Find("MapInfo");
-        if (mapInfoPanel != null)
-            mapInfoPanel.GetComponent<TextMesh>().text = string.Format("<b>Map Scale</b>: {0:0.0000}", currentScaling);
     }
 
     public void TellUserToLookLower() {
@@ -198,8 +213,8 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
 
     public void EnterDrawingMode() {
         isDrawing = true;
-        CursorStateData[1].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
-        CursorStateData[4].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
+        cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
+        cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
         OnCursorStateChange(CursorStateEnum.ObserveHover);
     }
 
@@ -208,8 +223,8 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         OnCursorStateChange(CursorStateEnum.ObserveHover);
         if (DrawPointCursor.activeSelf)
             HidePointCursor();
-        CursorStateData[1].CursorObject.transform.localPosition += new Vector3(0.04f, 0, 0);
-        CursorStateData[4].CursorObject.transform.localPosition += new Vector3(0.04f, 0, 0);
+        cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition += new Vector3(0.04f, 0, 0);
+        cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition += new Vector3(0.04f, 0, 0);
     }
 
     public void HidePointCursor() {
@@ -229,6 +244,18 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
 
     public void OnMapFocusExit() {
         OnCursorStateChange(CursorStateEnum.Observe);
+    }
+    
+    public void UpdateCurrentHeightInfo(object[] arguments) {
+        float currentHeight = (float)arguments[0];
+        int numOfStoreys = (int)arguments[1];
+        if (messageTextMesh == null)
+            messageTextMesh = GetComponent<TextMesh>();
+        string text = string.Format("Height: {000:0.0}m", currentHeight);
+        text += string.Format("\nnumber of storeys = {0:00}", numOfStoreys);
+
+        //messageTextMesh.text = text;
+        ScreenMessageManager.Instance.activateMessage(text);
     }
 
 }

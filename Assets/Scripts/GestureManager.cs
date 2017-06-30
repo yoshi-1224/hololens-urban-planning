@@ -105,7 +105,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
         IsScalingUsingNavigation = true;
         currentObjectInMotion = objectToRegister;
         InputManager.Instance.PushModalInputHandler(gameObject);
-        cursor.SendMessage("ShowScalingFeedback");
+        cursor.SendMessage("ShowScalingMapFeedback");
         return true;
     }
 
@@ -129,7 +129,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
             cursor.SendMessage("HideTranslationFeedback");
         }
         else if (IsScalingUsingNavigation) {
-            cursor.SendMessage("HideScalingFeedback");
+            cursor.SendMessage("HideScalingMapFeedback");
         }
         else if (IsScalingUsingManipulation)
             cursor.SendMessage("HideScalingFeedback");

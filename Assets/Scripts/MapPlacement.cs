@@ -13,9 +13,9 @@ public class MapPlacement : Singleton<MapPlacement> {
     public void InstantiateMap() {
         GameObject map = Instantiate(mapPrefab);
         // let the user choose the location to place first
-        map.GetComponentInChildren<MoveOnVoice>().OnInputClicked(null);
+        map.GetComponentInChildren<InteractibleMap>().OnInputClicked(null);
         //SetLayerRecursively(map, MapObjectsLayer);
-        dismissScanMessage();
+        //dismissScanMessage();
     }
 
     private void dismissScanMessage() {

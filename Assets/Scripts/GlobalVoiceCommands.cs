@@ -154,6 +154,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         if (!toolMenuObject.activeSelf)
             return;
         InteractibleButton.onToolbarMoveOrDisable();
+        GameObject.Find("BaseLayer").SendMessage("OnHideToolbar");
         toolMenuObject.SetActive(false);
     }
 
