@@ -37,11 +37,9 @@ public class InteractibleButton : MonoBehaviour, IFocusable, IInputClickHandler 
         instantiated = Instantiate(prefabToInstantiate);
         // set the parent transform of the instantiated prefab to the transform of building collection
         // AFTER it has been placed somewhere
-        float distanceUpHub = 0.25f;
-        //GameObject Toolbar = GameObject.Find("Toolbar");
-        GameObject hub = GameObject.Find("EnergyHub");
-        instantiated.transform.position = hub.transform.position + new Vector3(0, distanceUpHub ,0);
-        //instantiated.transform.parent = Toolbar.transform;
+        float distanceDownFromParent = -0.45f;
+        GameObject buttonsParent = GameObject.Find("PrefabsButtons");
+        instantiated.transform.position = buttonsParent.transform.position + new Vector3(0, distanceDownFromParent, 0);
         objectReadyToPlace = instantiated;
     }
 
