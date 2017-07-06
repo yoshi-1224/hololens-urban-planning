@@ -66,7 +66,6 @@
 			{
 				return _cachedQuad;
 			}
-
 			return BuildQuad(tile);
 		}
 
@@ -99,5 +98,11 @@
 
 			return unityMesh;
 		}
-	}
+
+        public override void OnZoomChanged() {
+            // clear the cachedQuad such that when the zoom changes
+            // we can create a brand new mesh to adjust for the size change
+            _cachedQuad = null;
+        }
+    }
 }

@@ -59,5 +59,9 @@
         internal abstract void OnRegistered(UnityTile tile);
 
         internal abstract void OnUnregistered(UnityTile tile);
+
+        public virtual void OnZoomChanged() {
+            // use this for terrain factory override
+        }
     }
 }

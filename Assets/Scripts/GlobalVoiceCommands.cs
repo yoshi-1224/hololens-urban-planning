@@ -24,6 +24,9 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public const string COMMAND_QUIT_APP = "quit application";
     public const string COMMAND_DRAW_POLYGON = "polygon";
     public const string COMMAND_CANCEL = "cancel";
+    //public const string COMMAND_PAN_LEFT = "pan left";
+    //public const string COMMAND_PAN_RIGHT = "pan right";
+
 
     private float toolsDistanceFromCamera = 1.3f;
     public bool IsInStreetViewMode = false;
@@ -34,8 +37,8 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
             return;
         }
         InputManager.Instance.AddGlobalListener(gameObject);
-        toolMenuObject = GameObject.Find("Toolbar");
-        toolMenuObject.SetActive(false);
+        //toolMenuObject = GameObject.Find("Toolbar");
+        //toolMenuObject.SetActive(false);
     }
 
     protected override void OnDestroy() {
@@ -52,10 +55,10 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
-        if (map == null)
-            map = GameObject.Find("CustomizedMap");
-        if (map == null) // still null then it has not yet been instantiated
-            return;
+        //if (map == null)
+        //    map = GameObject.Find("CustomizedMap");
+        //if (map == null) // still null then it has not yet been instantiated
+        //    return;
 
         string keyword = eventData.RecognizedText.ToLower();
         switch(keyword) {

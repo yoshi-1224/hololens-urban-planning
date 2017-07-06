@@ -9,6 +9,7 @@ using System;
 public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     [Tooltip("The table object to show on show details")]
     public GameObject tablePrefab;
+    private GameObject tableObject;
 
     [Tooltip("The user guide to show when gazed at for some time")]
     public GameObject guidePrefab;
@@ -29,7 +30,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     public AudioClip tableSound;
     private AudioSource audioSource;
 
-    private GameObject tableObject;
     private bool isTableAlreadyExists;
 
     public float RotationSensitivity = 0.5f;
@@ -230,14 +230,11 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
         tableObject = Instantiate(tablePrefab);
         tableObject.transform.parent = gameObject.transform;
-        fillTableData();
+        tableObject.SendMessage("FillTableData", gameObject.name);
         positionTableObject();
-
-        // add box collider at run time so that it fits the dynamically-set text sizes
-        tableObject.AddComponent<BoxCollider>();
+        
         isTableAlreadyExists = true;
 
-        //DisallowGuideObject();
         hideGuideObject();
     }
 
@@ -248,36 +245,13 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         Destroy(tableObject);
         tableObject = null;
         isTableAlreadyExists = false;
-
-        //AllowGuideObject();
     }
 
     private void positionTableObject() {
         float distanceRatio = 0.4f;
         tableObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
         tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
-        tableObject.SendMessage("OnPositionChange");
-    }
-
-    private void fillTableData() {
-        /// use Unity's RichText format to enable diverse fonts, colours etc.
-        TextMesh textMesh = tableObject.GetComponent<TextMesh>();
-        TableDataHolder.TableData data;
-        if (TableDataHolder.Instance.dataDict.TryGetValue(gameObject.name, out data)) {
-            string name = "<size=60><b>" + data.building_name + "</b></size>";
-            string _class = "<b>Class</b> : " + data.building_class;
-            string GPR = "<b>Gross Plot Ratio</b> : " + data.GPR;
-            if (data.building_name == "Chinese Culture Centre") {
-                string type = "(Prefab Type " + data.storeys_above_ground + ")";
-                textMesh.text = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
-                return;
-            }
-            string measured_height = "<b>Measured Height</b> : " + data.measured_height + "m";
-            string numStoreys = "<b>Number of Storeys</b> : " + data.storeys_above_ground;
-            textMesh.text = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys;
-        } else {
-            textMesh.text = "status unknown";
-        }
+        tableObject.SendMessage("UpdateLinePositions");
     }
 
 #endregion

@@ -105,7 +105,8 @@ namespace Mapbox.Unity.MeshGeneration
 
 			if (_inactiveTiles.Count > 0)
 			{
-				unityTile = _inactiveTiles.Dequeue();
+				unityTile = _inactiveTiles.Dequeue(); //recycling gameObjects
+                // this is a queue of UnityTile, not the tile objects themselves
 			}
 
 			if (unityTile == null)
@@ -119,6 +120,8 @@ namespace Mapbox.Unity.MeshGeneration
 #endif
 			}
 
+            // actually, clearing the queue and avoiding recycling does not do anything
+            // as things are initialized here
 			unityTile.Initialize(_map, tileId);
 
 			foreach (var factory in _factories)
@@ -142,5 +145,11 @@ namespace Mapbox.Unity.MeshGeneration
 				factory.Unregister(unityTile);
 			}
 		}
+
+        public void OnZoomChanged() {
+            foreach(var factory in _factories) {
+                factory.OnZoomChanged();
+            }
+        }
 	}
 }

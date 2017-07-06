@@ -341,8 +341,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         if (!IsBeingPlaced)
             MakeSiblingsChildren();
         GestureManager.Instance.RegisterGameObjectForRotation(gameObject);
-        axis = Instantiate(axisPrefab);
-        axis.transform.position = transform.position;
+        axis = Instantiate(axisPrefab, transform.position, Quaternion.identity);
     }
 
     private void PerformRotationStarted(Vector3 cumulativeDelta) {

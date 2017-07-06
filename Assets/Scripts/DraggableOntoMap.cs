@@ -226,6 +226,9 @@ public class DraggableOntoMap : MonoBehaviour, IFocusable, IInputHandler, ISourc
         DisplayBounds(canBePlaced);
     }
 
+    /// <summary>
+    /// returns true if clipped, else false
+    /// </summary>
     private bool clipToMapSurfaceIfNeeded() {
         Vector3 bottomCentre = GetColliderBottomPointsInWorldSpace()[0];
         float heightGap = bottomCentre.y - currentMapHeight;

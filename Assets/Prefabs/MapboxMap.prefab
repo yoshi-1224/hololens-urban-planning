@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7ff8ed3b76a4ee5a451d64a5393e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _range: {x: 0, y: 0, z: 0, w: 0}
+  _range: {x: 1, y: 1, z: 1, w: 1}
 --- !u!114 &114895351143258596
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -65,8 +65,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _latitudeLongitudeString: 1.351616, 103.808053
-  _zoom: 16
+  _zoom: 10
   _root: {fileID: 0}
   _tileProvider: {fileID: 114163186056920062}
-  _mapVisualizer: {fileID: 0}
+  _mapVisualizer: {fileID: 11400000, guid: 1c98f633ef57c0a4ca4adde5344462f7, type: 2}
   _unityTileSize: 100
