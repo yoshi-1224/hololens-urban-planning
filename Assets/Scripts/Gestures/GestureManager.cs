@@ -15,31 +15,22 @@ using System;
 /// all the buildings become event handlers which leads to inefficiency.
 /// </remark>
 public class GestureManager : Singleton<GestureManager>, IManipulationHandler, INavigationHandler {
-    public bool IsTranslating {
-        get; private set;
-    }
+    public bool IsTranslating { get; private set; }
+    public bool IsRotating { get; private set; }
+    public bool IsScalingUsingNavigation { get; private set; }
+    public bool IsScalingUsingManipulation { get; private set; }
 
-    public bool IsRotating {
-        get; private set;
-    }
+    [Tooltip("Reference to cursor object script in order to show motion feedbacks")]
+    [SerializeField]
+    private CustomObjectCursor cursorScript;
 
-    public bool IsScalingUsingNavigation {
-        get; private set;
-    }
-
-    public bool IsScalingUsingManipulation {
-        get; private set;
-    }
-
-    [Tooltip("Reference to cursor object in order to show motion feedbacks")]
-    public GameObject cursor;
+    private Scalable currentObjectScalableComponent;
+    private Rotatable currentObjectRotatableComponent;
 
     /// <summary>
     /// to be set by Interactible.cs class by voice command. There must be only one at one time
     /// </summary>
-    public GameObject currentObjectInMotion {
-        get; set;
-    }
+    public GameObject currentObjectInMotion { get; set; }
 
     private void Start() {
         IsRotating = false;
@@ -51,40 +42,41 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
 
     public void OnManipulationCanceled(ManipulationEventData eventData) {
         if (IsTranslating || IsScalingUsingManipulation)
-            UnregisterObject();
+            UnregisterCleanUp();
     }
 
     public void OnManipulationCompleted(ManipulationEventData eventData) {
-        if (IsTranslating || IsScalingUsingManipulation)
-            UnregisterObject();
+        if (IsTranslating)
+            UnregisterCleanUp();
+        else if (IsScalingUsingManipulation)
+            UnregisterObjectForScaling();
     }
 
     public void OnManipulationStarted(ManipulationEventData eventData) {
         if (IsTranslating)
             currentObjectInMotion.SendMessage("PerformTranslationStarted", eventData.CumulativeDelta);
         else if (IsScalingUsingManipulation)
-            currentObjectInMotion.SendMessage("PerformScalingStarted", eventData.CumulativeDelta);
+            currentObjectScalableComponent.PerformScalingStarted(eventData.CumulativeDelta);
     }
 
     public void OnManipulationUpdated(ManipulationEventData eventData) {
         if (IsTranslating) {
             currentObjectInMotion.SendMessage("PerformTranslationUpdate", eventData.CumulativeDelta);
         } else if (IsScalingUsingManipulation) {
-            currentObjectInMotion.SendMessage("PerformScalingUpdate", eventData.CumulativeDelta);
+            currentObjectScalableComponent.PerformScalingUpdateUsingManipulation(eventData.CumulativeDelta);
         } else {
             // ignore
         }
     }
 
-    public bool RegisterGameObjectForRotation(GameObject objectToRegister) {
+    public bool RegisterGameObjectForRotation(Rotatable rotatableComponent) {
         if (currentObjectInMotion != null || IsTranslating || IsRotating || IsScalingUsingNavigation | IsScalingUsingManipulation)
             return false;
 
         IsRotating = true;
-        currentObjectInMotion = objectToRegister;
-
+        currentObjectRotatableComponent = rotatableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
-        cursor.SendMessage("ShowRotationFeedback");
+        cursorScript.ShowRotationFeedback();
         return true;
     }
 
@@ -95,44 +87,58 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
         currentObjectInMotion = objectToRegister;
 
         InputManager.Instance.PushModalInputHandler(gameObject);
-        cursor.SendMessage("ShowTranslationFeedback");
+        cursorScript.ShowTranslationFeedback();
         return true;
     }
 
-    public bool RegisterGameObjectForScalingUsingNavigation(GameObject objectToRegister) {
+    /// <summary>
+    /// right now this is used for the base map rotation only
+    /// </summary>
+    public bool RegisterGameObjectForScalingUsingNavigation(Scalable scalableComponent) {
         if (currentObjectInMotion != null || IsTranslating || IsRotating || IsScalingUsingNavigation || IsScalingUsingManipulation)
             return false;
         IsScalingUsingNavigation = true;
-        currentObjectInMotion = objectToRegister;
+        currentObjectScalableComponent = scalableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
-        cursor.SendMessage("ShowScalingMapFeedback");
+        cursorScript.ShowScalingMapFeedback();
         return true;
     }
 
-    public bool RegisterGameObjectForScalingUsingManipulation(GameObject objectToRegister) {
+    public bool RegisterGameObjectForScalingUsingManipulation(Scalable scalableComponent) {
         if (currentObjectInMotion != null || IsTranslating || IsRotating || IsScalingUsingNavigation || IsScalingUsingManipulation)
             return false;
         IsScalingUsingManipulation = true;
-        currentObjectInMotion = objectToRegister;
+        currentObjectScalableComponent = scalableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
-        cursor.SendMessage("ShowScalingFeedback");
+        cursorScript.ShowScalingFeedback();
         return true;
     }
 
-    public void UnregisterObject() {
-        currentObjectInMotion.SendMessage("UnregisterCallBack");
+    public void UnregisterObjectForScaling() {
+        currentObjectScalableComponent.UnregisterForScaling();
+        currentObjectScalableComponent = null;
+        UnregisterCleanUp();
+    }
+
+    public void UnregisterObjectForRotation() {
+        currentObjectRotatableComponent.UnregisterForRotation();
+        currentObjectRotatableComponent = null;
+        UnregisterCleanUp();
+    }
+
+    public void UnregisterCleanUp() {
         currentObjectInMotion = null;
         if (IsRotating) {
-            cursor.SendMessage("HideRotationFeedback");
+            cursorScript.HideRotationFeedback();
         }
         else if (IsTranslating) {
-            cursor.SendMessage("HideTranslationFeedback");
+            cursorScript.HideTranslationFeedback();
         }
         else if (IsScalingUsingNavigation) {
-            cursor.SendMessage("HideScalingMapFeedback");
+            cursorScript.HideScalingMapFeedback();
         }
         else if (IsScalingUsingManipulation)
-            cursor.SendMessage("HideScalingFeedback");
+            cursorScript.HideScalingFeedback();
         // clear the stack so that other gameobjects can receive gesture inputs
         // it might actually be necessary to have the manipulation handler on the object itself
         // or just register this as global listener!
@@ -144,35 +150,32 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
         IsScalingUsingManipulation = false;
     }
 
-    public void UpdateMapScale() {
-
-    }
-
     public void OnNavigationStarted(NavigationEventData eventData) {
         if (IsScalingUsingNavigation)
-            currentObjectInMotion.SendMessage("PerformScalingStarted", eventData.NormalizedOffset);
-        // just to get rid of the guide from the map
+            currentObjectScalableComponent.PerformScalingStarted(eventData.NormalizedOffset);
         else if (IsRotating)
-            currentObjectInMotion.SendMessage("PerformRotationStarted", eventData.NormalizedOffset);
+            currentObjectRotatableComponent.PerformRotationStarted(eventData.NormalizedOffset);
     }
 
     public void OnNavigationUpdated(NavigationEventData eventData) {
         if (IsRotating) {
-            currentObjectInMotion.SendMessage("PerformRotationUpdate", eventData.NormalizedOffset);
+            currentObjectRotatableComponent.PerformRotationUpdate(eventData.NormalizedOffset);
         } else if (IsScalingUsingNavigation) {
-            currentObjectInMotion.SendMessage("PerformScalingUpdate", eventData.NormalizedOffset);
-        } else {
-            // ignore
+            currentObjectScalableComponent.PerformScalingUpdateUsingNavigation(eventData.NormalizedOffset);
         }
     }
 
     public void OnNavigationCompleted(NavigationEventData eventData) {
-        if (IsRotating || IsScalingUsingNavigation)
-            UnregisterObject();
+        if (IsRotating)
+            UnregisterObjectForRotation();
+        else if (IsScalingUsingNavigation)
+            UnregisterObjectForScaling();
     }
 
     public void OnNavigationCanceled(NavigationEventData eventData) {
-        if (IsRotating || IsScalingUsingNavigation)
-            UnregisterObject();
+        if (IsRotating)
+            UnregisterObjectForRotation();
+        else if (IsScalingUsingNavigation)
+            UnregisterObjectForScaling();
     }
 }

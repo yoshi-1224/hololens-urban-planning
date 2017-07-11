@@ -13,12 +13,11 @@ using HoloToolkit.Unity.InputModule;
 public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     [SerializeField]
     private HandDraggable handDraggable;
+    [SerializeField]
     private LineRenderer line;
     private bool shouldUpdateLinePositions;
 
     private void Start() {
-        line = gameObject.GetComponent<LineRenderer>();
-
         // Set the number of vertex fo the Line Renderer
         line.positionCount = 2;
         UpdateLinePositions();

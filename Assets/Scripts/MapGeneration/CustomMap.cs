@@ -21,12 +21,9 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
             return _zoom;
         }
         set {
-            // update the world scale as well
             _zoom = value;
-            var referenceTileRect = Conversions.TileBounds(TileCover.CoordinateToTileId(_mapCenterLatitudeLongitude, _zoom));
-            _mapCenterMercator = referenceTileRect.Center;
-            _worldRelativeScale = (float)(_unityTileSize / referenceTileRect.Size.x);
-            Root.localScale = Vector3.one * _worldRelativeScale;
+            UpdateOnZoomSet();
+            MapDataDisplay.Instance.UpdateZoomInfo(_zoom);
         }
     }
 
@@ -44,8 +41,7 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
     [SerializeField]
     MapVisualizer _mapVisualizer;
 
-    [SerializeField]
-    float _unityTileSize = 1.5f;
+    public float UnityTileSize = 1.5f;
 
     MapboxAccess _fileSource;
 
@@ -57,6 +53,7 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         set {
             _latitudeLongitudeString = string.Format("{0}, {1}", value.x, value.y);
             _mapCenterLatitudeLongitude = value;
+            MapDataDisplay.Instance.UpdateCenterCoordinatesInfo(_latitudeLongitudeString);
         }
     }
 
@@ -74,6 +71,12 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
     public float WorldRelativeScale {
         get {
             return _worldRelativeScale;
+        }
+
+        private set {
+            _worldRelativeScale = value;
+            // including the fact that the parent is also scaled
+            MapDataDisplay.Instance.UpdateWorldRelativeScaleInfo(_worldRelativeScale * transform.parent.transform.localScale.x);
         }
     }
 
@@ -107,18 +110,34 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
 
     protected virtual void Start() {
         var latLonSplit = _latitudeLongitudeString.Split(',');
-        _mapCenterLatitudeLongitude = new Vector2d(double.Parse(latLonSplit[0]), double.Parse(latLonSplit[1]));
-
-        var referenceTileRect = Conversions.TileBounds(TileCover.CoordinateToTileId(_mapCenterLatitudeLongitude, _zoom));
-        _mapCenterMercator = referenceTileRect.Center;
-
-        _worldRelativeScale = (float)(_unityTileSize / referenceTileRect.Size.x);
-        Root.localScale = Vector3.one * _worldRelativeScale;
-
+        CenterLatitudeLongitude = new Vector2d(double.Parse(latLonSplit[0]), double.Parse(latLonSplit[1]));
+        Zoom = Zoom; // hack to invoke the body of setter
+        CorrectCenterLatitudeLongitude();
         _mapVisualizer.Initialize(this, _fileSource);
         _tileProvider.Initialize(this);
 
         OnInitialized(); // use this event for something
+    }
+
+    /// <summary>
+    /// updates mapCenterMercator and localScale in response to a new zoom value set
+    /// </summary>
+    private void UpdateOnZoomSet() {
+        var referenceTileRect = Conversions.TileBounds(TileCover.CoordinateToTileId(_mapCenterLatitudeLongitude, _zoom));
+        CenterMercator = referenceTileRect.Center;
+        WorldRelativeScale = (float)(UnityTileSize / referenceTileRect.Size.x);
+        Root.localScale = Vector3.one * _worldRelativeScale;
+        CorrectCenterLatitudeLongitude();
+    }
+
+    /// <summary>
+    /// corrects and adjusts the mapCenterLatLong at the start and after zoom as the user-specified
+    /// string is unlikely to be the actual center coordinates for the center tile at the start,
+    /// or after zoom the coordinates much be updated
+    /// </summary>
+    private void CorrectCenterLatitudeLongitude() {
+        UnwrappedTileId CenterTile = TileCover.CoordinateToTileId(_mapCenterLatitudeLongitude, _zoom);
+        CenterLatitudeLongitude = Conversions.TileIdToCenterLatitudeLongitude(CenterTile.X, CenterTile.Y, CenterTile.Z);
     }
 
     protected void TileProvider_OnTileAdded(UnwrappedTileId tileId) {
@@ -130,6 +149,4 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         // event handler
         _mapVisualizer.DisposeTile(tileId);
     }
-
-
 }

@@ -113,11 +113,12 @@ namespace Mapbox.Unity.MeshGeneration
 			{
 				unityTile = new GameObject().AddComponent<UnityTile>();
 
-#if !UNITY_EDITOR
-				unityTile.transform.localScale = Unity.Constants.Math.Vector3One * _map.WorldRelativeScale;
-#else
-				unityTile.transform.SetParent(_map.Root, false);
-#endif
+//#if !UNITY_EDITOR
+//				unityTile.transform.localScale = Unity.Constants.Math.Vector3One * _map.WorldRelativeScale;
+//#else
+//				unityTile.transform.SetParent(_map.Root, false);
+//#endif
+            unityTile.transform.SetParent(_map.Root, false);
 			}
 
             // actually, clearing the queue and avoiding recycling does not do anything

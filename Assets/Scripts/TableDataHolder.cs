@@ -45,7 +45,7 @@ public class TableDataHolder : Singleton<TableDataHolder> {
     }
     
     public void updateDataDisplayIfActive() {
-        DataDisplay.Instance.UpdateMapInfo();
+        MapDataDisplay.Instance.UpdateMapInfo();
     }
 
     public void Start() {

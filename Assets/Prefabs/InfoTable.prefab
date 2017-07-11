@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handDraggable: {fileID: 114404389878292576}
+  line: {fileID: 120524250954849902}
 --- !u!120 &120524250954849902
 LineRenderer:
   m_ObjectHideFlags: 1

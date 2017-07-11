@@ -4,7 +4,7 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
 
-public class Scalable : MonoBehaviour, ISpeechHandler {
+public class ScalableHeight : MonoBehaviour, ISpeechHandler {
     public const string COMMAND_SCALE = "scale";
     private float ScalingSensitivity = 40f;
     private Transform parent;
@@ -76,7 +76,7 @@ public class Scalable : MonoBehaviour, ISpeechHandler {
     }
 
     public void RegisterForScaling() {
-        GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(gameObject);
+        //GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(gameObject);
     }
 
     public void UnregisterCallBack() {

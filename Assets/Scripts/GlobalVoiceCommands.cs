@@ -7,38 +7,38 @@ using System;
 using UnityEngine.SceneManagement;
 
 public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandler {
-    [Tooltip("Adjust the scaling sensitivity applied on voice commands")]
-    public float ScalingFactor;
-
     private GameObject toolMenuObject;
 
-    private GameObject map;
+    [SerializeField]
+    private InteractibleMap mapParentInteractible;
+
+#region commands strings
     public const string COMMAND_MOVE_MAP = "move map";
-    public const string COMMAND_MAP_BIGGER = "map bigger";
-    public const string COMMAND_MAP_SMALLER = "map smaller";
     public const string COMMAND_SCALE_MAP = "scale map";
+    public const string COMMAND_ROTATE_MAP = "rotate map";
+
     public const string COMMAND_SHOW_TOOLS = "show tools";
     public const string COMMAND_HIDE_TOOLS = "hide tools";
-    public const string COMMAND_ROTATE_MAP = "rotate map";
     public const string COMMAND_RESET = "reset";
-    public const string COMMAND_QUIT_APP = "quit application";
-    public const string COMMAND_DRAW_POLYGON = "polygon";
-    public const string COMMAND_CANCEL = "cancel";
-    //public const string COMMAND_PAN_LEFT = "pan left";
-    //public const string COMMAND_PAN_RIGHT = "pan right";
 
+    public const string COMMAND_DRAW_POLYGON = "polygon";
+    public const string COMMAND_PIN_LOCATION = "pin location";
+    public const string COMMAND_CANCEL = "cancel";
+
+    #endregion
 
     private float toolsDistanceFromCamera = 1.3f;
-    public bool IsInStreetViewMode = false;
-    public bool IsInDrawingMode = false;
+    public bool IsInStreetViewMode { get; set; }
+    public bool IsInDrawingMode { get; set; }
 
     void Start() {
         if (InputManager.Instance == null) {
             return;
         }
         InputManager.Instance.AddGlobalListener(gameObject);
-        //toolMenuObject = GameObject.Find("Toolbar");
-        //toolMenuObject.SetActive(false);
+        toolMenuObject = GameObject.Find(GameObjectNamesHolder.NAME_TOOL_BAR);
+        IsInDrawingMode = false;
+        IsInStreetViewMode = false;
     }
 
     protected override void OnDestroy() {
@@ -47,26 +47,12 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         InputManager.Instance.RemoveGlobalListener(gameObject);
     }
 
-    /// <summary>
-    /// handler for "move map" voice command. Has the same effect as selecting the map
-    /// </summary>
-    public void moveMap() {
-        map.SendMessage("OnInputClicked", new InputClickedEventData(null));
-    }
-
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
-        //if (map == null)
-        //    map = GameObject.Find("CustomizedMap");
-        //if (map == null) // still null then it has not yet been instantiated
-        //    return;
 
         string keyword = eventData.RecognizedText.ToLower();
         switch(keyword) {
             case COMMAND_RESET:
                 resetScene();
-                return;
-            case COMMAND_QUIT_APP:
-                quitApplication();
                 return;
             case COMMAND_CANCEL:
                 cancelDrawing();
@@ -88,7 +74,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
                     moveMap();
                     break;
                 case COMMAND_SCALE_MAP:
-                    scaleMap();
+                    registerMapForScaling();
                     break;
                 case COMMAND_SHOW_TOOLS:
                     showTools();
@@ -121,8 +107,12 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void quitApplication() {
-        Application.Quit();
+    private void markLocation() {
+        GameObject hitObject = GazeManager.Instance.HitObject;
+        if (hitObject == null || hitObject.layer != LayerMask.NameToLayer(GameObjectNamesHolder.NAME_LAYER_MAP))
+            return;
+        PinLocation.MarkPoint(GazeManager.Instance.HitPosition);
+        // the gazed object was indeed a map
     }
 
     public void enterDrawingMode() {
@@ -137,11 +127,19 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         IsInDrawingMode = false;
     }
 
+    public void moveMap() {
+        mapParentInteractible.PlacementStart();
+    }
+
     /// <summary>
     /// enable manipulation gesture to scale the map together with the buildings
     /// </summary>
-    private void scaleMap() {
-        map.SendMessage("RegisterForScaling");
+    private void registerMapForScaling() {
+        mapParentInteractible.GetComponent<Scalable>().RegisterForScaling(Scalable.ScalingMode.Navigation);
+    }
+
+    private void registerMapForRotation() {
+        mapParentInteractible.GetComponent<Rotatable>().RegisterForRotation();
     }
 
     /// <summary>
@@ -173,8 +171,4 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         toolMenuObject.transform.rotation = upRotation * toolMenuObject.transform.rotation;
     }
 
-    private void registerMapForRotation() {
-        Debug.Log("Registering map for rotation");
-        map.SendMessage("RegisterForRotation");
-    }
 }

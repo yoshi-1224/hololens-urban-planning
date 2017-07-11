@@ -32,7 +32,6 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
     private bool isTableAlreadyExists;
 
-    public float RotationSensitivity = 0.5f;
     public float TranslationSensitivity = 5f;
 
     // used for translation to get the moveVector
@@ -50,6 +49,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// used for visual feedback when focus has entered/exited this gameobject.
     /// </summary>
     private Material[] defaultMaterials;
+    [SerializeField]
+    Rotatable rotatableComponent;
 
     void Start() {
         Renderer tempRenderer = GetComponentInChildren<Renderer>();
@@ -195,16 +196,8 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     /// </summary>
     private void registerForRotation() {
         HideDetails();
-        GestureManager.Instance.RegisterGameObjectForRotation(gameObject);
+        GestureManager.Instance.RegisterGameObjectForRotation(rotatableComponent);
         DisallowGuideObject();
-    }
-
-    /// <summary>
-    /// This message is sent from GestureManager instance
-    /// </summary>
-    public void PerformRotationUpdate(Vector3 normalizedOffset) {
-        float rotationFactor = -normalizedOffset.x * RotationSensitivity; // may be wrong by doing this.
-        transform.Rotate(new Vector3(0, rotationFactor, 0));
     }
 
     public void PerformRotationStarted(Vector3 normalizedOffset) {

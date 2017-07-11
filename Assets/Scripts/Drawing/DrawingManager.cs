@@ -124,7 +124,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         Dictionary<int, int> neighbouringVertexMapping;
         GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial, out neighbouringVertexMapping);
         polygon.transform.parent = GameObject.Find("LOD2").transform; // make map script more general: just do child stuff in script rather than assigning in editor
-        Scalable script = polygon.AddComponent<Scalable>();
+        ScalableHeight script = polygon.AddComponent<ScalableHeight>();
         script.neighbouringVertexMapping = neighbouringVertexMapping;
         polygon.AddComponent<DeleteOnVoice>();
         StopDrawing();

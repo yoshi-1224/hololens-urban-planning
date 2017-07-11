@@ -103,11 +103,12 @@ namespace Mapbox.Unity.MeshGeneration.Data
 			_canonicalTileId = tileId.Canonical;
 			var position = new Vector3((float)(Rect.Center.x - map.CenterMercator.x), 0, (float)(Rect.Center.y - map.CenterMercator.y));
 
-#if !UNITY_EDITOR
-			position *= map.WorldRelativeScale;
-#else
-			gameObject.name = tileId.ToString();
-#endif
+//#if !UNITY_EDITOR
+//			position *= map.WorldRelativeScale;
+//#else
+//			gameObject.name = tileId.ToString();
+//#endif
+            gameObject.name = tileId.ToString();
 			transform.localPosition = position;
 			gameObject.SetActive(true);
 		}

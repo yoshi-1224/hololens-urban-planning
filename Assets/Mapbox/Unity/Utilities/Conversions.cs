@@ -27,7 +27,7 @@ namespace Mapbox.Unity.Utilities
 		/// </summary>
 		/// <param name="v"> The <see cref="T:Mapbox.Utils.Vector2d"/>. </param>
 		/// <returns> A <see cref="T:UnityEngine.Vector2d"/> of coordinates in meters. </returns>
-		private static Vector2d LatLonToMeters(Vector2d v)
+		public static Vector2d LatLonToMeters(Vector2d v)
 		{
 			return LatLonToMeters(v.x, v.y);
 		}
@@ -39,7 +39,7 @@ namespace Mapbox.Unity.Utilities
 		/// <param name="lat"> The latitude. </param>
 		/// <param name="lon"> The longitude. </param>
 		/// <returns> A <see cref="T:UnityEngine.Vector2d"/> of xy meters. </returns>
-		private static Vector2d LatLonToMeters(double lat, double lon)
+		public static Vector2d LatLonToMeters(double lat, double lon)
 		{
 			var posx = lon * OriginShift / 180;
 			var posy = Math.Log(Math.Tan((90 + lat) * Math.PI / 360)) / (Math.PI / 180);
@@ -47,23 +47,24 @@ namespace Mapbox.Unity.Utilities
 			return new Vector2d(posx, posy);
 		}
 
-		/// <summary>
-		/// Converts WGS84 lat/lon to x/y meters in reference to a center point
-		/// </summary>
-		/// <param name="lat"> The latitude. </param>
-		/// <param name="lon"> The longitude. </param>
-		/// <param name="refPoint"> A <see cref="T:UnityEngine.Vector2d"/> center point to offset resultant xy</param>
-		/// <param name="scale"> Scale in meters. (default scale = 1) </param>
-		/// <returns> A <see cref="T:UnityEngine.Vector2d"/> xy tile ID. </returns>
-		/// <example>
-		/// Converts a Lat/Lon of (37.7749, 122.4194) into Unity coordinates for a map centered at (10,10) and a scale of 2.5 meters for every 1 Unity unit 
-		/// <code>
-		/// var worldPosition = Conversions.GeoToWorldPosition(37.7749, 122.4194, new Vector2d(10, 10), (float)2.5);
-		/// // worldPosition = ( 11369163.38585, 34069138.17805 )
-		/// </code>
-		/// </example>
-		public static Vector2d GeoToWorldPosition(double lat, double lon, Vector2d refPoint, float scale = 1)
+        /// <summary>
+        /// Converts WGS84 lat/lon to x/y meters in reference to a center point
+        /// </summary>
+        /// <param name="lat"> The latitude. </param>
+        /// <param name="lon"> The longitude. </param>
+        /// <param name="refPoint"> A <see cref="T:UnityEngine.Vector2d"/> center point to offset resultant xy</param>
+        /// <param name="scale"> Scale in meters. (default scale = 1) </param>
+        /// <returns> A <see cref="T:UnityEngine.Vector2d"/> xy tile ID. </returns>
+        /// <example>
+        /// Converts a Lat/Lon of (37.7749, 122.4194) into Unity coordinates for a map centered at (10,10) and a scale of 2.5 meters for every 1 Unity unit 
+        /// <code>
+        /// var worldPosition = Conversions.GeoToWorldPosition(37.7749, 122.4194, new Vector2d(10, 10), (float)2.5);
+        /// // worldPosition = ( 11369163.38585, 34069138.17805 )
+        /// </code>
+        /// </example>
+        public static Vector2d GeoToWorldPosition(double lat, double lon, Vector2d refPoint, float scale = 1)
 		{
+            // note how it is almost the same as above function
 			var posx = lon * OriginShift / 180;
 			var posy = Math.Log(Math.Tan((90 + lat) * Math.PI / 360)) / (Math.PI / 180);
 			posy = posy * OriginShift / 180;
@@ -208,6 +209,7 @@ namespace Mapbox.Unity.Utilities
 		/// <returns>A <see cref="T:UnityEngine.Vector2d"/> of lat/lon coordinates.</returns>
 		public static Vector2d TileIdToCenterLatitudeLongitude(int x, int y, int zoom)
 		{
+            // not the most accurate
 			var bb = TileIdToBounds(x, y, zoom);
 			var center = bb.Center;
 			return new Vector2d((float)center.x, (float)center.y);

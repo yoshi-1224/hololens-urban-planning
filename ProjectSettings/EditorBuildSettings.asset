@@ -9,5 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/main.unity
     guid: 91a5512269586d0488f5939fa824fd1e
   - enabled: 0
-    path: Assets/Scenes/1-1_scale_test.unity
+    path: 
     guid: 945e8486d5eff104ab3a27c727758a2b

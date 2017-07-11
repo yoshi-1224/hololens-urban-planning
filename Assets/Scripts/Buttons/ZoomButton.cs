@@ -6,6 +6,7 @@ using HoloToolkit.Unity.InputModule;
 public class ZoomButton : ButtonBase {
     [Tooltip("Zoom direction")]
     public CustomRangeTileProvider.ZoomDirection InOrOut;
+    private GameObject MapBox;
 
     protected override void Start() {
         base.Start();
@@ -13,6 +14,8 @@ public class ZoomButton : ButtonBase {
 
     public override void OnInputClicked(InputClickedEventData eventData) {
         base.OnInputClicked(eventData);
-        GameObject.Find("MapboxMap").SendMessage("ChangeZoom", InOrOut);
+        if (MapBox == null)
+            MapBox = GameObject.Find(GameObjectNamesHolder.NAME_MAP);
+        MapBox.SendMessage("ChangeZoom", InOrOut);
     }
 }
