@@ -67,6 +67,12 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         }
     }
 
+    public UnwrappedTileId CenterTileId {
+        get {
+            return TileCover.CoordinateToTileId(CenterLatitudeLongitude, Zoom);
+        }
+    }
+
     float _worldRelativeScale;
     public float WorldRelativeScale {
         get {
@@ -93,6 +99,8 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         }
     }
 
+    public float UnityTileLocalSize { get; set; }
+
     private void TileProvider_OnZoomChanged() {
         _mapVisualizer.OnZoomChanged();
     }
@@ -115,7 +123,7 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         CorrectCenterLatitudeLongitude();
         _mapVisualizer.Initialize(this, _fileSource);
         _tileProvider.Initialize(this);
-
+        UnityTileLocalSize = (UnityTileSize) / (transform.localScale.x);
         OnInitialized(); // use this event for something
     }
 

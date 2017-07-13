@@ -22,6 +22,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         In,
         Out
     }
+    
     /// <summary>
     /// used to identify which tile should be loaded next
     /// when the user pans the map in certain direction
@@ -55,22 +56,14 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         North,
         South
     }
+    public event Action OnAllTilesLoaded;
+    private bool AtStart = true;
 
     internal override void OnInitialized() {
         _currentRange = TileRangeLimits.Initial;
-
-        var centerTile = TileCover.CoordinateToTileId(_map.CenterLatitudeLongitude, _map.Zoom);
-        for (int x = (int)(centerTile.X - _range.x); x <= (centerTile.X + _range.z); x++) {
-            for (int y = (int)(centerTile.Y - _range.y); y <= (centerTile.Y + _range.w); y++) {
-                AddTile(new UnwrappedTileId(_map.Zoom, x, y));
-            }
-            // yield return here?
-        }
-
-        _currentRange.minXId = (int)(centerTile.X - _range.x);
-        _currentRange.maxXId = (int)(centerTile.X + _range.z);
-        _currentRange.minYId = (int)(centerTile.Y - _range.y);
-        _currentRange.maxYId = (int)(centerTile.Y + _range.w);
+        UpdateCurrentRange();
+        StartCoroutine("LoadNewTiles");
+        OnAllTilesLoaded += OnAllTilesLoadedHandler;
     }
 
     public void PanTowards(Direction direction) {
@@ -145,39 +138,37 @@ public class CustomRangeTileProvider : AbstractTileProvider {
 
     private void shiftTiles(Direction direction) {
         Vector3 shiftAmount = Vector3.zero;
-        float TileSizeInLocalSpace = 0;
-        //float TileSizeInLocalSpace = (CustomMap.Instance.UnityTileSize / transform.localScale.x); // from CustomMap
-        // find the none-zero transform.position value in Children
-        foreach(Transform child in GetComponentsInChildren<Transform>()) {
-            if (child != transform) {
-                float offset = Math.Abs(child.localPosition.x) < 1? child.localPosition.z : child.localPosition.x;
-                if (offset > 1) {
-                    TileSizeInLocalSpace = Math.Abs(offset);
-                    break;
-                }
-            }
-        }
+        int centerXId = (_currentRange.minXId + _currentRange.maxXId) / 2;
+        int centerYId = (_currentRange.minYId + _currentRange.maxYId) / 2;
         switch (direction) {
             // shift in different direction to the pan
             case Direction.West:
-                shiftAmount.x += TileSizeInLocalSpace;
+                shiftAmount.x += CustomMap.Instance.UnityTileLocalSize;
                 break;
             case Direction.East:
-                shiftAmount.x -= TileSizeInLocalSpace;
+                shiftAmount.x -= CustomMap.Instance.UnityTileLocalSize;
                 break;
             case Direction.North:
-                shiftAmount.z -= TileSizeInLocalSpace;
+                shiftAmount.z -= CustomMap.Instance.UnityTileLocalSize;
                 break;
             case Direction.South:
-                shiftAmount.z += TileSizeInLocalSpace;
+                shiftAmount.z += CustomMap.Instance.UnityTileLocalSize;
                 break;
         }
         // how about referencing the transform of other tiles and then use
         // that as the shift amount?
         foreach(Transform child in GetComponentsInChildren<Transform>()) {
-            if (child != transform)
+            if (child != transform) {
                 // just the tiles and their children, and we want to modify the localPosition
-                child.localPosition += shiftAmount;
+                //child.localPosition += shiftAmount;
+                /// for PoC
+                string[] tileIds = child.gameObject.name.Split('/');
+                // zoom, x, y
+                int xOffset = int.Parse(tileIds[1]) - centerXId;
+                int yOffset = int.Parse(tileIds[2]) - centerYId;
+                Vector3 newLocalPosition = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize, 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
+                child.localPosition = newLocalPosition;
+            }
         }
     }
 
@@ -213,8 +204,18 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         } else if (zoom == ZoomDirection.Out) {
             CustomMap.Instance.Zoom -= zoomResponsiveness;
         }
+        CustomMap.Instance.UnityTileLocalSize = (CustomMap.Instance.UnityTileSize) / (transform.localScale.x);
         RemoveAllTiles();
+        UpdateCurrentRange();
         StartCoroutine("LoadNewTiles");
+    }
+
+    public void UpdateCurrentRange() {
+        var centerTile = TileCover.CoordinateToTileId(_map.CenterLatitudeLongitude, _map.Zoom);
+        _currentRange.minXId = (int)(centerTile.X - _range.x);
+        _currentRange.maxXId = (int)(centerTile.X + _range.z);
+        _currentRange.minYId = (int)(centerTile.Y - _range.y);
+        _currentRange.maxYId = (int)(centerTile.Y + _range.w);
     }
 
     /// <summary>
@@ -249,11 +250,12 @@ public class CustomRangeTileProvider : AbstractTileProvider {
 
     /// <summary>
     /// loads new tiles upon zoom or change of area in the background
-    /// Note that in Unity, Coroutines are run every Update()
+    /// Note that in Unity, Coroutines are checked every Update()
     /// </summary>
     internal IEnumerator LoadNewTiles() {
         var centerTile = TileCover.CoordinateToTileId(_map.CenterLatitudeLongitude, _map.Zoom);
         yield return new WaitForSeconds(0.5f); // to get rid of the blinking effect
+
         for (int x = (int)(centerTile.X - _range.x); x <= (centerTile.X + _range.z); x++) {
             for (int y = (int)(centerTile.Y - _range.y); y <= (centerTile.Y + _range.w); y++) {
                 AddTile(new UnwrappedTileId(_map.Zoom, x, y));
@@ -261,9 +263,13 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             }
         }
 
-        _currentRange.minXId = (int)(centerTile.X - _range.x);
-        _currentRange.maxXId = (int)(centerTile.X + _range.z);
-        _currentRange.minYId = (int)(centerTile.Y - _range.y);
-        _currentRange.maxYId = (int)(centerTile.Y + _range.w);
+        if (AtStart)
+            OnAllTilesLoaded.Invoke();
     }
+
+    public void OnAllTilesLoadedHandler() {
+        AtStart = false;
+        InteractibleMap.Instance.PlacementStart();
+    }
+
 }

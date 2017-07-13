@@ -35,9 +35,9 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - VisibleTiles
   - ObjectToPlace
-  - MapObjects
+  - InvisibleTiles
   - SpatialMapping
   m_SortingLayers:
   - name: Default

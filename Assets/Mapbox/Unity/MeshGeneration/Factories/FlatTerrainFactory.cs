@@ -74,12 +74,13 @@
 			var unityMesh = new Mesh();
 			var verts = new Vector3[4];
 
-			verts[0] = ((tile.Rect.Min - tile.Rect.Center).ToVector3xz());
-			verts[2] = (new Vector3((float)(tile.Rect.Min.x - tile.Rect.Center.x), 0, (float)(tile.Rect.Max.y - tile.Rect.Center.y)));
-			verts[1] = (new Vector3((float)(tile.Rect.Max.x - tile.Rect.Center.x), 0, (float)(tile.Rect.Min.y - tile.Rect.Center.y)));
-			verts[3] = ((tile.Rect.Max - tile.Rect.Center).ToVector3xz());
+            float halfExtent = CustomMap.Instance.UnityTileLocalSize / 2f;
+            verts[0] = new Vector2(-halfExtent, halfExtent).ToVector3xz();
+            verts[1] = new Vector2(halfExtent, halfExtent).ToVector3xz();
+            verts[2] = new Vector2(-halfExtent, -halfExtent).ToVector3xz();
+            verts[3] = new Vector2(halfExtent, -halfExtent).ToVector3xz();
 
-			unityMesh.vertices = verts;
+            unityMesh.vertices = verts;
 			var trilist = new int[6] { 0, 1, 2, 1, 3, 2 };
 			unityMesh.SetTriangles(trilist, 0);
 			var uvlist = new Vector2[4]

@@ -74,7 +74,7 @@ namespace Mapbox.Unity.MeshGeneration.Data
 		{
 			get
 			{
-				return _rect;
+                return _rect;
 			}
 		}
 
@@ -100,14 +100,23 @@ namespace Mapbox.Unity.MeshGeneration.Data
 		{
 			_relativeScale = 1 / Mathf.Cos(Mathf.Deg2Rad * (float)map.CenterLatitudeLongitude.x);
 			_rect = Conversions.TileBounds(tileId);
-			_canonicalTileId = tileId.Canonical;
-			var position = new Vector3((float)(Rect.Center.x - map.CenterMercator.x), 0, (float)(Rect.Center.y - map.CenterMercator.y));
 
-//#if !UNITY_EDITOR
-//			position *= map.WorldRelativeScale;
-//#else
-//			gameObject.name = tileId.ToString();
-//#endif
+			_canonicalTileId = tileId.Canonical;
+
+            // previous implementation. This is done this way, custom for each tile
+            // since we cannot tell where to place each tile according to the
+            // center of the map (rather than find the center tile id, then offset 
+            // each of the tiles taking the x- and y- difference in the id
+            //var position = new Vector3((float)(Rect.Center.x - map.CenterMercator.x), 0, (float)(Rect.Center.y - map.CenterMercator.y));
+            // zoom, x, y
+            UnwrappedTileId centerTileId = CustomMap.Instance.CenterTileId;
+            int xOffset = tileId.X - centerTileId.X;
+            int yOffset = tileId.Y - centerTileId.Y;
+            Vector3 position = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize, 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
+
+            //#if !UNITY_EDITOR
+            //			position *= map.WorldRelativeScale;
+            //#endif
             gameObject.name = tileId.ToString();
 			transform.localPosition = position;
 			gameObject.SetActive(true);

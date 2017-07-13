@@ -111,7 +111,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         GameObject hitObject = GazeManager.Instance.HitObject;
         if (hitObject == null || hitObject.layer != LayerMask.NameToLayer(GameObjectNamesHolder.NAME_LAYER_MAP))
             return;
-        PinLocation.MarkPoint(GazeManager.Instance.HitPosition);
+        PinLocator.PinLocation(GazeManager.Instance.HitPosition);
         // the gazed object was indeed a map
     }
 

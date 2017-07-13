@@ -62,7 +62,12 @@ namespace HoloToolkit.Unity
             base.Awake();
 
             AnchorStore = null;
+#if UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work in the editor. Anchor Store will never be ready.");
+#endif
+            Debug.Log("Doing async");
             WorldAnchorStore.GetAsync(AnchorStoreReady);
+            Debug.Log("Done async");
         }
 
         /// <summary>
@@ -78,7 +83,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Attaches an anchor to the game object.  If the anchor store has
-        /// an anchor with the specified name it will load the acnhor, otherwise
+        /// an anchor with the specified name it will load the anchor, otherwise
         /// a new anchor will be saved under the specified name.
         /// </summary>
         /// <param name="gameObjectToAnchor">The Gameobject to attach the anchor to.</param>

@@ -14,4 +14,4 @@ MonoBehaviour:
   _baseMaterial: {fileID: 2100000, guid: f127be725a4be104790af75543be5e0c, type: 2}
   _addCollider: 1
   _addToLayer: 1
-  _layerId: 30
+  _layerId: 28

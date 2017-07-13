@@ -59,7 +59,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
         interpolator = GetComponent<Interpolator>();
         interpolator.PositionPerSecond = 30f;
         
-        PlacementStart();
         if (scalableComponent != null) {
             scalableComponent.OnRegisteringForScaling += scalable_OnRegisteringForScaling;
             scalableComponent.OnScalingUpdated += scalable_OnScalingUpdated;
@@ -71,6 +70,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
             rotatableComponent.OnRegisteringForRotation += rotatable_OnRegisteringForRotation;
             rotatableComponent.OnUnregisterForRotation += rotatable_OnUnregisterForRotation;
         }
+
+        //WorldAnchorManager.Instance.AttachAnchor(gameObject, "anchor");
     }
 
     private void Update() {
@@ -120,6 +121,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
     }
 
     public void PlacementStart() {
+        //WorldAnchorManager.Instance.RemoveAnchor(gameObject);
         IsBeingPlaced = true;
         feedbackSoundComponent.PlayFeedbackSound();
         DisallowGuideObject();
@@ -128,6 +130,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
     }
 
     private void PlacementStop() {
+        //WorldAnchorManager.Instance.AttachAnchor(gameObject, "anchor");
         IsBeingPlaced = false;
         feedbackSoundComponent.PlayFeedbackSound();
         AllowGuideObject();
