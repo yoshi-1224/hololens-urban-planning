@@ -113,16 +113,9 @@ namespace Mapbox.Unity.MeshGeneration
 			{
 				unityTile = new GameObject().AddComponent<UnityTile>();
 
-//#if !UNITY_EDITOR
-//				unityTile.transform.localScale = Unity.Constants.Math.Vector3One * _map.WorldRelativeScale;
-//#else
-//				unityTile.transform.SetParent(_map.Root, false);
-//#endif
             unityTile.transform.SetParent(_map.Root, false);
 			}
 
-            // actually, clearing the queue and avoiding recycling does not do anything
-            // as things are initialized here
 			unityTile.Initialize(_map, tileId);
 
 			foreach (var factory in _factories)
@@ -131,6 +124,9 @@ namespace Mapbox.Unity.MeshGeneration
 			}
 
 			_activeTiles.Add(tileId, unityTile);
+
+            /// TODO: comes from: TileProvider.AddTile Then CustomMap OnTileAdded
+            CustomRangeTileProvider.CacheTileObject(tileId, unityTile.gameObject);
 		}
 
 		public void DisposeTile(UnwrappedTileId tileId)
@@ -145,7 +141,10 @@ namespace Mapbox.Unity.MeshGeneration
 			{
 				factory.Unregister(unityTile);
 			}
-		}
+
+            /// TODO:
+            CustomRangeTileProvider.InstantiatedTiles.Remove(tileId.ToString());
+        }
 
         public void OnZoomChanged() {
             foreach(var factory in _factories) {

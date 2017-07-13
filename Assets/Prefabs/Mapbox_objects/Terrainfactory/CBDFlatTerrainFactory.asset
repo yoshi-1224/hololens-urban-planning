@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseMaterial: {fileID: 2100000, guid: f127be725a4be104790af75543be5e0c, type: 2}
   _addCollider: 1
-  _addToLayer: 1
+  _addToLayer: 0
   _layerId: 28
