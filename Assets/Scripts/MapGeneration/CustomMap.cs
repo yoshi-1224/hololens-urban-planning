@@ -22,8 +22,9 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         }
         set {
             _zoom = value;
-            UpdateOnZoomSet();
+            UpdateOnNewZoomLevelSet();
             MapDataDisplay.Instance.UpdateZoomInfo(_zoom);
+            OnZoomChanged();
         }
     }
 
@@ -45,7 +46,7 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
 
     MapboxAccess _fileSource;
 
-    Vector2d _mapCenterLatitudeLongitude;
+    private Vector2d _mapCenterLatitudeLongitude;
     public Vector2d CenterLatitudeLongitude {
         get {
             return _mapCenterLatitudeLongitude;
@@ -57,7 +58,7 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         }
     }
 
-    Vector2d _mapCenterMercator;
+    private Vector2d _mapCenterMercator;
     public Vector2d CenterMercator {
         get {
             return _mapCenterMercator;
@@ -93,16 +94,20 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         _fileSource = MapboxAccess.Instance;
         _tileProvider.OnTileAdded += TileProvider_OnTileAdded;
         _tileProvider.OnTileRemoved += TileProvider_OnTileRemoved;
-        _tileProvider.OnZoomChanged += TileProvider_OnZoomChanged;
         if (!_root) {
             _root = transform;
         }
     }
 
-    public float UnityTileLocalSize { get; set; }
+    public float UnityTileLocalSize {
+        get {
+            return (UnityTileSize) / (transform.localScale.x);
+        }
+    }
 
-    private void TileProvider_OnZoomChanged() {
+    private void OnZoomChanged() {
         _mapVisualizer.OnZoomChanged();
+        BuildingsPlacement.Instance.OnZoomChanged();
     }
 
     protected override void OnDestroy() {
@@ -110,7 +115,6 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         if (_tileProvider != null) {
             _tileProvider.OnTileAdded -= TileProvider_OnTileAdded;
             _tileProvider.OnTileRemoved -= TileProvider_OnTileRemoved;
-            _tileProvider.OnZoomChanged -= TileProvider_OnZoomChanged;
         }
 
         _mapVisualizer.Destroy();
@@ -123,14 +127,13 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         CorrectCenterLatitudeLongitude();
         _mapVisualizer.Initialize(this, _fileSource);
         _tileProvider.Initialize(this);
-        UnityTileLocalSize = (UnityTileSize) / (transform.localScale.x);
         OnInitialized(); // use this event for something
     }
 
     /// <summary>
     /// updates mapCenterMercator and localScale in response to a new zoom value set
     /// </summary>
-    private void UpdateOnZoomSet() {
+    private void UpdateOnNewZoomLevelSet() {
         var referenceTileRect = Conversions.TileBounds(TileCover.CoordinateToTileId(_mapCenterLatitudeLongitude, _zoom));
         CenterMercator = referenceTileRect.Center;
         WorldRelativeScale = (float)(UnityTileSize / referenceTileRect.Size.x);

@@ -9,7 +9,6 @@
 	{
 		public event Action<UnwrappedTileId> OnTileAdded = delegate { };
 		public event Action<UnwrappedTileId> OnTileRemoved = delegate { };
-        public event Action OnZoomChanged;
 
         protected IMap _map;
 
@@ -53,11 +52,7 @@
                 OnTileRemoved(tile);
             }
             _activeTiles.Clear();
-
-            // this is called here since the child class
-            // cannot reference it from their scope
-            OnZoomChanged(); 
-        }
+    }
 
 		internal abstract void OnInitialized();
 	}

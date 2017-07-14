@@ -6,12 +6,13 @@ using Mapbox.Utils;
 using Mapbox.Unity.Utilities;
 using System.Collections.Generic;
 using System.Collections;
+using HoloToolkit.Unity;
 
 public class CustomRangeTileProvider : AbstractTileProvider {
     [SerializeField]
     Vector4 _preLoadedRange;
 
-    static Vector2 _visibleRange = new Vector2(2, 2);
+    static int visibleRange = 2;
 
     [SerializeField]
     private int zoomResponsiveness = 1;
@@ -49,8 +50,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         }
     }
 
-    private TileRangeLimits _currentRange;
-
+    private TileRangeLimits _currentLoadedRange;
     public enum Direction {
         East,
         West,
@@ -58,90 +58,42 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         South
     }
     public event Action OnAllTilesLoaded;
+    public static event Action<UnwrappedTileId> OnTileObjectAdded;
     private bool AtStart = true;
 
     /// <summary>
     /// UnityTiles will put the pair into this dictionary
     /// </summary>
-    public static Dictionary<string, GameObject> InstantiatedTiles { get; set; }
+    public static Dictionary<UnwrappedTileId, GameObject> InstantiatedTiles { get; set; }
 
     internal override void OnInitialized() {
-        InstantiatedTiles = new Dictionary<string, GameObject>();
-        _currentRange = TileRangeLimits.Initial;
-        UpdateCurrentRange();
-        StartCoroutine("LoadNewTiles");
+        InstantiatedTiles = new Dictionary<UnwrappedTileId, GameObject>();
+        _currentLoadedRange = TileRangeLimits.Initial;
         OnAllTilesLoaded += OnAllTilesLoadedHandler;
+        StartCoroutine(LoadNewTiles());
     }
 
     public void PanTowards(Direction direction) {
-        if (direction == Direction.East || direction == Direction.West) {
-            bool isEast = (direction == Direction.East);
-            int colIdToDelete = isEast ? _currentRange.minXId : _currentRange.maxXId;
-
-            deleteColFromMap(colIdToDelete);
-            updateRangeLimits(direction);
-            updateMapCenterMercatorAndCenterCoord();
-            shiftTiles(direction);
-            StartCoroutine(addNewColToMap(isEast));
-
-        } else if (direction == Direction.North || direction == Direction.South) {
-            bool isNorth = (direction == Direction.North);
-            int rowIdToDelete = isNorth ? _currentRange.maxYId : _currentRange.minYId;
-
-            deleteRowFromMap(rowIdToDelete);
-            updateRangeLimits(direction);
-            updateMapCenterMercatorAndCenterCoord();
-            shiftTiles(direction);
-            StartCoroutine(addNewRowToMap(isNorth));
-        }
-
+        updateMapCenterMercatorAndCenterCoord(direction);
+        shiftTiles(direction);
+        StartCoroutine(addVisibleTiles());
     }
 
-    private void updateRangeLimits(Direction direction) {
-        switch(direction) {
-            case Direction.North:
-                --_currentRange.maxYId;
-                --_currentRange.minYId;
-                break;
-            case Direction.South:
-                ++_currentRange.maxYId;
-                ++_currentRange.minYId;
-                break;
-            case Direction.East:
-                ++_currentRange.maxXId;
-                ++_currentRange.minXId;
-                break;
-            case Direction.West:
-                --_currentRange.maxXId;
-                --_currentRange.minXId;
-                break;
-        }
-    }
-
-    private IEnumerator addNewColToMap(bool isEast) {
-        int colIdToAdd = isEast ? _currentRange.maxXId: _currentRange.minXId;
-
-        for (int i = _currentRange.minYId; i <= _currentRange.maxYId; i++) {
-            UnwrappedTileId tileToAdd = new UnwrappedTileId(CustomMap.Instance.Zoom, colIdToAdd, i);
-            AddTile(tileToAdd);
-            yield return null;
-        }
-    }
-
-    private IEnumerator addNewRowToMap(bool isNorth) {
-        int rowIdToAdd = isNorth ? _currentRange.minYId: _currentRange.maxYId;
-
-        for (int i = _currentRange.minXId; i <= _currentRange.maxXId; i++) {
-            UnwrappedTileId tileToAdd = new UnwrappedTileId(CustomMap.Instance.Zoom, i, rowIdToAdd);
-            AddTile(tileToAdd);
-            yield return null;
-        }
-    }
-
-    private void deleteColFromMap(int colIdToDelete) {
-        for (int i = _currentRange.minYId; i <= _currentRange.maxYId; i++) {
-            UnwrappedTileId tileToDelete = new UnwrappedTileId(CustomMap.Instance.Zoom, colIdToDelete, i);
-            RemoveTile(tileToDelete);
+    /// <summary>
+    /// tries to load all the tiles that should be visible. If the tile already exists 
+    /// then it skips and load the next one
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator addVisibleTiles() {
+        var centerTileId = CustomMap.Instance.CenterTileId;
+        for (int i = centerTileId.X - visibleRange; i <= centerTileId.X + visibleRange; i++) {
+            for (int j = centerTileId.Y - visibleRange; j <= centerTileId.Y + visibleRange; j++) {
+                UnwrappedTileId tileToAdd = new UnwrappedTileId(CustomMap.Instance.Zoom, i, j);
+                if (InstantiatedTiles.ContainsKey(tileToAdd))
+                    continue;
+                AddTile(tileToAdd);
+                yield return null;
+            }
         }
     }
 
@@ -163,30 +115,24 @@ public class CustomRangeTileProvider : AbstractTileProvider {
                 shiftAmount.z += CustomMap.Instance.UnityTileLocalSize;
                 break;
         }
-        foreach (string key in InstantiatedTiles.Keys) {
+        foreach (UnwrappedTileId key in InstantiatedTiles.Keys) {
             GameObject tileObject = InstantiatedTiles[key];
-            string[] tileIds = key.Split('/');
-            int xOffset = int.Parse(tileIds[1]) - centerTileId.X;
-            int yOffset = int.Parse(tileIds[2]) - centerTileId.Y;
+            int xOffset = key.X - centerTileId.X;
+            int yOffset = key.Y - centerTileId.Y;
             Vector3 newLocalPosition = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize,                                 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
             tileObject.transform.localPosition = newLocalPosition;
 
+            // have to access all the tile objects anyways so just do it this way
             AdjustVisibility(xOffset, yOffset, tileObject);
         }
     }
 
     private static void AdjustVisibility(int xOffset, int yOffset, GameObject tileObject) {
-        // hide this object if not within the visible range by setting its layer
-        if (Math.Abs(xOffset) <= _visibleRange.x && Math.Abs(yOffset) <= _visibleRange.y) {
-            tileObject.layer = GameObjectNamesHolder.LAYER_VISIBLE_TILES;
+        if (Math.Abs(xOffset) <= visibleRange && Math.Abs(yOffset) <= visibleRange) {
+            Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_VISIBLE_TILES);
         } else {
-            tileObject.layer = GameObjectNamesHolder.LAYER_INVISIBLE_TILES;
+            Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_INVISIBLE_TILES);
         }
-    }
-
-    public static void CacheTileObject(UnwrappedTileId tileId, GameObject tileObject) {
-        InstantiatedTiles[tileId.ToString()] = tileObject;
-        AdjustVisibility(tileObject);
     }
 
     private static void AdjustVisibility(GameObject tileObject) {
@@ -197,26 +143,42 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         AdjustVisibility(xOffset, yOffset, tileObject);
     }
 
-    private void deleteRowFromMap(int rowIdToDelete) {
-        for (int i = _currentRange.minXId; i <= _currentRange.maxXId; i++) {
-            UnwrappedTileId tileToDelete = new UnwrappedTileId(CustomMap.Instance.Zoom, i, rowIdToDelete);
-            RemoveTile(tileToDelete);
-        }
+    public static void CacheTileObject(UnwrappedTileId tileId, GameObject tileObject) {
+        InstantiatedTiles[tileId] = tileObject;
+        AdjustVisibility(tileObject);
+        OnTileObjectAdded.Invoke(tileId);
     }
 
     /// <summary>
     /// updates CenterMercator in CustomMap.Instance so that new tiles can be added
     /// in the correct positions relative to the parent.
-    /// Assumption is that there are 9 tiles in total, the map being 3 by 3. 
     /// </summary>
-    private void updateMapCenterMercatorAndCenterCoord() {
-        int newCenterXId = (_currentRange.minXId + _currentRange.maxXId) / 2;
-        int newCenterYId = (_currentRange.minYId + _currentRange.maxYId) / 2;
-        UnwrappedTileId centerTile = new UnwrappedTileId(CustomMap.Instance.Zoom, newCenterXId, newCenterYId);
-        var referenceTileRect = Conversions.TileBounds(centerTile);
+    private void updateMapCenterMercatorAndCenterCoord(Direction panDirection) {
+        UnwrappedTileId centerTileId = CustomMap.Instance.CenterTileId;
+        int newCenterXId = centerTileId.X;
+        int newCenterYId = centerTileId.Y;
+
+        // simply increment the Y or X rather than taking the average of the range
+        switch(panDirection) {
+            case Direction.South:
+                newCenterYId++;
+                break;
+            case Direction.North:
+                newCenterYId--;
+                break;
+            case Direction.East:
+                newCenterXId++;
+                break;
+            case Direction.West:
+                newCenterXId--;
+                break;
+        }
+
+        UnwrappedTileId newCenterTileId = new UnwrappedTileId(CustomMap.Instance.Zoom, newCenterXId, newCenterYId);
+        var referenceTileRect = Conversions.TileBounds(newCenterTileId);
 
         CustomMap.Instance.CenterMercator = referenceTileRect.Center;
-        CustomMap.Instance.CenterLatitudeLongitude = Conversions.TileIdToCenterLatitudeLongitude(centerTile.X, centerTile.Y, CustomMap.Instance.Zoom);
+        CustomMap.Instance.CenterLatitudeLongitude = Conversions.TileIdToCenterLatitudeLongitude(newCenterTileId.X, newCenterTileId.Y, CustomMap.Instance.Zoom);
     }
 
     public void ChangeZoom(ZoomDirection zoom) {
@@ -228,10 +190,8 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         } else if (zoom == ZoomDirection.Out) {
             CustomMap.Instance.Zoom -= zoomResponsiveness;
         }
-        CustomMap.Instance.UnityTileLocalSize = (CustomMap.Instance.UnityTileSize) / (transform.localScale.x);
         RemoveAllTiles();
-        UpdateCurrentRange();
-        StartCoroutine("LoadNewTiles");
+        StartCoroutine(LoadNewTiles());
     }
 
     private bool isNextZoomLevelWithinLimit(ZoomDirection zoom) {
@@ -250,51 +210,12 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             return true;
     }
 
-    public void UpdateCurrentRange() {
-        var centerTile = CustomMap.Instance.CenterTileId;
-        _currentRange.minXId = (int)(centerTile.X - _preLoadedRange.x);
-        _currentRange.maxXId = (int)(centerTile.X + _preLoadedRange.z);
-        _currentRange.minYId = (int)(centerTile.Y - _preLoadedRange.y);
-        _currentRange.maxYId = (int)(centerTile.Y + _preLoadedRange.w);
-    }
-
-    /// <summary>
-    /// returns the coordinates bounds for the map in (SW, NE) format
-    /// </summary>
-    public Vector2dBounds GetMapGeoBounds() {
-        Vector2dBounds northEastTileBounds = Conversions.TileIdToBounds(_currentRange.minXId, _currentRange.maxYId, CustomMap.Instance.Zoom);
-        Vector2dBounds southWestTileBounds = Conversions.TileIdToBounds(_currentRange.maxXId, _currentRange.minYId, CustomMap.Instance.Zoom);
-        return new Vector2dBounds(southWestTileBounds.SouthWest, northEastTileBounds.NorthEast);
-    }
-
-    /// <summary>
-    /// for debugging LocationHelper.geoCoordinateToWorldPosition
-    /// </summary>
-    public void PrintPositions() {
-        foreach(UnwrappedTileId id in _activeTiles) {
-            Debug.Log(id.ToString() + " :" + LocationHelper.geoCoordinateToWorldPosition(Conversions.TileIdToCenterLatitudeLongitude(id.X, id.Y, id.Z)) + " = " + GameObject.Find(id.ToString()).transform.position);
-        }
-    }
-
-    /// <summary>
-    /// for debugging LocationHelper.WorldPositionToGeoCoordinate
-    /// </summary>
-    public void PrintCoordinates() {
-        foreach(Transform child in GetComponentsInChildren<Transform>()) {
-            if (child != transform) {
-                string[] names = child.gameObject.name.Split('/');
-                Debug.Log(child.gameObject.name + " :" + Conversions.TileIdToCenterLatitudeLongitude(int.Parse(names[1]), int.Parse(names[2]), int.Parse(names[0])) + " " + LocationHelper.worldPositionToGeoCoordinate(child.position));
-            }
-        }
-    }
-
     /// <summary>
     /// loads new tiles upon zoom or change of area in the background
-    /// Note that in Unity, Coroutines are checked every Update()
     /// </summary>
     internal IEnumerator LoadNewTiles() {
         var centerTile = CustomMap.Instance.CenterTileId;
-        yield return new WaitForSeconds(0.1f); // to get rid of the blinking effect
+        yield return null;
 
         for (int x = (int)(centerTile.X - _preLoadedRange.x); x <= (centerTile.X + _preLoadedRange.z); x++) {
             for (int y = (int)(centerTile.Y - _preLoadedRange.y); y <= (centerTile.Y + _preLoadedRange.w); y++) {

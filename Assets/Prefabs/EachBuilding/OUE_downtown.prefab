@@ -9,46 +9,46 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1624444326586486}
+  m_RootGameObject: {fileID: 1520292000159848}
   m_IsPrefabParent: 1
---- !u!1 &1624444326586486
+--- !u!1 &1520292000159848
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4322360715931658}
-  - component: {fileID: 33619764612816544}
-  - component: {fileID: 23741376344075864}
-  - component: {fileID: 114906097382462348}
-  - component: {fileID: 114562078125863910}
+  - component: {fileID: 4154031432473794}
+  - component: {fileID: 33567635127515918}
+  - component: {fileID: 23905165060195860}
+  - component: {fileID: 65075255412744712}
+  - component: {fileID: 114542186573067690}
   m_Layer: 0
-  m_Name: SCCC_S3
+  m_Name: OUE_downtown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4322360715931658
+--- !u!4 &4154031432473794
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1624444326586486}
-  m_LocalRotation: {x: -0.6830127, y: 0.18301271, z: 0.18301271, w: 0.6830127}
-  m_LocalPosition: {x: -352.6033, y: 18.12062, z: -372.0711}
-  m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
+  m_GameObject: {fileID: 1520292000159848}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 33.20703, y: 76.79752, z: -260.70508}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23741376344075864
+--- !u!23 &23905165060195860
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1624444326586486}
+  m_GameObject: {fileID: 1520292000159848}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83da7870e8c70cc489d0133caa913130, type: 2}
+  - {fileID: 2100000, guid: 04fb3ec846e5b384c8b67006cfeb22b0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,37 +75,32 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33619764612816544
+--- !u!33 &33567635127515918
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1624444326586486}
-  m_Mesh: {fileID: 4300004, guid: 56b6b33217b0bd94f98933a5133c7bcb, type: 3}
---- !u!114 &114562078125863910
-MonoBehaviour:
+  m_GameObject: {fileID: 1520292000159848}
+  m_Mesh: {fileID: 4300010, guid: 2a2b3124fedbf4848a206143b1d67b84, type: 3}
+--- !u!65 &65075255412744712
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1624444326586486}
+  m_GameObject: {fileID: 1520292000159848}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5f0abfa9facfc0499b5a43871bb7e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
-  DistanceScale: 2
-  RotationMode: 3
-  PositionLerpSpeed: 0.2
-  RotationLerpSpeed: 0.2
-  IsDraggingEnabled: 1
---- !u!114 &114906097382462348
+  serializedVersion: 2
+  m_Size: {x: 143.02734, y: 150.44101, z: 124.34375}
+  m_Center: {x: 0, y: 0.000019073486, z: -0.000015258789}
+--- !u!114 &114542186573067690
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1624444326586486}
-  m_Enabled: 0
+  m_GameObject: {fileID: 1520292000159848}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7e17a6a4e8342b468487df016d852ab, type: 3}
   m_Name: 
@@ -116,5 +111,5 @@ MonoBehaviour:
     type: 2}
   gazeDurationTillGuideDisplay: 4
   tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
-  RotationSensitivity: 10
   TranslationSensitivity: 5
+  rotatableComponent: {fileID: 0}

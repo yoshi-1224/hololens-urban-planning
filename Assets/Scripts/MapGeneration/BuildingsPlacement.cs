@@ -6,79 +6,122 @@ using Mapbox.Utils;
 using HoloToolkit.Unity;
 using Mapbox.Map;
 using Mapbox.Unity.Utilities;
+using System.Linq;
+using System;
 
 public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement> {
-    private static int mapLayer = LayerMask.NameToLayer(GameObjectNamesHolder.NAME_LAYER_MAP);
-
-    // how about making this a CustomMeshFactory class, each building tied
-    // to each map? => hard for the server to tell which building to load?
+    [Serializable]
+    public struct CoordinateBoundBuilding {
+        public float latitude;
+        public float longitude;
+        public Vector2d coordinates {
+            get {
+                return new Vector2d(latitude, longitude); // note that x = lat, y = long
+            }
+        }
+        public GameObject prefab;
+        public GameObject parentTile { get; set; }
+    }
 
     [SerializeField]
-    private CustomRangeTileProvider tileProvider;
+    private List<CoordinateBoundBuilding> BuildingPrefabList;
+
+    /// <summary>
+    /// use this to process buildings one by one in order to minimize the computing cost
+    /// on the frame rate
+    /// </summary>
+    private Queue<CoordinateBoundBuilding> buildingsToLoad;
 
     /// <summary>
     /// dictionary that keeps track of which buildings are brought into the scene.
     /// Use this to check for duplicates etc.
     /// </summary>
-    private Dictionary<string, GameObject> buildingsInScene = new Dictionary<string, GameObject>();
-    
+    private Dictionary<string, GameObject> buildingsInScene;
+
+    protected override void Awake() {
+        base.Awake();
+        CustomRangeTileProvider.OnTileObjectAdded += TileProvider_OnTileAdded;
+        buildingsInScene = new Dictionary<string, GameObject>();
+        buildingsToLoad = new Queue<CoordinateBoundBuilding>();
+    }
+
+    private void TileProvider_OnTileAdded(UnwrappedTileId tileId) {
+        queryBuildingsWithinTileBounds(tileId);
+    }
+
+    private void Update() {
+        if (buildingsToLoad.Count > 0) {
+            InstantiateBuilding(buildingsToLoad.Dequeue());
+        }
+    }
+
     /// <summary>
     /// finds the tile object that should parent the building with the latLong
     /// </summary>
-    public GameObject FindParentTile(Vector2d ObjectLatLong) {
-        //Vector3 ObjectPosition = LocationHelper.geoCoordinateToWorldPosition(ObjectLatLong);
-        //GameObject hitTile = null;
-
-        //// shift it slightly above the map so that we can perform raycast
-        //ObjectPosition.y += 1f;
-
-        //RaycastHit hitInfo;
-        //Vector3 raycastDirection = Vector3.down;
-        //int layerMask = 1 << mapLayer; // only hit this layer
-        //float maxDistance = 100;
-        //if (Physics.Raycast(ObjectPosition, raycastDirection, out hitInfo, maxDistance, layerMask)) {
-        //    hitTile = hitInfo.collider.gameObject;
-        //} else {
-        //    Debug.Log("This object should not be on the map");
-        //    return null;
-        //}
-        //return hitTile;
-
-        UnwrappedTileId parentTile = TileCover.CoordinateToTileId(ObjectLatLong, CustomMap.Instance.Zoom);
-        string tileObjectName = parentTile.ToString();
-        GameObject tileObject = GameObject.Find(tileObjectName);
-        if (tileObject == null) {
-            Debug.Log("The tile is not in the scene ");
-            return null;
-        } else {
-            Debug.Log("Tile object with the same id found");
+    public GameObject FindParentTile(Vector2d latLong) {
+        UnwrappedTileId parentTile = TileCover.CoordinateToTileId(latLong, CustomMap.Instance.Zoom);
+        GameObject tileObject;
+        if (CustomRangeTileProvider.InstantiatedTiles.TryGetValue(parentTile, out tileObject)) {
             return tileObject;
+        } else {
+            return null;
         }
     }
 
-    public void FetchAssetsForNewMapBounds() {
-        Vector2dBounds mapGeoBounds = tileProvider.GetMapGeoBounds();
-        /// request the server or something with this new information
-        
-    }
+    private GameObject InstantiateBuilding(CoordinateBoundBuilding buildingModel) {
+        string buildingName = buildingModel.prefab.name;
 
-    private GameObject InstantiateBuilding(GameObject buildingPrefab, Vector2d latLong) {
-        string buildingName = buildingPrefab.name;
-        if (buildingsInScene.ContainsKey(buildingName))
-            return null;
-
-        GameObject parentTile = FindParentTile(latLong);
+        GameObject parentTile = FindParentTile(buildingModel.coordinates);
         if (parentTile == null) {
-            Debug.Log("Not instantiating since no parent tile found");
+            Debug.Log("Not instantiating since no parent tile found"); // this should not happen
             return null;
         }
 
-        Vector3 position = LocationHelper.geoCoordinateToWorldPosition(latLong);
-        GameObject building = Instantiate(buildingPrefab, position, Quaternion.identity, parentTile.transform);
-        // attach stuff here
+        Vector3 position = LocationHelper.geoCoordinateToWorldPosition(buildingModel.coordinates);
+        GameObject building;
+        if (buildingsInScene.TryGetValue(buildingName, out building)) {
+            // if it already has been instantiated but simply hidden
+            building.SetActive(true);
+            building.transform.SetParent(parentTile.transform, false);
+        } else { //instantiate the prefab for the first time
+            building = Instantiate(buildingModel.prefab, parentTile.transform);
+            building.name = buildingName; // get the (Clone) substring out of it
+            buildingsInScene[buildingName] = building;
+        }
+        
+        float halfHeight = building.GetComponent<BoxCollider>().bounds.extents.y;
+        position.y += halfHeight;
+        building.transform.position = position;
 
-        buildingsInScene[buildingName] = building;
+        building.layer = parentTile.layer;
 
         return building;
+    }
+
+    internal void OnZoomChanged() {
+        foreach(GameObject building in buildingsInScene.Values) {
+            // set parent to null in order to avoid getting destroyed with the parent tile
+            building.transform.SetParent(null, false);
+            building.SetActive(false); // simply hide it
+        }
+    }
+
+    /// <summary>
+    /// used every time a new tile is loaded (per-tile basis)
+    /// </summary>
+    private void queryBuildingsWithinTileBounds(UnwrappedTileId tileId) {
+        Vector2dBounds bounds = Conversions.TileIdToBounds(tileId);
+        var buildings = BuildingPrefabList.Where(building => {
+            if (building.coordinates.x.InRange(bounds.North, bounds.South) 
+            && building.coordinates.y.InRange(bounds.West, bounds.East)) {
+                return true;
+            }
+
+            return false;
+        });
+
+        foreach (CoordinateBoundBuilding building in buildings) {
+            buildingsToLoad.Enqueue(building);
+        }
     }
 }

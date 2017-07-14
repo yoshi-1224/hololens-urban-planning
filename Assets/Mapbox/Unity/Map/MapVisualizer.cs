@@ -143,7 +143,7 @@ namespace Mapbox.Unity.MeshGeneration
 			}
 
             /// TODO:
-            CustomRangeTileProvider.InstantiatedTiles.Remove(tileId.ToString());
+            CustomRangeTileProvider.InstantiatedTiles.Remove(tileId);
         }
 
         public void OnZoomChanged() {

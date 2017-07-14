@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 114120244540472166}
   - component: {fileID: 114692285306935018}
   - component: {fileID: 114332127234508892}
+  - component: {fileID: 114011938053295232}
   m_Layer: 0
   m_Name: MapboxParent
   m_TagString: Untagged
@@ -54,8 +55,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1603031923928696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
   m_Children:
   - {fileID: 4932611694149700}
   m_Father: {fileID: 0}
@@ -74,6 +75,18 @@ Transform:
   m_Father: {fileID: 4437306183761706}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114011938053295232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1603031923928696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c14f0c499a00d479e5d00e4b8fdaed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackSound: {fileID: 8300000, guid: 0128a9d89c2d92248ac298b03434f739, type: 3}
 --- !u!114 &114120244540472166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -86,12 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axisPrefab: {fileID: 1994721312360596, guid: 6f8563ab3a2c8ce4b92a883b69690097, type: 2}
-  IsBeingPlaced: 1
+  IsBeingPlaced: 0
   guidePrefab: {fileID: 1785017360494800, guid: 4beb97fe14611f143a2179c6f35480a8,
     type: 2}
   gazeDurationTillGuideDisplay: 4
-  PlacementSound: {fileID: 8300000, guid: 0128a9d89c2d92248ac298b03434f739, type: 3}
   cursorScript: {fileID: 0}
+  feedbackSoundComponent: {fileID: 114011938053295232}
   scalableComponent: {fileID: 114692285306935018}
   rotatableComponent: {fileID: 114332127234508892}
 --- !u!114 &114332127234508892
@@ -117,8 +130,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd027e722c58fb8408ebe99168ace097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _range: {x: 1, y: 1, z: 1, w: 1}
+  _preLoadedRange: {x: 4, y: 4, z: 4, w: 4}
   zoomResponsiveness: 1
+  maxZoomLevel: 20
+  minZoomLevel: 12
 --- !u!114 &114692285306935018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -130,8 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc200345bf8536479d89a43e33474ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumScale: 0.0005
-  maximumScale: 0.005
+  scalingSensitivity: 0.001
+  minimumScale: 0.005
+  maximumScale: 1
 --- !u!114 &114736708335539490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,9 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2113b07415ad07d40a999afd664a59e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _latitudeLongitudeString: 1.351616, 103.808053
-  _zoom: 16
+  _latitudeLongitudeString: 1.27636841799318, 103.847579956055
+  _zoom: 18
   _root: {fileID: 0}
   _tileProvider: {fileID: 114413273624391010}
   _mapVisualizer: {fileID: 11400000, guid: 1c98f633ef57c0a4ca4adde5344462f7, type: 2}
-  UnityTileSize: 1.5
+  UnityTileSize: 150

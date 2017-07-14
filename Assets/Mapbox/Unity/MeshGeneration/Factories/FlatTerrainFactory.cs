@@ -79,7 +79,7 @@
             verts[1] = new Vector2(halfExtent, halfExtent).ToVector3xz();
             verts[2] = new Vector2(-halfExtent, -halfExtent).ToVector3xz();
             verts[3] = new Vector2(halfExtent, -halfExtent).ToVector3xz();
-
+            
             unityMesh.vertices = verts;
 			var trilist = new int[6] { 0, 1, 2, 1, 3, 2 };
 			unityMesh.SetTriangles(trilist, 0);

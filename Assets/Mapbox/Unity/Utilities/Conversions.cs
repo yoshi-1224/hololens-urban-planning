@@ -195,10 +195,18 @@ namespace Mapbox.Unity.Utilities
 		/// <returns> The <see cref="T:Mapbox.Utils.Vector2dBounds"/> of the tile. </returns>
 		public static Vector2dBounds TileIdToBounds(int x, int y, int zoom)
 		{
-			var sw = new Vector2d(TileYToNWLatitude(y, zoom), TileXToNWLongitude(x + 1, zoom));
-			var ne = new Vector2d(TileYToNWLatitude(y + 1, zoom), TileXToNWLongitude(x, zoom));
-			return new Vector2dBounds(sw, ne);
+			//var sw = new Vector2d(TileYToNWLatitude(y, zoom), TileXToNWLongitude(x + 1, zoom));
+			//var ne = new Vector2d(TileYToNWLatitude(y + 1, zoom), TileXToNWLongitude(x, zoom));
+            //TODO: modified as they were wrong
+            // singapore is above the equator (NH) so tileY decrease means lat value increases
+            var sw = new Vector2d(TileYToNWLatitude(y, zoom), TileXToNWLongitude(x, zoom));
+            var ne = new Vector2d(TileYToNWLatitude(y + 1, zoom), TileXToNWLongitude(x + 1, zoom));
+            return new Vector2dBounds(sw, ne);
 		}
+
+        public static Vector2dBounds TileIdToBounds(UnwrappedTileId tileId) {
+            return TileIdToBounds(tileId.X, tileId.Y, tileId.Z);
+        }
 
 		/// <summary>
 		/// Gets the WGS84 lat/lon of the center of a tile.
