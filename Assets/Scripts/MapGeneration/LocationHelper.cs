@@ -23,7 +23,7 @@ public static class LocationHelper {
     }
 
     public static Vector2d worldPositionToGeoCoordinate(Vector3 position) {
-        // ignore the height diff
+        // ignore the height diff and convert to local position wrt the map
         Vector2d displacementFromMapCenter = CustomMap.Instance.transform.InverseTransformPoint(position).ToVector2d();
         // note that the displacement in localSpace is much bigger than that in worldspace because of the mapScaling
 

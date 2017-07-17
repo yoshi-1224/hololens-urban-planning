@@ -90,14 +90,16 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
 
             // cursorstate does NOT change if going from building => map (still observeHover)
             // targeted object is NOT updated until the state changes => use HitObject
+
+            // maybe just do branching?
             if (isDrawing) {
                 GameObject hitObject = GazeManager.Instance.HitObject;
                 if (hitObject != null) {
-                    if (hitObject.name == "CustomizedMap") {
+                    if (hitObject.name == GameObjectNamesHolder.NAME_MAP_COLLIDER) {
                         if (newActive.CursorState == CursorStateEnum.ObserveHover)
                             newActive.CursorObject.SetActive(false);
                         ShowPointCursor();
-                        return;
+                        return; // note that this is return
 
                     } else if (hitObject.name.Contains("Point")) {
                         //This is for the first cursor collision
@@ -179,7 +181,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         //MessageToUser.SetActive(true);
     }
 
-
     /// <summary>
     /// shows the current scaling for the user. arguments array MUST BE an array
     /// with first element being float value and second element boolean
@@ -215,6 +216,8 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         isDrawing = true;
         cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
         cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
+
+        // force cursor state change
         OnCursorStateChange(CursorStateEnum.ObserveHover);
     }
 
@@ -228,10 +231,12 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     }
 
     public void HidePointCursor() {
+        Debug.Log("hide point cursor called");
         DrawPointCursor.SetActive(false);
     }
 
     public void ShowPointCursor() {
+        Debug.Log("show point cursor called");
         DrawPointCursor.SetActive(true);
     }
 

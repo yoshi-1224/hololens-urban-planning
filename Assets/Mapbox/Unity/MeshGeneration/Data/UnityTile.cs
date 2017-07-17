@@ -114,9 +114,6 @@ namespace Mapbox.Unity.MeshGeneration.Data
             int yOffset = tileId.Y - centerTileId.Y;
             Vector3 position = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize, 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
 
-            //#if !UNITY_EDITOR
-            //			position *= map.WorldRelativeScale;
-            //#endif
             gameObject.name = tileId.ToString();
 			transform.localPosition = position;
 			gameObject.SetActive(true);

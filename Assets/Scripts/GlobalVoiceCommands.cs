@@ -13,14 +13,17 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     private InteractibleMap mapParentInteractible;
 
 #region commands strings
+    // commands for the map base
     public const string COMMAND_MOVE_MAP = "move map";
     public const string COMMAND_SCALE_MAP = "scale map";
     public const string COMMAND_ROTATE_MAP = "rotate map";
 
+    // commands for the tool bar
     public const string COMMAND_SHOW_TOOLS = "show tools";
     public const string COMMAND_HIDE_TOOLS = "hide tools";
     public const string COMMAND_RESET = "reset";
 
+    // commands for drawing tools
     public const string COMMAND_DRAW_POLYGON = "polygon";
     public const string COMMAND_PIN_LOCATION = "pin location";
     public const string COMMAND_CANCEL = "cancel";
@@ -62,8 +65,8 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         if (IsInStreetViewMode) {
             // allowable voice commands in streetviewmode
             switch (keyword) {
-                case StreetView.COMMAND_EXIT_STREET_VIEW:
-                    StreetView.Instance.ExitStreetView();
+                case StreetViewManager.COMMAND_EXIT_STREET_VIEW:
+                    StreetViewManager.Instance.ExitStreetView();
                     break;
             } // end switch
 
@@ -109,7 +112,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
 
     private void markLocation() {
         GameObject hitObject = GazeManager.Instance.HitObject;
-        if (hitObject == null || hitObject.layer != LayerMask.NameToLayer(GameObjectNamesHolder.NAME_LAYER_MAP))
+        if (hitObject == null || hitObject.layer != GameObjectNamesHolder.LAYER_MAP_OBJECTS)
             return;
         PinLocator.PinLocation(GazeManager.Instance.HitPosition);
         // the gazed object was indeed a map
@@ -119,6 +122,10 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
         if (!IsInDrawingMode)
             DrawingManager.Instance.StartDrawing();
         IsInDrawingMode = true;
+    }
+
+    public void exitDrawingMode() {
+        IsInDrawingMode = false;
     }
 
     public void cancelDrawing() {

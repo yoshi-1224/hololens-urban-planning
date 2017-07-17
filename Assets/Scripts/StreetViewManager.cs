@@ -9,13 +9,16 @@ using System;
 /// attach this to a global object as exitView command should be recognized regardless
 /// of what the gazed object is.
 /// </summary>
-public class StreetView : Singleton<StreetView> {
+public class StreetViewManager : Singleton<StreetViewManager> {
 
     public const string COMMAND_STREET_VIEW = "street view";
     public const string COMMAND_EXIT_STREET_VIEW = "exit";
 
-    public GameObject cursor;
-    public float UserCameraHeight = 1.5f;
+    [SerializeField]
+    private GameObject cursor;
+    public float UserCameraHeightAboveGround = 1.5f;
+
+    [SerializeField]
     private GameObject mapObject;
 
     /// <summary>
@@ -24,7 +27,7 @@ public class StreetView : Singleton<StreetView> {
     private GameObject gazePointObject;
 
     private bool isInStreetViewMode = false;
-    private Vector3 beforeStreetViewScale;
+    private Vector3 originalScale;
 
     public void SetUpStreetView() {
         if (isInStreetViewMode)
@@ -42,8 +45,6 @@ public class StreetView : Singleton<StreetView> {
     /// will be placed in street view mode.
     /// </summary>
     public void SaveGazePosition() {
-        if (mapObject == null)
-            mapObject = GameObject.Find("CustomizedMap");
         Vector3 hitPoint = GazeManager.Instance.HitPosition;
         gazePointObject = new GameObject();
         gazePointObject.transform.position = hitPoint;
@@ -58,23 +59,22 @@ public class StreetView : Singleton<StreetView> {
     /// so that the user will be put in the street-view-like scene.
     /// </summary>
     public void CreateScene() {
-        mapObject.SendMessage("MakeSiblingsChildren");
         //save the current scaling
-        beforeStreetViewScale = mapObject.transform.localScale;
+        originalScale = mapObject.transform.localScale;
         mapObject.transform.localScale = new Vector3(1, 1, 1); // set 1-1 scale
 
-        //now prepare to move the map for the user
+        //now prepare to move the map with respect to the camera position
         gazePointObject.transform.parent = mapObject.transform.parent;
         mapObject.transform.parent = gazePointObject.transform;
-        gazePointObject.transform.position = Camera.main.transform.position - new Vector3(0, UserCameraHeight, 0);
+        gazePointObject.transform.position = Camera.main.transform.position - new Vector3(0, UserCameraHeightAboveGround, 0);
 
-        ////then revert the transform
+        ////then revert the transform relationship
         mapObject.transform.parent = gazePointObject.transform.parent;
 
         //// gazePointObject not required anymore
         Destroy(gazePointObject);
         gazePointObject = null;
-        mapObject.SendMessage("HideGuideObject");
+        
         if (cursor != null)
             cursor.SetActive(false);
     }
@@ -91,28 +91,27 @@ public class StreetView : Singleton<StreetView> {
         if (cursor != null)
             cursor.SetActive(true);
         switchMapCapabilityForNormalMode();
-        mapObject.GetComponent<InteractibleMap>().OnInputClicked(null);
+        mapObject.GetComponentInParent<InteractibleMap>().PlacementStart();
         isInStreetViewMode = false;
         GlobalVoiceCommands.Instance.ExitStreetViewMode();
-        
     }
 
     private void restoreScaleAndPosition() {
-        mapObject.transform.localScale = beforeStreetViewScale;
+        mapObject.transform.localScale = originalScale;
         // translate map's position instantly so that it won't take a long time to return to the user's gaze
         mapObject.transform.position = Camera.main.transform.position;
     }
 
     private void switchMapCapabilityForStreetView() {
-        mapObject.AddComponent<StreetViewMovement>();
-        mapObject.GetComponent<InteractibleMap>().enabled = false;
+        //mapObject.AddComponent<StreetViewMovement>();
+        mapObject.GetComponentInParent<InteractibleMap>().enabled = false;
         GlobalVoiceCommands.Instance.HideTools();
     }
 
     private void switchMapCapabilityForNormalMode() {
-        StreetViewMovement movement = mapObject.GetComponent<StreetViewMovement>();
-        if (movement != null)
-            Destroy(movement);
-        mapObject.GetComponent<InteractibleMap>().enabled = true;
+        //StreetViewMovement movement = mapObject.GetComponent<StreetViewMovement>();
+        //if (movement != null)
+        //    Destroy(movement);
+        mapObject.GetComponentInParent<InteractibleMap>().enabled = true;
     }
 }

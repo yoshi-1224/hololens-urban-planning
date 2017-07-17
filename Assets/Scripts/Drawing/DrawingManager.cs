@@ -4,10 +4,16 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
 using System;
+using Mapbox.Utils;
+using Mapbox.Map;
 
 public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
-    private GameObject cursor;
-    
+    [SerializeField]
+    private CustomObjectCursor cursor;
+
+    // using this object's position is more accurate than using GazeManager.hitPosition
+    [SerializeField]
+    private Transform drawingPointOnCursorTransform;
     /// <summary>
     /// stores the positions of instantiated spheres
     /// </summary>
@@ -16,16 +22,18 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     /// <summary>
     /// transform parent of the instantiated spheres. A simple new gameobject created
     /// </summary>
-    private GameObject pointsParent;
+    private GameObject pointsContainerObject;
 
     /// <summary>
     /// message to the user that shows up when the polygon can be enclosed with a click
     /// </summary>
-    public GameObject EncloseGuide;
+    [SerializeField]
+    private GameObject EncloseGuide;
     private GameObject instantiatedGuideObj;
     private float guidePositionAbovePoint = 0.05f;
 
-    public Material polygonMaterial;
+    [SerializeField]
+    private Material polygonMaterial;
 
     public bool CanPolygonBeEnclosedAndCursorOnFirstPoint {
         get; set;
@@ -36,29 +44,33 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     private LineRenderer currentlyDrawnLine;
 
     private GameObject lastDrawnPoint;
+
+    [SerializeField]
     private GameObject map;
+
     private float lineWidth = 0.002f;
-	
+
+    protected override void Awake() {
+        base.Awake();
+    }
+
     public void StartDrawing() {
-        InteractibleMap.Instance.IsDrawing = true;
         GuideStatus.ShouldShowGuide = false;
         isAnyPointDrawnYet = false;
         polygonVertices = new List<Vector3>();
         changeCursorToDrawingPoint();
         InputManager.Instance.PushModalInputHandler(gameObject);
         CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
-        map = GameObject.Find("CustomizedMap");
     }
 
     public void StopDrawing() {
-        GlobalVoiceCommands.Instance.IsInDrawingMode = false;
-        InteractibleMap.Instance.IsDrawing = false;
         InputManager.Instance.PopModalInputHandler();
         clearPoints();
         changeCursorBack();
         isAnyPointDrawnYet = false;
         CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
         GuideStatus.ShouldShowGuide = true;
+        GlobalVoiceCommands.Instance.exitDrawingMode();
     }
 
     /// <summary>
@@ -80,16 +92,15 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     }
 
     private void UpdateLineDrawing() {
-        currentlyDrawnLine.SetPosition(1, GazeManager.Instance.HitPosition);
+        currentlyDrawnLine.SetPosition(1, drawingPointOnCursorTransform.position);
     }
 
     private void changeCursorToDrawingPoint() {
-        cursor = GameObject.Find("CustomCursorWithFeedback");
-        cursor.SendMessage("EnterDrawingMode");
+        cursor.EnterDrawingMode();
     }
 
     private void changeCursorBack() {
-        cursor.SendMessage("ExitDrawingMode");
+        cursor.ExitDrawingMode();
     }
 
     /// <summary>
@@ -102,19 +113,23 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         polygonVertices.Add(sphere.transform.position);
         lastDrawnPoint = sphere;
         if (!isAnyPointDrawnYet) {
-            // if this sphere is the first sphere to be drawn
-            pointsParent = new GameObject("PointsParent");
+            // if this sphere is the first sphere to be drawn, set up a empty parent
+            // that contains all the sphere objects so that they become easier to delete
+            pointsContainerObject = new GameObject("PointsContainer");
             setUpFirstSphere(sphere);
         }
+
         if (isAnyPointDrawnYet)
             currentlyDrawnLine.SetPosition(1, position);
         instantiateNewLine();
-        sphere.transform.parent = pointsParent.transform;
+        sphere.transform.parent = pointsContainerObject.transform;
     }
 
     private void setUpFirstSphere(GameObject firstSphere) {
+        Vector3 originalPosition = firstSphere.transform.position;
         firstSphere.AddComponent<FirstDrawnPoint>();
-
+        // fix its position as it bounces off the map collider for some reason
+        firstSphere.transform.position = originalPosition;
     }
 
     /// <summary>
@@ -123,11 +138,30 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     private void instantiatePolygon() {
         Dictionary<int, int> neighbouringVertexMapping;
         GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial, out neighbouringVertexMapping);
-        polygon.transform.parent = GameObject.Find("LOD2").transform; // make map script more general: just do child stuff in script rather than assigning in editor
-        ScalableHeight script = polygon.AddComponent<ScalableHeight>();
+ 
+        Vector2d polygonCoordinates = setPolygonParentToMapTile(polygon);
+        UserGeneratedPolygon script = polygon.AddComponent<UserGeneratedPolygon>();
+
+        script.Coordinates = polygonCoordinates;
         script.neighbouringVertexMapping = neighbouringVertexMapping;
-        polygon.AddComponent<DeleteOnVoice>();
         StopDrawing();
+    }
+
+    /// <summary>
+    /// finds the tile gameObject that is directly below the center of the polygon
+    /// and set its transform to polygon's parent transform
+    /// </summary>
+    /// <param name="polygon"></param>
+    private Vector2d setPolygonParentToMapTile(GameObject polygon) {
+        Vector2d polygonCoordinates = LocationHelper.worldPositionToGeoCoordinate(polygon.transform.position);
+        UnwrappedTileId parentTileId = TileCover.CoordinateToTileId(polygonCoordinates, CustomMap.Instance.Zoom);
+        GameObject parentTileObject = null;
+        if (CustomRangeTileProvider.InstantiatedTiles.TryGetValue(parentTileId, out parentTileObject)) {
+            polygon.transform.SetParent(parentTileObject.transform, true);
+        } else {
+            Debug.Log("Parent not found!");
+        }
+        return polygonCoordinates;
     }
 
     /// <summary>
@@ -137,7 +171,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     /// 3) polygon is created successfully
     /// </summary>
     private void clearPoints() {
-        Destroy(pointsParent);
+        Destroy(pointsContainerObject);
         polygonVertices.Clear();
     }
 
@@ -148,7 +182,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
             isAnyPointDrawnYet = false;
             CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
         } else if (GazeManager.Instance.HitObject == map){
-            Vector3 drawPointPosition = GameObject.FindGameObjectWithTag("DrawPoint").transform.position;
+            Vector3 drawPointPosition = drawingPointOnCursorTransform.position;
             createSphereAt(drawPointPosition);
             isAnyPointDrawnYet = true;
         } else {
@@ -161,7 +195,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         currentlyDrawnLine = lastDrawnPoint.GetComponent<LineRenderer>();
         currentlyDrawnLine.positionCount = 2;
         currentlyDrawnLine.SetPosition(0, lastDrawnPoint.transform.position);
-        currentlyDrawnLine.SetPosition(1, GazeManager.Instance.HitPosition);
+        currentlyDrawnLine.SetPosition(1, drawingPointOnCursorTransform.position);
         currentlyDrawnLine.startWidth = lineWidth;
         currentlyDrawnLine.endWidth = lineWidth;
     }
@@ -177,9 +211,16 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         textMesh.text = "Click to enclose this polygon";
     }
 
+    public void ForceCursorStateChange() {
+        // after all we need the map to tell the cursor state change between the map and 
+        // other objects, which cannot be detected using the default cursor state
+        cursor.OnCursorStateChange(HoloToolkit.Unity.InputModule.Cursor.CursorStateEnum.Observe);
+    }
+
     public void destroyGuide() {
         if (instantiatedGuideObj != null)
             Destroy(instantiatedGuideObj);
         instantiatedGuideObj = null;
+        
     }
 }

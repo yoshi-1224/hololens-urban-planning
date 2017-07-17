@@ -38,11 +38,26 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
     /// </summary>
     private Dictionary<string, GameObject> buildingsInScene;
 
+    private bool shouldStartLoadingTiles;
+
     protected override void Awake() {
         base.Awake();
+        shouldStartLoadingTiles = false;
         CustomRangeTileProvider.OnTileObjectAdded += TileProvider_OnTileAdded;
+        CustomRangeTileProvider.OnAllTilesLoaded += CustomRangeTileProvider_OnAllTilesLoaded;
         buildingsInScene = new Dictionary<string, GameObject>();
         buildingsToLoad = new Queue<CoordinateBoundBuilding>();
+    }
+
+    protected override void OnDestroy() {
+        CustomRangeTileProvider.OnTileObjectAdded -= TileProvider_OnTileAdded;
+        CustomRangeTileProvider.OnAllTilesLoaded -= CustomRangeTileProvider_OnAllTilesLoaded;
+        buildingsInScene = null;
+        buildingsToLoad = null;
+    }
+
+    private void CustomRangeTileProvider_OnAllTilesLoaded() {
+        shouldStartLoadingTiles = true;
     }
 
     private void TileProvider_OnTileAdded(UnwrappedTileId tileId) {
@@ -50,8 +65,10 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
     }
 
     private void Update() {
-        if (buildingsToLoad.Count > 0) {
+        if (shouldStartLoadingTiles && buildingsToLoad.Count > 0) {
             InstantiateBuilding(buildingsToLoad.Dequeue());
+            if (buildingsInScene.Count == 0)
+                shouldStartLoadingTiles = false;
         }
     }
 
@@ -89,6 +106,8 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
             buildingsInScene[buildingName] = building;
         }
         
+        // adjust its position since the pivot position of the building models
+        // are at their center.
         float halfHeight = building.GetComponent<BoxCollider>().bounds.extents.y;
         position.y += halfHeight;
         building.transform.position = position;
@@ -98,11 +117,14 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
         return building;
     }
 
+    /// <summary>
+    /// set the transform parent of all the building models to null as all tiles are going to be     destroyed and hide the buildings models
+    /// </summary>
     internal void OnZoomChanged() {
         foreach(GameObject building in buildingsInScene.Values) {
             // set parent to null in order to avoid getting destroyed with the parent tile
             building.transform.SetParent(null, false);
-            building.SetActive(false); // simply hide it
+            building.SetActive(false); // simply hide it rather than destroy
         }
     }
 

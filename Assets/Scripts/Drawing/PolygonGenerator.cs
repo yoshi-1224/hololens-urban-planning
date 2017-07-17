@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TriangleNet.Geometry;
-//using Dynagon;
+using TriangleNet4.Geometry;
+// the TriangleNet source code is different to the one I downloaded.
+// So the one I downloaded is renamed to TriangleNet4
 
 public static class PolygonGenerator {
 
@@ -112,7 +113,7 @@ public static class PolygonGenerator {
     }
 
     private static void correctHeightwrtMap(List<Vector3> points) {
-        float mapHeight = GameObject.Find("CustomizedMap").transform.position.y;
+        float mapHeight = GameObject.Find(GameObjectNamesHolder.NAME_MAP_COLLIDER).transform.position.y;
         for (int i = 0; i < points.Count; i++) {
             Vector3 tempVector = points[i];
             tempVector.y = mapHeight;

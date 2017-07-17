@@ -8,11 +8,10 @@ using System;
 /// attach to the map so that this is available only when the map is gazed at
 /// </summary>
 public class StreetViewVoiceListener : MonoBehaviour, ISpeechHandler {
-    public const string COMMAND_STREET_VIEW = "street view";
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
         switch (eventData.RecognizedText.ToLower()) {
-            case COMMAND_STREET_VIEW:
+            case StreetViewManager.COMMAND_STREET_VIEW:
                 setUpStreetView();
                 break;
 
@@ -23,7 +22,7 @@ public class StreetViewVoiceListener : MonoBehaviour, ISpeechHandler {
     }
 
     private void setUpStreetView() {
-        StreetView.Instance.SetUpStreetView();
+        StreetViewManager.Instance.SetUpStreetView();
     }
 
 }

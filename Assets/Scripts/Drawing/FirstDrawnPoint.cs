@@ -13,9 +13,10 @@ public class FirstDrawnPoint : MonoBehaviour, IFocusable {
         // if we make it with our hands then we might need to do onTriggerEnter
         // but with gaze, just use onFocusEnter/onFocusExit
 
+        // adding this collider shifts the first sphere by a bit in upwards direction
         SphereCollider collider = gameObject.AddComponent<SphereCollider>();
         collider.radius *= 3;
-        collider.isTrigger = true;
+
         isEnlarged = false;
     }
 
@@ -36,6 +37,7 @@ public class FirstDrawnPoint : MonoBehaviour, IFocusable {
             DrawingManager.Instance.CanPolygonBeEnclosedAndCursorOnFirstPoint = true;
             enlargeToShowFeedback();
             DrawingManager.Instance.FixLineEndAtFirstSphere();
+            //DrawingManager.Instance.ForceCursorStateChange();
             DrawingManager.Instance.instantiateGuide(transform.position);
         }
     }
@@ -44,10 +46,12 @@ public class FirstDrawnPoint : MonoBehaviour, IFocusable {
         DrawingManager.Instance.CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
         returnToNormalScale();
         DrawingManager.Instance.destroyGuide();
+        //DrawingManager.Instance.ForceCursorStateChange();
     }
 
     private void OnDestroy() {
-        DrawingManager.Instance.destroyGuide();
+        if (DrawingManager.Instance != null)
+            DrawingManager.Instance.destroyGuide();
     }
 
 }

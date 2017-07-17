@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
+using Mapbox.Utils;
 
-public class ScalableHeight : MonoBehaviour, ISpeechHandler {
+public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
     public const string COMMAND_SCALE = "scale";
-    private float ScalingSensitivity = 40f;
     private Transform parent;
     private float minimumHeight = 0.1f;
     private Vector3 previousManipulationPosition;
-    private GameObject cursor;
+    private CustomObjectCursor cursor;
     private static float heightOfAStorey = 5;
-
+    private Scalable scalableScript;
 
     /// <summary>
     /// should be passed when this component is added to this gameObject
@@ -20,6 +20,8 @@ public class ScalableHeight : MonoBehaviour, ISpeechHandler {
     public Dictionary<int, int> neighbouringVertexMapping {
         get; set;
     }
+
+    public Vector2d Coordinates;
 
     public float Area {
         get {
@@ -31,9 +33,24 @@ public class ScalableHeight : MonoBehaviour, ISpeechHandler {
 
     private void Start() {
         mesh = GetComponent<MeshFilter>().mesh;
-        Debug.Log("Real world area " + Area / TableDataHolder.Instance.MapScale);
-        Debug.Log("Hologram area " + Area);
-        
+ 
+        // set up the scalable script
+        scalableScript = gameObject.AddComponent<Scalable>();
+        scalableScript.ScalingSensitivity = 10f;
+        scalableScript.minimumScale = 0.1f;
+
+        scalableScript.OnRegisteringForScaling += ScalableScript_OnRegisteringForScaling;
+        scalableScript.OnScalingUpdated += ScalableScript_OnScalingUpdated;
+
+        gameObject.AddComponent<DeleteOnVoice>();
+    }
+
+    private void ScalableScript_OnScalingUpdated(bool isExceedingLimit) {
+        NotifyHeightInfo(isExceedingLimit);
+    }
+
+    private void ScalableScript_OnRegisteringForScaling() {
+        // might need to set the parent transform to something above the tile
     }
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
@@ -47,52 +64,20 @@ public class ScalableHeight : MonoBehaviour, ISpeechHandler {
     }
 
     #region scaling-related
-    public void PerformScalingStarted(Vector3 cumulativeDelta) {
-        parent = transform.parent;
-        transform.parent = parent.transform.parent;
-        previousManipulationPosition = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
-    }
-
-    public void PerformScalingUpdate(Vector3 cumulativeDelta) {
-        // we should make this one use manipulation gesture rather than navigation
-        Vector3 moveVector = Vector3.zero;
-        Vector3 cumulativeDeltaInCameraSpace = Camera.main.transform.InverseTransformPoint(cumulativeDelta);
-        moveVector = cumulativeDeltaInCameraSpace - previousManipulationPosition;
-        previousManipulationPosition = cumulativeDeltaInCameraSpace;
-        float currentYScale = transform.localScale.y;
-        float scalingFactor = moveVector.y * ScalingSensitivity;
-
-        bool isExceedingLimit;
-        if (currentYScale + scalingFactor <= minimumHeight) {
-            isExceedingLimit = true;
-        }
-        else {
-            transform.localScale += new Vector3(0, scalingFactor, 0);
-            isExceedingLimit = false;
-        }
-
-        // notify the user of height, GFA?, number of storeys
-        NotifyHeightInfo(isExceedingLimit);
-    }
-
     public void RegisterForScaling() {
-        //GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(gameObject);
-    }
-
-    public void UnregisterCallBack() {
-        transform.parent = parent;
+        GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(scalableScript);
     }
 
     public void NotifyHeightInfo(bool isExceedingLimit) {
         if (cursor == null)
-            cursor = GameObject.Find("CustomCursorWithFeedback");
+            cursor = GameObject.Find(GameObjectNamesHolder.NAME_CURSOR).GetComponent<CustomObjectCursor>();
 
         mesh.RecalculateBounds();
         float hologramHeight = transform.TransformVector(mesh.bounds.size).y;
-        float realWorldHeight = hologramHeight / TableDataHolder.Instance.MapScale;
+        float realWorldHeight = hologramHeight / MapDataDisplay.Instance.MapWorldRelativeScale;
         int numOfStoreys = estimateNumOfStoreys(realWorldHeight);
         object[] arguments = { realWorldHeight, numOfStoreys, isExceedingLimit };
-        cursor.SendMessage("UpdateCurrentHeightInfo", arguments);
+        cursor.UpdateCurrentHeightInfo(arguments);
     }
 
     #endregion

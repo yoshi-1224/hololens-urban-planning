@@ -15,7 +15,7 @@ public class ZoomButton : ButtonBase {
     public override void OnInputClicked(InputClickedEventData eventData) {
         base.OnInputClicked(eventData);
         if (MapBox == null)
-            MapBox = GameObject.Find(GameObjectNamesHolder.NAME_MAP);
+            MapBox = GameObject.Find(GameObjectNamesHolder.NAME_MAPBOX);
         MapBox.SendMessage("ChangeZoom", InOrOut);
     }
 }

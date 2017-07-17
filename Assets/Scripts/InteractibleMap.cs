@@ -2,9 +2,10 @@
 using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(Interpolator))]
-public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
+public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IFocusable {
 
     private float DistanceFromCamera = 2.5f;
     private Transform cameraTransform;
@@ -13,8 +14,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
     [SerializeField]
     private GameObject axisPrefab;
     private GameObject axis;
-
-    public bool IsDrawing { get; set; }
 
     /// <summary>
     /// Keeps track of if the user is moving the object or not.
@@ -145,7 +144,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
         // wait and then show
         yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
 
-        if (shouldShowGuide) { // if any user action has taken during the wait
+        if (shouldShowGuide) { // if any user action has not been taken during the wait
             showGuideObject();
         }
     }
@@ -252,5 +251,17 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler {
         if (!IsBeingPlaced)
             return;
         PlacementStop();
+    }
+
+    /// <summary>
+    /// this is required because the cursor by itself cannot detect the change in 
+    /// the object gazed (i.e. between the map and other rest)
+    /// </summary>
+    public void OnFocusEnter() {
+        DrawingManager.Instance.ForceCursorStateChange();
+    }
+
+    public void OnFocusExit() {
+        DrawingManager.Instance.ForceCursorStateChange();
     }
 }

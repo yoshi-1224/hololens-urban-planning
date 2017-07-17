@@ -57,7 +57,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         North,
         South
     }
-    public event Action OnAllTilesLoaded;
+    public static event Action OnAllTilesLoaded;
     public static event Action<UnwrappedTileId> OnTileObjectAdded;
     private bool AtStart = true;
 
@@ -70,7 +70,8 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         InstantiatedTiles = new Dictionary<UnwrappedTileId, GameObject>();
         _currentLoadedRange = TileRangeLimits.Initial;
         OnAllTilesLoaded += OnAllTilesLoadedHandler;
-        StartCoroutine(LoadNewTiles());
+        //StartCoroutine(LoadNewTiles());
+        LoadNewTilesAtStart();
     }
 
     public void PanTowards(Direction direction) {
@@ -224,13 +225,29 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             }
         }
 
-        if (AtStart)
-            OnAllTilesLoaded.Invoke();
+        OnAllTilesLoaded.Invoke();
+    }
+
+    /// <summary>
+    /// loads new tiles upon zoom or change of area in the background
+    /// </summary>
+    internal void LoadNewTilesAtStart() {
+        var centerTile = CustomMap.Instance.CenterTileId;
+
+        for (int x = (int)(centerTile.X - _preLoadedRange.x); x <= (centerTile.X + _preLoadedRange.z); x++) {
+            for (int y = (int)(centerTile.Y - _preLoadedRange.y); y <= (centerTile.Y + _preLoadedRange.w); y++) {
+                AddTile(new UnwrappedTileId(_map.Zoom, x, y));
+            }
+        }
+
+        OnAllTilesLoaded.Invoke();
     }
 
     public void OnAllTilesLoadedHandler() {
-        AtStart = false;
-        InteractibleMap.Instance.PlacementStart();
+        if (AtStart) {
+            InteractibleMap.Instance.PlacementStart();
+            AtStart = false;
+        }
     }
 
 }
