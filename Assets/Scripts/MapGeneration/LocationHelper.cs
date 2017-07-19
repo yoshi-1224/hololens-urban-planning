@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
+using Mapbox.Map;
 
 public static class LocationHelper {
 
@@ -30,5 +31,19 @@ public static class LocationHelper {
         Vector2d mapCenterInMeters = Conversions.LatLonToMeters(CustomMap.Instance.CenterLatitudeLongitude);
         Vector2d positionInMeters = displacementFromMapCenter + mapCenterInMeters;
         return Conversions.MetersToLatLon(positionInMeters);
+    }
+
+    /// <summary>
+    /// finds the tile object that should parent the building with a latitude/longitude
+    /// </summary>
+    public static GameObject FindParentTile(Vector2d latLong) {
+        UnwrappedTileId parentTile = TileCover.CoordinateToTileId(latLong, CustomMap.Instance.Zoom);
+        GameObject tileObject;
+        if (CustomRangeTileProvider.InstantiatedTiles.TryGetValue(parentTile, out tileObject)) {
+            return tileObject;
+        }
+        else {
+            return null;
+        }
     }
 }

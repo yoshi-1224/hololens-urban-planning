@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
+using Mapbox.Utils;
 /// <summary>
 /// This handles the voice commands as well as the gesture inputs on a building.
 /// </summary>
-public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
-    [Tooltip("The table object to show on show details")]
-    public GameObject tablePrefab;
+public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     private GameObject tableObject;
-
-    [Tooltip("The user guide to show when gazed at for some time")]
-    public GameObject guidePrefab;
     private GameObject guideObject;
 
     [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
@@ -52,7 +48,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
     [SerializeField]
     Rotatable rotatableComponent;
 
-    void Start() {
+    private void Start() {
         Renderer tempRenderer = GetComponentInChildren<Renderer>();
         if (tempRenderer != null)
             defaultMaterials = tempRenderer.materials;
@@ -103,10 +99,13 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
 #region guide-related
 
+    /// <summary>
+    /// waits for gazeDurationTillGuideDisplay seconds and then display the command guide
+    /// </summary>
     IEnumerator ShowGuideCoroutine() {
         if (guideObject != null || !shouldShowGuide) //already exists
             yield break;
-        // wait and then show
+        // wait and then display
         yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
         if (shouldShowGuide)
             showGuideObject();
@@ -114,7 +113,7 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
 
     private void showGuideObject() {
         if (guideObject == null) {
-            guideObject = Instantiate(guidePrefab);
+            guideObject = Instantiate(PrefabHolder.Instance.guidePrefab);
             fillGuideDetails();
             guideObject.transform.parent = transform;
         }
@@ -221,11 +220,10 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
             return;
         }
 
-        tableObject = Instantiate(tablePrefab);
-        tableObject.transform.parent = gameObject.transform;
-        tableObject.SendMessage("FillTableData", gameObject.name);
+        tableObject = Instantiate(PrefabHolder.Instance.tablePrefab);
+        tableObject.transform.SetParent(gameObject.transform, true);
         positionTableObject();
-        
+        FillTableData();
         isTableAlreadyExists = true;
 
         hideGuideObject();
@@ -247,9 +245,33 @@ public class Interactible : MonoBehaviour, IFocusable, ISpeechHandler, IInputCli
         tableObject.SendMessage("UpdateLinePositions");
     }
 
-#endregion
+    private void FillTableData() {
+        string buildingName = gameObject.name;
+        string textToDisplay;
+        TableDataHolder.TableData data;
+        if (TableDataHolder.Instance.dataDict.TryGetValue(buildingName, out data)) {
+            string name = "<size=60><b>" + data.building_name + "</b></size>";
+            string _class = "<b>Class</b> : " + data.building_class;
+            string GPR = "<b>Gross Plot Ratio</b> : " + data.GPR;
+            if (data.building_name == "Chinese Culture Centre") {
+                string type = "(Prefab Type " + data.storeys_above_ground + ")";
+                textToDisplay = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
+            } else {
+                string measured_height = "<b>Measured Height</b> : " + data.measured_height + "m";
+                string numStoreys = "<b>Number of Storeys</b> : " + data.storeys_above_ground;
+                Vector2d coordinates = TableDataHolder.Instance.nameToLocation[buildingName];
+                string coordinatesString = PrefabHolder.formatLatLong(coordinates);
+                textToDisplay = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
+            }
+        } else {
+            textToDisplay = "status unknown";
+        }
+        tableObject.GetComponent<DraggableInfoTable>().FillTableData(textToDisplay);
+    }
 
-#region audio-related
+    #endregion
+
+    #region audio-related
     private void EnableAudioHapticFeedback() {
         if (tableSound == null)
             return;

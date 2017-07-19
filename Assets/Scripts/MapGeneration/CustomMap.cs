@@ -107,7 +107,9 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
 
     private void OnZoomChanged() {
         _mapVisualizer.OnZoomChanged();
-        BuildingsPlacement.Instance.OnZoomChanged();
+        BuildingManager.Instance.OnZoomChanged();
+        PinnedLocationManager.Instance.OnZoomChanged();
+        PolygonManager.Instance.OnZoomChanged();
     }
 
     protected override void OnDestroy() {

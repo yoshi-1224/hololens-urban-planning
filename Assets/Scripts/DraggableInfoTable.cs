@@ -2,6 +2,7 @@
 using System;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
+using Mapbox.Utils;
 
 /// <summary>
 /// Component that allows dragging an object with your hand on HoloLens.
@@ -11,8 +12,7 @@ using HoloToolkit.Unity.InputModule;
 
 [RequireComponent(typeof(HandDraggable))]
 public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
-    [SerializeField]
-    private HandDraggable handDraggable;
+    private HandDraggable handDraggableComponent;
     [SerializeField]
     private LineRenderer line;
     private bool shouldUpdateLinePositions;
@@ -21,10 +21,10 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
         // Set the number of vertex fo the Line Renderer
         line.positionCount = 2;
         UpdateLinePositions();
-
         shouldUpdateLinePositions = false;
-        handDraggable.StartedDragging += HandDraggable_StartedDragging;
-        handDraggable.StoppedDragging += HandDraggable_StoppedDragging;
+        handDraggableComponent = GetComponent<HandDraggable>();
+        handDraggableComponent.StartedDragging += HandDraggable_StartedDragging;
+        handDraggableComponent.StoppedDragging += HandDraggable_StoppedDragging;
     }
 
     private void HandDraggable_StartedDragging() {
@@ -36,8 +36,8 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     }
 
     private void OnDestroy() {
-        handDraggable.StartedDragging -= HandDraggable_StartedDragging;
-        handDraggable.StoppedDragging -= HandDraggable_StoppedDragging;
+        handDraggableComponent.StartedDragging -= HandDraggable_StartedDragging;
+        handDraggableComponent.StoppedDragging -= HandDraggable_StoppedDragging;
     }
 
     private void Update() {
@@ -47,17 +47,17 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     }
 
     public void OnFocusEnter() {
-        SendMessageUpwards("EnableEmission");
+        //SendMessageUpwards("EnableEmission");
     }
 
     public void OnFocusExit() {
-        SendMessageUpwards("DisableEmission");
+        //SendMessageUpwards("DisableEmission");
     }
     
 
     public void OnInputClicked(InputClickedEventData eventData) {
         SendMessageUpwards("HideDetails");
-        SendMessageUpwards("DisableEmission");
+        //SendMessageUpwards("DisableEmission");
     }
     
     /// <summary>
@@ -71,28 +71,13 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
         line.SetPosition(1, transform.position);
     }
 
-    public void FillTableData(string buildingName) {
+    public void FillTableData(string textToDisplay) {
         TextMesh textMesh = GetComponent<TextMesh>();
-        TableDataHolder.TableData data;
-        if (TableDataHolder.Instance.dataDict.TryGetValue(buildingName, out data)) {
-            string name = "<size=60><b>" + data.building_name + "</b></size>";
-            string _class = "<b>Class</b> : " + data.building_class;
-            string GPR = "<b>Gross Plot Ratio</b> : " + data.GPR;
-            if (data.building_name == "Chinese Culture Centre") {
-                string type = "(Prefab Type " + data.storeys_above_ground + ")";
-                textMesh.text = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
-                return;
-            }
-            string measured_height = "<b>Measured Height</b> : " + data.measured_height + "m";
-            string numStoreys = "<b>Number of Storeys</b> : " + data.storeys_above_ground;
-            textMesh.text = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys;
-        }
-        else {
-            textMesh.text = "status unknown";
-        }
+        textMesh.text = textToDisplay;
 
         // add box collider at run time so that it fits the dynamically-set text sizes
         gameObject.AddComponent<BoxCollider>();
     }
-}
+ 
+ }
 

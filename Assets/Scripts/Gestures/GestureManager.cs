@@ -32,7 +32,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     /// </summary>
     public GameObject currentObjectInMotion { get; set; }
 
-    private void Start() {
+    protected override void Awake() {
+        base.Awake();
         IsRotating = false;
         IsTranslating = false;
         IsScalingUsingNavigation = false;

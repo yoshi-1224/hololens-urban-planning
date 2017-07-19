@@ -231,12 +231,10 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     }
 
     public void HidePointCursor() {
-        Debug.Log("hide point cursor called");
         DrawPointCursor.SetActive(false);
     }
 
     public void ShowPointCursor() {
-        Debug.Log("show point cursor called");
         DrawPointCursor.SetActive(true);
     }
 

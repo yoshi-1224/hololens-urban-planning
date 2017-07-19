@@ -5,7 +5,7 @@ using HoloToolkit.Unity.InputModule;
 using System;
 using Mapbox.Utils;
 
-public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
+public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHandler {
     public const string COMMAND_SCALE = "scale";
     private Transform parent;
     private float minimumHeight = 0.1f;
@@ -21,19 +21,24 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
         get; set;
     }
 
-    public Vector2d Coordinates;
-
-    public float Area {
+    private Vector2d Coordinates;
+    public float RealWorldArea {
         get {
-            return computeBaseArea();
+            return computeBaseArea() / MapDataDisplay.Instance.MapWorldRelativeScale;
         }
     }
-
+    public float RealWorldHeight {
+        get {
+            return computeRealWorldHeight();
+        }
+    }
     private Mesh mesh;
+    private GameObject tableObject;
+    private bool isTableAlreadyExists;
 
     private void Start() {
         mesh = GetComponent<MeshFilter>().mesh;
- 
+        setCoordinates();
         // set up the scalable script
         scalableScript = gameObject.AddComponent<Scalable>();
         scalableScript.ScalingSensitivity = 10f;
@@ -43,6 +48,10 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
         scalableScript.OnScalingUpdated += ScalableScript_OnScalingUpdated;
 
         gameObject.AddComponent<DeleteOnVoice>();
+    }
+
+    private void setCoordinates() {
+        Coordinates = LocationHelper.worldPositionToGeoCoordinate(transform.position);
     }
 
     private void ScalableScript_OnScalingUpdated(bool isExceedingLimit) {
@@ -67,22 +76,30 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
     public void RegisterForScaling() {
         GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(scalableScript);
     }
-
     public void NotifyHeightInfo(bool isExceedingLimit) {
         if (cursor == null)
             cursor = GameObject.Find(GameObjectNamesHolder.NAME_CURSOR).GetComponent<CustomObjectCursor>();
 
         mesh.RecalculateBounds();
-        float hologramHeight = transform.TransformVector(mesh.bounds.size).y;
-        float realWorldHeight = hologramHeight / MapDataDisplay.Instance.MapWorldRelativeScale;
+        float realWorldHeight = computeRealWorldHeight();
         int numOfStoreys = estimateNumOfStoreys(realWorldHeight);
         object[] arguments = { realWorldHeight, numOfStoreys, isExceedingLimit };
         cursor.UpdateCurrentHeightInfo(arguments);
     }
-
     #endregion
+
+    private float computeRealWorldHeight() {
+        float hologramHeight = transform.TransformVector(mesh.bounds.size).y;
+        float realWorldHeight = hologramHeight / MapDataDisplay.Instance.MapWorldRelativeScale;
+        return realWorldHeight;
+    }
+
+    private int estimateNumOfStoreys(float buildingHeight) {
+        return (int)(buildingHeight / heightOfAStorey) + 1;
+    }
+
     /// <summary>
-    /// calculates the LOCAL base area of the polygon using shoelace method
+    /// calculates the base area of the polygon in Unity space using shoelace method
     /// The value that this method returns should be scaled with map scale
     /// to convert into real-world area
     /// </summary>
@@ -110,10 +127,6 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
         return Math.Abs(area) / 2f;
     }
 
-    private int estimateNumOfStoreys(float buildingHeight) {
-        return (int) (buildingHeight / heightOfAStorey) + 1;
-    }
-
     /// <summary>
     /// At the moment, GPR == numOfStoreys since GFA per floor == base area
     /// </summary>
@@ -129,4 +142,51 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler {
         }
         return vector2s;
     }
+
+    public void OnInputClicked(InputClickedEventData eventData) {
+        ShowDetails();
+        positionTableObject();
+        FillTableData();
+    }
+
+    public void ShowDetails() {
+        if (isTableAlreadyExists) {
+            positionTableObject();
+            return;
+        }
+
+        tableObject = Instantiate(PrefabHolder.Instance.tablePrefab);
+        tableObject.transform.parent = gameObject.transform;
+        positionTableObject();
+
+        isTableAlreadyExists = true;
+    }
+
+    public void HideDetails() {
+        if (!isTableAlreadyExists)
+            return;
+
+        Destroy(tableObject);
+        tableObject = null;
+        isTableAlreadyExists = false;
+    }
+
+    private void FillTableData() {
+        string textToDisplay;
+        //show area, height and coordinates
+        string name = PrefabHolder.renderBold(PrefabHolder.changeTextSize(gameObject.name, 60));
+        string area = PrefabHolder.renderBold("Area: ") + RealWorldArea;
+        string coordinatesString = PrefabHolder.formatLatLong(Coordinates);
+        textToDisplay = name + "\n" + area + "\n" + coordinatesString;
+        tableObject.GetComponent<DraggableInfoTable>().FillTableData(textToDisplay);
+    }
+
+    private void positionTableObject() {
+        float distanceRatio = 0.4f;
+        tableObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
+        tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+        tableObject.SendMessage("UpdateLinePositions");
+    }
+
+
 }

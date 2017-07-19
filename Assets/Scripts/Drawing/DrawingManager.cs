@@ -32,9 +32,6 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     private GameObject instantiatedGuideObj;
     private float guidePositionAbovePoint = 0.05f;
 
-    [SerializeField]
-    private Material polygonMaterial;
-
     public bool CanPolygonBeEnclosedAndCursorOnFirstPoint {
         get; set;
     }
@@ -136,32 +133,8 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     /// args should take in pointsDrawn
     /// </summary>
     private void instantiatePolygon() {
-        Dictionary<int, int> neighbouringVertexMapping;
-        GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial, out neighbouringVertexMapping);
- 
-        Vector2d polygonCoordinates = setPolygonParentToMapTile(polygon);
-        UserGeneratedPolygon script = polygon.AddComponent<UserGeneratedPolygon>();
-
-        script.Coordinates = polygonCoordinates;
-        script.neighbouringVertexMapping = neighbouringVertexMapping;
+        PolygonManager.Instance.GeneratePolygonFromVertices(polygonVertices);
         StopDrawing();
-    }
-
-    /// <summary>
-    /// finds the tile gameObject that is directly below the center of the polygon
-    /// and set its transform to polygon's parent transform
-    /// </summary>
-    /// <param name="polygon"></param>
-    private Vector2d setPolygonParentToMapTile(GameObject polygon) {
-        Vector2d polygonCoordinates = LocationHelper.worldPositionToGeoCoordinate(polygon.transform.position);
-        UnwrappedTileId parentTileId = TileCover.CoordinateToTileId(polygonCoordinates, CustomMap.Instance.Zoom);
-        GameObject parentTileObject = null;
-        if (CustomRangeTileProvider.InstantiatedTiles.TryGetValue(parentTileId, out parentTileObject)) {
-            polygon.transform.SetParent(parentTileObject.transform, true);
-        } else {
-            Debug.Log("Parent not found!");
-        }
-        return polygonCoordinates;
     }
 
     /// <summary>
@@ -208,6 +181,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         instantiatedGuideObj = Instantiate(EncloseGuide, firstSpherePosition + new Vector3(0, guidePositionAbovePoint, 0), Quaternion.LookRotation(firstSpherePosition - Camera.main.transform.position, Vector3.up));
         TextMesh textMesh = instantiatedGuideObj.GetComponent<TextMesh>();
         textMesh.fontSize = 56;
+        textMesh.color = Color.black;
         textMesh.text = "Click to enclose this polygon";
     }
 

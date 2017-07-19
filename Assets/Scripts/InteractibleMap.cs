@@ -23,10 +23,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
     public bool IsBeingPlaced;
 
-    /// added
-    [Tooltip("The user guide to show when gazed at for some time")]
-    [SerializeField]
-    private GameObject guidePrefab;
     private GameObject guideObject;
 
     [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
@@ -120,7 +116,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     public void PlacementStart() {
-        //WorldAnchorManager.Instance.RemoveAnchor(gameObject);
         IsBeingPlaced = true;
         feedbackSoundComponent.PlayFeedbackSound();
         DisallowGuideObject();
@@ -129,7 +124,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void PlacementStop() {
-        //WorldAnchorManager.Instance.AttachAnchor(gameObject, "anchor");
         IsBeingPlaced = false;
         feedbackSoundComponent.PlayFeedbackSound();
         AllowGuideObject();
@@ -151,7 +145,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     private void showGuideObject() {
         if (guideObject == null)
-            guideObject = Instantiate(guidePrefab);
+            guideObject = Instantiate(PrefabHolder.Instance.guidePrefab);
         fillGuideDetails();
         positionGuideObject();
     }
@@ -195,7 +189,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void scalable_OnRegisteringForScaling() {
-        foreach (Interactible script in GetComponentsInChildren<Interactible>()) {
+        foreach (InteractibleBuilding script in GetComponentsInChildren<InteractibleBuilding>()) {
             script.HideDetails();
         }
         DisallowGuideObject();
@@ -204,7 +198,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     public void scalable_OnUnregister() {
         AllowGuideObject();
-        TableDataHolder.Instance.MapScale = transform.localScale.x;
     }
 
     /// <summary>
@@ -221,9 +214,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
 #region rotation-related
     public void rotatable_OnRegisteringForRotation() {
-        Debug.Log("Rotation feedback");
         DisallowGuideObject();
-        foreach (Interactible script in GetComponentsInChildren<Interactible>()) {
+        foreach (InteractibleBuilding script in GetComponentsInChildren<InteractibleBuilding>()) {
             script.HideDetails();
         }
         axis = Instantiate(axisPrefab, transform.position, Quaternion.identity);

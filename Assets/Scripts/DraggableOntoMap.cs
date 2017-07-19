@@ -10,7 +10,7 @@ using HoloToolkit.Unity;
 /// </summary>
 
 [RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(Interactible))]
+[RequireComponent(typeof(InteractibleBuilding))]
 [RequireComponent(typeof(DeleteOnVoice))]
 public class DraggableOntoMap : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
 
@@ -261,7 +261,7 @@ public class DraggableOntoMap : MonoBehaviour, IFocusable, IInputHandler, ISourc
             transform.parent = GameObject.Find("LOD2").transform;
             // set this so that the bottom surface of this object would be directly on the map
             positionBottomOnTheMap();
-            gameObject.GetComponent<Interactible>().enabled = true;
+            gameObject.GetComponent<InteractibleBuilding>().enabled = true;
             gameObject.GetComponent<DeleteOnVoice>().enabled = true;
             MapPlacement.SetLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
             // remove this component

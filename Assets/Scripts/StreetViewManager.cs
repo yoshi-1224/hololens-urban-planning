@@ -29,6 +29,10 @@ public class StreetViewManager : Singleton<StreetViewManager> {
     private bool isInStreetViewMode = false;
     private Vector3 originalScale;
 
+    protected override void Awake() {
+        base.Awake();
+    }
+
     public void SetUpStreetView() {
         if (isInStreetViewMode)
             return;
@@ -37,7 +41,6 @@ public class StreetViewManager : Singleton<StreetViewManager> {
         isInStreetViewMode = true;
         GlobalVoiceCommands.Instance.EnterStreetViewMode();
         switchMapCapabilityForStreetView();
-
     }
 
     /// <summary>
@@ -99,7 +102,9 @@ public class StreetViewManager : Singleton<StreetViewManager> {
     private void restoreScaleAndPosition() {
         mapObject.transform.localScale = originalScale;
         // translate map's position instantly so that it won't take a long time to return to the user's gaze
-        mapObject.transform.position = Camera.main.transform.position;
+        mapObject.transform.localPosition = Vector3.zero;
+        mapObject.transform.parent.transform.position = Camera.main.transform.position;
+        //mapObject.transform.position = Camera.main.transform.position;
     }
 
     private void switchMapCapabilityForStreetView() {

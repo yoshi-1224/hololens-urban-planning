@@ -7,16 +7,13 @@ using System;
 
 /// <summary>
 /// Component that allows dragging an object with your hand on HoloLens.
-/// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
-/// and then repositioning the object based on that.
+/// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions, and then repositioning the object based on that.
 /// </summary>
 [RequireComponent(typeof(HandDraggable))]
 public class DraggableLayer : MonoBehaviour {
 
     [Tooltip("The parent of all the contents this toolbar contains")]
     public GameObject ToolbarContents;
-
-    [SerializeField]
     private HandDraggable handDraggable;
 
     private Vector3 originalLocalPosition;
@@ -25,6 +22,7 @@ public class DraggableLayer : MonoBehaviour {
     private void Start() {
         originalLocalPosition = transform.localPosition;
         originalLocalRotation = transform.localRotation;
+        handDraggable = GetComponent<HandDraggable>();
         handDraggable.StartedDragging += HandDraggable_StartedDragging;
         handDraggable.StoppedDragging += HandDraggable_StoppedDragging;
     }

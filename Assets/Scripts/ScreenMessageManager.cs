@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity;
 
+[RequireComponent(typeof(Interpolator))]
 public class ScreenMessageManager : Singleton<ScreenMessageManager> {
 
     private float distanceFromUser = 1.0f;

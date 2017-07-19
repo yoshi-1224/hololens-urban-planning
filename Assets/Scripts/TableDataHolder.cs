@@ -1,4 +1,5 @@
 ﻿using HoloToolkit.Unity;
+using Mapbox.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,25 +31,11 @@ public class TableDataHolder : Singleton<TableDataHolder> {
                                 "business, trade"};
 
     // actual member classes
-    public Dictionary<string, TableData> dataDict;
+    public Dictionary<string, TableData> dataDict { get; set; }
+    public Dictionary<string, Vector2d> nameToLocation { get; set; }
 
-    private float mapScale = 0f; // backing store
-    public float MapScale {
-        get {
-            return mapScale;
-        }
-
-        set {
-            mapScale = value;
-            updateDataDisplayIfActive();
-        }
-    }
-    
-    public void updateDataDisplayIfActive() {
-        MapDataDisplay.Instance.UpdateMapInfo();
-    }
-
-    public void Start() {
+    protected override void Awake() {
+        base.Awake();
         dataDict = new Dictionary<string, TableData>();
         // initialize the hard-coded dictionary
         dataDict["AXA_tower"] = new TableData("AXA Tower", classes[0], 8.71f, 251.8f, 84);
@@ -62,25 +49,14 @@ public class TableDataHolder : Singleton<TableDataHolder> {
         dataDict["SCCC_S3_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 3);
         dataDict["Singapore_conference_hall"] = new TableData("Singapore Conference Hall", classes[2], 0f, 29.88f, 10);
         dataDict["OUE_downtown"] = new TableData("OUE Downtown", classes[2], 13.88f, 193.56f, 65);
+
+        nameToLocation = new Dictionary<string, Vector2d>();
     }
 
-    public static void getMapExtents(out float xExtent, out float zExtent) {
-        GameObject map = GameObject.Find("CustomizedMap");
-
-        // we are using mesh.bounds since renderer.bounds have issues updating after scaling
-        Bounds mapBounds = map.GetComponent<MeshFilter>().mesh.bounds;
-        // assume that the pivot is really at the map centre
-        // and map size is symmetrical in both x- and z-directions
-        Vector3 extents = map.transform.TransformVector(mapBounds.extents);
-        xExtent = extents.x; // should be in metres
-        zExtent = extents.z; // should be in metres
-
+    protected override void OnDestroy() {
+        dataDict.Clear();
+        nameToLocation.Clear();
+        base.OnDestroy();
     }
 
-    public static void getCornerCoordinates(List<int> centreCoord, float xExtent, float zExtent) {
-        // either assume that singapore map is FLAT, or use
-        // spherical calculations if really required
-    }
-
-    //set table texture. need to know which vertices are which t
 }

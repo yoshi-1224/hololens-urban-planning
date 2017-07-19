@@ -9,9 +9,9 @@ using Mapbox.Unity.Utilities;
 using System.Linq;
 using System;
 
-public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement> {
+public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
     [Serializable]
-    public struct CoordinateBoundBuilding {
+    public struct CoordinateBoundObjects {
         public float latitude;
         public float longitude;
         public Vector2d coordinates {
@@ -20,17 +20,16 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
             }
         }
         public GameObject prefab;
-        public GameObject parentTile { get; set; }
     }
 
     [SerializeField]
-    private List<CoordinateBoundBuilding> BuildingPrefabList;
+    private List<CoordinateBoundObjects> BuildingPrefabList;
 
     /// <summary>
     /// use this to process buildings one by one in order to minimize the computing cost
-    /// on the frame rate
+    /// on each frame
     /// </summary>
-    private Queue<CoordinateBoundBuilding> buildingsToLoad;
+    private Queue<CoordinateBoundObjects> buildingsToLoad;
 
     /// <summary>
     /// dictionary that keeps track of which buildings are brought into the scene.
@@ -46,7 +45,7 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
         CustomRangeTileProvider.OnTileObjectAdded += TileProvider_OnTileAdded;
         CustomRangeTileProvider.OnAllTilesLoaded += CustomRangeTileProvider_OnAllTilesLoaded;
         buildingsInScene = new Dictionary<string, GameObject>();
-        buildingsToLoad = new Queue<CoordinateBoundBuilding>();
+        buildingsToLoad = new Queue<CoordinateBoundObjects>();
     }
 
     protected override void OnDestroy() {
@@ -72,23 +71,10 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
         }
     }
 
-    /// <summary>
-    /// finds the tile object that should parent the building with the latLong
-    /// </summary>
-    public GameObject FindParentTile(Vector2d latLong) {
-        UnwrappedTileId parentTile = TileCover.CoordinateToTileId(latLong, CustomMap.Instance.Zoom);
-        GameObject tileObject;
-        if (CustomRangeTileProvider.InstantiatedTiles.TryGetValue(parentTile, out tileObject)) {
-            return tileObject;
-        } else {
-            return null;
-        }
-    }
-
-    private GameObject InstantiateBuilding(CoordinateBoundBuilding buildingModel) {
+    private GameObject InstantiateBuilding(CoordinateBoundObjects buildingModel) {
         string buildingName = buildingModel.prefab.name;
 
-        GameObject parentTile = FindParentTile(buildingModel.coordinates);
+        GameObject parentTile = LocationHelper.FindParentTile(buildingModel.coordinates);
         if (parentTile == null) {
             Debug.Log("Not instantiating since no parent tile found"); // this should not happen
             return null;
@@ -111,6 +97,9 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
         float halfHeight = building.GetComponent<BoxCollider>().bounds.extents.y;
         position.y += halfHeight;
         building.transform.position = position;
+
+        // add the mapping for building name to coordinates
+        TableDataHolder.Instance.nameToLocation[buildingName] = buildingModel.coordinates;
 
         building.layer = parentTile.layer;
 
@@ -142,7 +131,7 @@ public class BuildingsPlacement : HoloToolkit.Unity.Singleton<BuildingsPlacement
             return false;
         });
 
-        foreach (CoordinateBoundBuilding building in buildings) {
+        foreach (CoordinateBoundObjects building in buildings) {
             buildingsToLoad.Enqueue(building);
         }
     }
