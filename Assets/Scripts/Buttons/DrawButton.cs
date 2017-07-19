@@ -8,6 +8,7 @@ public class DrawButton : ButtonBase {
         base.OnInputClicked(eventData);
         //GlobalVoiceCommands.Instance.enterDrawingMode();
         //GameObject.Find(GameObjectNamesHolder.NAME_MAP).SendMessage("PrintPositions");
-        GameObject.Find(GameObjectNamesHolder.NAME_MAPBOX).SendMessage("PrintCoordinates");
+        //GameObject.Find(GameObjectNamesHolder.NAME_MAPBOX).SendMessage("PrintCoordinates");
+
     }
 }

@@ -7,6 +7,9 @@ using Mapbox.Map;
 using Mapbox.Unity.Utilities;
 using System.Linq;
 
+/// <summary>
+/// handles the creation of polygons and stores them in a list
+/// </summary>
 public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
     [SerializeField]
     private Material polygonMaterial;
@@ -39,7 +42,7 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
     public void GeneratePolygonFromVertices(List<Vector3> polygonVertices) {
         Dictionary<int, int> neighbouringVertexMapping;
         GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial, out neighbouringVertexMapping);
-        polygon.name = "polygon" + polygonsInScene.Count;
+        polygon.name = "polygon #" + polygonsInScene.Count;
         Vector2d polygonCoordinates = setPolygonParentToMapTile(polygon);
         UserGeneratedPolygon script = polygon.AddComponent<UserGeneratedPolygon>();
         script.neighbouringVertexMapping = neighbouringVertexMapping;
@@ -79,7 +82,6 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
 
         foreach (BuildingManager.CoordinateBoundObjects polygon in polygonsWithinBound) {
             // set its position properly
-            Debug.Log("polygon");
             polygon.prefab.transform.position = LocationHelper.geoCoordinateToWorldPosition(polygon.coordinates);
             polygon.prefab.transform.parent = CustomRangeTileProvider.InstantiatedTiles[tileId].transform;
             polygon.prefab.SetActive(true);

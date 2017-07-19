@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FeedbackSound : MonoBehaviour {
     [SerializeField]
     private AudioClip feedbackSound;
     private AudioSource audioSource;
 
-    void Start () {
+    private void Awake () {
         EnableAudioHapticFeedback();
 	}
 
-    public void EnableAudioHapticFeedback() {
+    private void EnableAudioHapticFeedback() {
         if (feedbackSound == null)
             return;
 

@@ -20,18 +20,20 @@ public class ButtonBase : MonoBehaviour, IFocusable, IInputClickHandler {
     private AudioSource audioSource;
 
     public virtual void OnFocusEnter() {
-        faceRenderer.material.SetColor(colorString, FocusedColor);
+        //if (faceRenderer != null )
+            faceRenderer.material.SetColor(colorString, FocusedColor);
     }
 
     public virtual void OnFocusExit() {
-        faceRenderer.material.SetColor(colorString, originalColor);
+        //if (faceRenderer != null )
+            faceRenderer.material.SetColor(colorString, originalColor);
     }
 
     public virtual void OnInputClicked(InputClickedEventData eventData) {
         playButtonClickSound();
     }
 
-    protected virtual void Start() {
+    protected virtual void Awake() {
         faceRenderer = RendererHolder.GetComponent<MeshRenderer>();
         originalColor = faceRenderer.material.GetColor("_Color");
         EnableAudioHapticFeedback();

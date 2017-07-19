@@ -9,9 +9,9 @@ public class PanButton : ButtonBase {
     public CustomRangeTileProvider.Direction direction;
     private GameObject MapBox;
 
-    protected override void Start() {
-        base.Start();
-    }
+    //protected override void Start() {
+    //    base.Start();
+    //}
 
     public override void OnInputClicked(InputClickedEventData eventData) {
         base.OnInputClicked(eventData);

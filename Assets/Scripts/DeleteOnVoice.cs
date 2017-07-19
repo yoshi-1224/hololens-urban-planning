@@ -6,12 +6,7 @@ using System;
 
 public class DeleteOnVoice : MonoBehaviour, ISpeechHandler {
     public const string COMMAND_DELETE = "delete";
-
-    // put Update() just for the sake of being able to disable this component
-    // from Unity editor
-    private void Update() {
-        
-    }
+    public event Action OnBeforeDelete = delegate { };
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
         switch(eventData.RecognizedText.ToLower()) {
@@ -25,6 +20,7 @@ public class DeleteOnVoice : MonoBehaviour, ISpeechHandler {
     }
 
     private void deleteThisObject() {
+        OnBeforeDelete.Invoke();
         Destroy(gameObject);
     }
 }

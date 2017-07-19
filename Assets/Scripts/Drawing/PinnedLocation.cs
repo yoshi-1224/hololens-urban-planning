@@ -8,11 +8,18 @@ using Mapbox.Utils;
 public class PinnedLocation : MonoBehaviour, IFocusable {
     private Vector2d Coordinates;
     private TextMesh textMesh;
+    private DeleteOnVoice deleteOnVoiceComponent;
 
     private void Start() {
         textMesh = GetComponentInChildren<TextMesh>();
-        gameObject.AddComponent<DeleteOnVoice>();
+        deleteOnVoiceComponent = gameObject.AddComponent<DeleteOnVoice>();
+        deleteOnVoiceComponent.OnBeforeDelete += DeleteOnVoiceComponent_OnBeforeDelete;
         setCoordinates();
+    }
+
+    private void DeleteOnVoiceComponent_OnBeforeDelete() {
+        deleteOnVoiceComponent.OnBeforeDelete -= DeleteOnVoiceComponent_OnBeforeDelete;
+        // delete this object from the list
     }
 
     public void setCoordinates() {

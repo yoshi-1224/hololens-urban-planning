@@ -12,7 +12,9 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
     private Vector3 previousManipulationPosition;
     private CustomObjectCursor cursor;
     private static float heightOfAStorey = 5;
-    private Scalable scalableScript;
+    private Scalable scalableComponent;
+    private Movable movableComponent;
+    private Rotatable rotatableComponent;
 
     /// <summary>
     /// should be passed when this component is added to this gameObject
@@ -40,14 +42,16 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
         mesh = GetComponent<MeshFilter>().mesh;
         setCoordinates();
         // set up the scalable script
-        scalableScript = gameObject.AddComponent<Scalable>();
-        scalableScript.ScalingSensitivity = 10f;
-        scalableScript.minimumScale = 0.1f;
+        scalableComponent = gameObject.AddComponent<Scalable>();
+        scalableComponent.ScalingSensitivity = 10f;
+        scalableComponent.minimumScale = 0.1f;
 
-        scalableScript.OnRegisteringForScaling += ScalableScript_OnRegisteringForScaling;
-        scalableScript.OnScalingUpdated += ScalableScript_OnScalingUpdated;
+        scalableComponent.OnRegisteringForScaling += ScalableScript_OnRegisteringForScaling;
+        scalableComponent.OnScalingUpdated += ScalableScript_OnScalingUpdated;
 
         gameObject.AddComponent<DeleteOnVoice>();
+        movableComponent = gameObject.AddComponent<Movable>();
+        rotatableComponent = gameObject.AddComponent<Rotatable>();
     }
 
     private void setCoordinates() {
@@ -67,15 +71,34 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
             case COMMAND_SCALE:
                 RegisterForScaling();
                 break;
+            case Rotatable.COMMAND_ROTATE:
+                RegisterForRotation();
+                break;
+            case Movable.COMMAND_MOVE:
+                RegisterForTranslation();
+                break;
             default:
                 break;
         }
     }
 
     #region scaling-related
-    public void RegisterForScaling() {
-        GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(scalableScript);
+    private void RegisterForScaling() {
+        GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(scalableComponent);
     }
+
+    private void RegisterForTranslation() {
+        GestureManager.Instance.RegisterGameObjectForTranslation(movableComponent);
+    }
+
+    private void RegisterForRotation() {
+        GestureManager.Instance.RegisterGameObjectForRotation(rotatableComponent);
+    }
+
+    private void UnregisteForTranslation() {
+        // update its coordinates based on the position
+    }
+
     public void NotifyHeightInfo(bool isExceedingLimit) {
         if (cursor == null)
             cursor = GameObject.Find(GameObjectNamesHolder.NAME_CURSOR).GetComponent<CustomObjectCursor>();

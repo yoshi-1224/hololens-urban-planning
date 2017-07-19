@@ -7,6 +7,7 @@ using Mapbox.Utils;
 /// <summary>
 /// This handles the voice commands as well as the gesture inputs on a building.
 /// </summary>
+
 public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     private GameObject tableObject;
     private GameObject guideObject;
@@ -22,31 +23,20 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         }
     }
 
-    [Tooltip("Sound to play upon table instantiate and destroy")]
-    public AudioClip tableSound;
-    private AudioSource audioSource;
-
     private bool isTableAlreadyExists;
-
-    public float TranslationSensitivity = 5f;
-
-    // used for translation to get the moveVector
-    private Vector3 previousManipulationPosition;
 
     /// <summary>
     /// recognised voice commands. Make sure they are all in lower case
     /// </summary>
     private const string COMMAND_SHOW_DETAILS = "show info";
     private const string COMMAND_HIDE_DETAILS = "hide info";
-    private const string COMMAND_POSITION = "position";
-    private const string COMMAND_ROTATE = "rotate";
     
     /// <summary>
     /// used for visual feedback when focus has entered/exited this gameobject.
     /// </summary>
     private Material[] defaultMaterials;
-    [SerializeField]
-    Rotatable rotatableComponent;
+    private Rotatable rotatableComponent;
+    private Movable movableComponent;
 
     private void Start() {
         Renderer tempRenderer = GetComponentInChildren<Renderer>();
@@ -57,8 +47,27 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
                 defaultMaterials[i].SetColor("_EmissionColor", new Color(0.1176471f, 0.1176471f, 0.1176471f));
             }
         }
+        rotatableComponent = GetComponent<Rotatable>();
+        rotatableComponent.OnUnregisterForRotation += RotatableComponent_OnUnregisterForRotation;
+        movableComponent = GetComponent<Movable>();
+        movableComponent.OnUnregisterForTranslation += MovableComponent_OnUnregisterForTranslation;
         isTableAlreadyExists = false;
-        EnableAudioHapticFeedback();
+    }
+
+    private void MovableComponent_OnUnregisterForTranslation() {
+        AllowGuideObject();
+    }
+
+    private void RotatableComponent_OnUnregisterForRotation() {
+        AllowGuideObject();
+    }
+
+    private void OnDestroy() {
+        if (movableComponent!= null)
+            movableComponent.OnUnregisterForTranslation -= MovableComponent_OnUnregisterForTranslation;
+
+        if (rotatableComponent != null)
+            rotatableComponent.OnUnregisterForRotation -= RotatableComponent_OnUnregisterForRotation;
     }
 
     public void OnFocusEnter() {
@@ -83,11 +92,11 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
                 HideDetails();
                 break;
 
-            case COMMAND_POSITION:
+            case Movable.COMMAND_MOVE:
                 registerForTranslation();
                 break;
 
-            case COMMAND_ROTATE:
+            case Rotatable.COMMAND_ROTATE:
                 registerForRotation();
                 break;
 
@@ -117,7 +126,6 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
             fillGuideDetails();
             guideObject.transform.parent = transform;
         }
-
         positionGuideObject();
     }
 
@@ -131,8 +139,8 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         TextMesh textMesh = guideObject.GetComponent<TextMesh>();
         textMesh.text =
             "<b>Valid commands:</b>\n" + COMMAND_SHOW_DETAILS + "\n" + 
-            COMMAND_HIDE_DETAILS + "\n" + COMMAND_POSITION + "\n" + COMMAND_ROTATE;
-        // should put commands in an array or dictionary as # of commands grow
+            COMMAND_HIDE_DETAILS + "\n" + Movable.COMMAND_MOVE + "\n" + Rotatable.COMMAND_ROTATE;
+
         if (GetComponent<DeleteOnVoice>() != null)
             textMesh.text += "\n" + DeleteOnVoice.COMMAND_DELETE;
         textMesh.fontSize = 55;
@@ -163,33 +171,13 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     /// </summary>
     private void registerForTranslation() {
         HideDetails();
-        GestureManager.Instance.RegisterGameObjectForTranslation(gameObject);
         DisallowGuideObject();
-    }
-    
-    /// <summary>
-    /// This message is sent from GestureManager instance.
-    /// </summary>
-    public void PerformTranslationStarted(Vector3 cumulativeDelta) {
-        previousManipulationPosition = cumulativeDelta;
-    }
-
-    /// <summary>
-    /// this message is sent from GestureManager instance.
-    /// </summary>
-    public void PerformTranslationUpdate(Vector3 cumulativeDelta) {
-        Vector3 moveVector = Vector3.zero;
-        moveVector = cumulativeDelta - previousManipulationPosition;
-        previousManipulationPosition = cumulativeDelta;
-
-        // disable the y-move as it doesn't make sense to have buildings flying around,
-        // and also it makes it easier just to limit to this script for translation (vs placeable.cs)
-        transform.position += new Vector3(moveVector.x * TranslationSensitivity, 0, moveVector.z * TranslationSensitivity);
+        GestureManager.Instance.RegisterGameObjectForTranslation(movableComponent);
     }
 
 #endregion
 
-#region rotation-related
+    #region rotation-related
     /// <summary>
     /// register this object as the one in focus for rotation
     /// </summary>
@@ -199,22 +187,10 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         DisallowGuideObject();
     }
 
-    public void PerformRotationStarted(Vector3 normalizedOffset) {
-    }
-
-    /// <summary>
-    /// shouldShowGuide is set to true so that next time the user gaze enters the help guide
-    /// will show. At the END of the user action this should be set to true.
-    /// </summary>
-    public void UnregisterCallBack() {
-        AllowGuideObject();
-    }
-
 #endregion
 
-#region table-related
+    #region table-related
     public void ShowDetails() {
-        playTableSound();
         if (isTableAlreadyExists) {
             positionTableObject();
             return;
@@ -270,27 +246,6 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     }
 
     #endregion
-
-    #region audio-related
-    private void EnableAudioHapticFeedback() {
-        if (tableSound == null)
-            return;
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = tableSound;
-        audioSource.playOnAwake = false;
-        audioSource.spatialBlend = 1;
-        audioSource.dopplerLevel = 0;
-    }
-
-    private void playTableSound() {
-        if (audioSource != null && !audioSource.isPlaying)
-            audioSource.Play();
-    }
-
-#endregion
 
     public void OnInputClicked(InputClickedEventData eventData) {
         ShowDetails();

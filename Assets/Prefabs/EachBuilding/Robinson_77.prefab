@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 33371546994611572}
   - component: {fileID: 23360852394391158}
   - component: {fileID: 65305803932273082}
+  - component: {fileID: 114288836222707868}
+  - component: {fileID: 114451509332023892}
   m_Layer: 0
   m_Name: Robinson_77
   m_TagString: Untagged
@@ -93,3 +95,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 75.740234, y: 181.93002, z: 95.23047}
   m_Center: {x: 0.0009789467, y: 0.0000038146973, z: -5.421011e-20}
+--- !u!114 &114288836222707868
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1742311120214100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfaed0e633d42a046b0eecc71e4883c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationSensitivity: 10
+--- !u!114 &114451509332023892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1742311120214100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b7ee2f0c3057e45912d4d27398fd95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TranslationSensitivity: 10

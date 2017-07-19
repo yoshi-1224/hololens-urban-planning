@@ -1,13 +1,9 @@
 ﻿using UnityEngine;
-using System;
-using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
-using Mapbox.Utils;
 
 /// <summary>
 /// Component that allows dragging an object with your hand on HoloLens.
-/// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
-/// and then repositioning the object based on that.
+/// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions, and then repositioning the object based on that.
 /// </summary>
 
 [RequireComponent(typeof(HandDraggable))]
@@ -16,6 +12,7 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     [SerializeField]
     private LineRenderer line;
     private bool shouldUpdateLinePositions;
+    private FeedbackSound feedbackSoundComponent;
 
     private void Start() {
         // Set the number of vertex fo the Line Renderer
@@ -23,11 +20,14 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
         UpdateLinePositions();
         shouldUpdateLinePositions = false;
         handDraggableComponent = GetComponent<HandDraggable>();
+        feedbackSoundComponent = GetComponent<FeedbackSound>();
         handDraggableComponent.StartedDragging += HandDraggable_StartedDragging;
         handDraggableComponent.StoppedDragging += HandDraggable_StoppedDragging;
     }
 
     private void HandDraggable_StartedDragging() {
+        if (feedbackSoundComponent != null)
+            feedbackSoundComponent.PlayFeedbackSound();
         shouldUpdateLinePositions = true;
     }
 
@@ -36,8 +36,10 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     }
 
     private void OnDestroy() {
-        handDraggableComponent.StartedDragging -= HandDraggable_StartedDragging;
-        handDraggableComponent.StoppedDragging -= HandDraggable_StoppedDragging;
+        if (handDraggableComponent != null) {
+            handDraggableComponent.StartedDragging -= HandDraggable_StartedDragging;
+            handDraggableComponent.StoppedDragging -= HandDraggable_StoppedDragging;
+        }
     }
 
     private void Update() {

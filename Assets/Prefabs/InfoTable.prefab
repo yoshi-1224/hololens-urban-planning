@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 114698195595284836}
   - component: {fileID: 120524250954849902}
   - component: {fileID: 114404389878292576}
+  - component: {fileID: 114961078989864424}
   m_Layer: 0
   m_Name: InfoTable
   m_TagString: Untagged
@@ -200,8 +201,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76a65f15b5a6f44496151c6f9631fe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handDraggableComponent: {fileID: 114404389878292576}
   line: {fileID: 120524250954849902}
+--- !u!114 &114961078989864424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1761780268493972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c14f0c499a00d479e5d00e4b8fdaed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
 --- !u!120 &120524250954849902
 LineRenderer:
   m_ObjectHideFlags: 1

@@ -16,9 +16,9 @@ public class InteractibleButton : ButtonBase {
     /// </summary>
     public static GameObject objectReadyToPlace = null;
 
-    protected override void Start () {
-        base.Start();
-	}
+ //   protected override void Start () {
+ //       base.Start();
+	//}
     
     public void InstantiatePrefab() {
         if (objectReadyToPlace != null)

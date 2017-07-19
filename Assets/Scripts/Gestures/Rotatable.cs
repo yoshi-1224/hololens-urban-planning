@@ -7,6 +7,7 @@ public class Rotatable : MonoBehaviour {
     [SerializeField]
     private float RotationSensitivity = 10f;
 
+    public const string COMMAND_ROTATE = "rotate";
     public event Action OnRegisteringForRotation = delegate { };
     public event Action OnUnregisterForRotation = delegate { };
     public event Action OnRotationUpdated = delegate { };

@@ -39,7 +39,7 @@ public class PinnedLocationManager: HoloToolkit.Unity.Singleton<PinnedLocationMa
         if (parentTile == null)
             Debug.Log("Parent not found for the new pin");
         GameObject pinObject = Instantiate(pinPrefab, point, Quaternion.identity);
-        pinObject.name = "pin" + pinsInScene.Count;
+        pinObject.name = "pin #" + pinsInScene.Count;
         newPin.prefab = pinObject;
         pinObject.transform.SetParent(parentTile.transform, true);
         pinsInScene.Add(newPin);
