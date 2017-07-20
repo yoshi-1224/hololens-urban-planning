@@ -161,7 +161,7 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     public void HideTools() {
         if (!toolMenuObject.activeSelf)
             return;
-        InteractibleButton.onToolbarMoveOrDisable();
+        DropDownPrefabs.Instance.OnToolbarMoveOrDisable();
         GameObject.Find("BaseLayer").SendMessage("OnHideToolbar");
         toolMenuObject.SetActive(false);
     }

@@ -102,6 +102,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     }
 
     public void UnregisterObjectForTranslation() {
+        Debug.Log("Unregistering ");
         currentObjectMovableComponent.UnregisterForTranslation();
         currentObjectMovableComponent = null;
         UnregisterCleanUp();

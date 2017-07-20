@@ -33,9 +33,10 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
 
     /// <summary>
     /// dictionary that keeps track of which buildings are brought into the scene.
-    /// Use this to check for duplicates etc.
+    /// Use this to check for duplicates etc. Note how it doesn't make sense to store
+    /// reference to parent tile because the tiles can get destroyed upon zoom
     /// </summary>
-    private Dictionary<string, GameObject> buildingsInScene;
+    public Dictionary<string, GameObject> BuildingsInScene { get; set; }
 
     private bool shouldStartLoadingTiles;
 
@@ -44,15 +45,16 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
         shouldStartLoadingTiles = false;
         CustomRangeTileProvider.OnTileObjectAdded += TileProvider_OnTileAdded;
         CustomRangeTileProvider.OnAllTilesLoaded += CustomRangeTileProvider_OnAllTilesLoaded;
-        buildingsInScene = new Dictionary<string, GameObject>();
+        BuildingsInScene = new Dictionary<string, GameObject>();
         buildingsToLoad = new Queue<CoordinateBoundObjects>();
     }
 
     protected override void OnDestroy() {
         CustomRangeTileProvider.OnTileObjectAdded -= TileProvider_OnTileAdded;
         CustomRangeTileProvider.OnAllTilesLoaded -= CustomRangeTileProvider_OnAllTilesLoaded;
-        buildingsInScene = null;
+        BuildingsInScene = null;
         buildingsToLoad = null;
+        base.OnDestroy();
     }
 
     private void CustomRangeTileProvider_OnAllTilesLoaded() {
@@ -66,7 +68,7 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
     private void Update() {
         if (shouldStartLoadingTiles && buildingsToLoad.Count > 0) {
             InstantiateBuilding(buildingsToLoad.Dequeue());
-            if (buildingsInScene.Count == 0)
+            if (BuildingsInScene.Count == 0)
                 shouldStartLoadingTiles = false;
         }
     }
@@ -82,14 +84,14 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
 
         Vector3 position = LocationHelper.geoCoordinateToWorldPosition(buildingModel.coordinates);
         GameObject building;
-        if (buildingsInScene.TryGetValue(buildingName, out building)) {
+        if (BuildingsInScene.TryGetValue(buildingName, out building)) {
             // if it already has been instantiated but simply hidden
             building.SetActive(true);
             building.transform.SetParent(parentTile.transform, false);
         } else { //instantiate the prefab for the first time
             building = Instantiate(buildingModel.prefab, parentTile.transform);
             building.name = buildingName; // get the (Clone) substring out of it
-            buildingsInScene[buildingName] = building;
+            BuildingsInScene[buildingName] = building;
         }
         
         // adjust its position since the pivot position of the building models
@@ -110,7 +112,7 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
     /// set the transform parent of all the building models to null as all tiles are going to be     destroyed and hide the buildings models
     /// </summary>
     internal void OnZoomChanged() {
-        foreach(GameObject building in buildingsInScene.Values) {
+        foreach(GameObject building in BuildingsInScene.Values) {
             // set parent to null in order to avoid getting destroyed with the parent tile
             building.transform.SetParent(null, false);
             building.SetActive(false); // simply hide it rather than destroy
@@ -131,8 +133,13 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
             return false;
         });
 
+        List<string> buildingNames = new List<string>();
         foreach (CoordinateBoundObjects building in buildings) {
             buildingsToLoad.Enqueue(building);
+            buildingNames.Add(building.prefab.name);
         }
+
+        /// lets add the building name to dropdown here
+        DropDownBuildings.Instance.AddBuildingsToDropDown(buildingNames);
     }
 }

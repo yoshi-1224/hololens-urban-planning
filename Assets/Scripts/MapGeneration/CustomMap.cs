@@ -162,4 +162,5 @@ public class CustomMap : HoloToolkit.Unity.Singleton<CustomMap>, IMap {
         // event handler
         _mapVisualizer.DisposeTile(tileId);
     }
+
 }

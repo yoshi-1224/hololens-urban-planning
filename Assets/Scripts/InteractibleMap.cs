@@ -15,6 +15,9 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     private GameObject axisPrefab;
     private GameObject axis;
 
+    [SerializeField]
+    private GameObject mapTools;
+
     /// <summary>
     /// Keeps track of if the user is moving the object or not.
     /// Setting this to true will enable the user to move and place the object in the scene.
@@ -49,6 +52,9 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     [SerializeField]
     Rotatable rotatableComponent;
 
+    public event Action OnBeforeMapPlacingStart = delegate { };
+    public event Action OnMapPlaced = delegate { };
+
     private void Start() {
         // Make sure we have all the components in the scene we need.
         interpolator = GetComponent<Interpolator>();
@@ -66,7 +72,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
             rotatableComponent.OnUnregisterForRotation += rotatable_OnUnregisterForRotation;
         }
 
-        //WorldAnchorManager.Instance.AttachAnchor(gameObject, "anchor");
     }
 
     private void Update() {
@@ -117,6 +122,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     public void PlacementStart() {
         IsBeingPlaced = true;
+        hideMapTools();
+        OnBeforeMapPlacingStart.Invoke();
         feedbackSoundComponent.PlayFeedbackSound();
         DisallowGuideObject();
         InputManager.Instance.PushModalInputHandler(gameObject);
@@ -124,6 +131,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void PlacementStop() {
+        showMapTools();
+        OnMapPlaced.Invoke();
         IsBeingPlaced = false;
         feedbackSoundComponent.PlayFeedbackSound();
         AllowGuideObject();
@@ -189,11 +198,15 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void scalable_OnRegisteringForScaling() {
+        HideAllTables();
+        DisallowGuideObject();
+        UpdateMapInfo(false);
+    }
+
+    public void HideAllTables() {
         foreach (InteractibleBuilding script in GetComponentsInChildren<InteractibleBuilding>()) {
             script.HideDetails();
         }
-        DisallowGuideObject();
-        UpdateMapInfo(false);
     }
 
     public void scalable_OnUnregister() {
@@ -255,5 +268,15 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     public void OnFocusExit() {
         DrawingManager.Instance.ForceCursorStateChange();
+    }
+
+    public void showMapTools() {
+        if (!mapTools.activeSelf)
+            mapTools.SetActive(true);
+    }
+
+    public void hideMapTools() {
+        if (mapTools.activeSelf)
+            mapTools.SetActive(false);
     }
 }

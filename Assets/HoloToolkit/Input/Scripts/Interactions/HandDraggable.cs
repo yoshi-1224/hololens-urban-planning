@@ -14,12 +14,16 @@ namespace HoloToolkit.Unity.InputModule
     public class HandDraggable : MonoBehaviour,
                                  IFocusable,
                                  IInputHandler,
-                                 ISourceStateHandler
-    {
+                                 ISourceStateHandler {
         /// <summary>
         /// Event triggered when dragging starts.
         /// </summary>
         public event Action StartedDragging;
+
+        ///<summary>
+        /// Event triggered after every dragging
+        /// </summary>
+        public event Action OnDraggingUpdate = delegate { };
 
         /// <summary>
         /// Event triggered when dragging stops.
@@ -231,6 +235,8 @@ namespace HoloToolkit.Unity.InputModule
                 Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);		
                 HostTransform.rotation = upRotation * HostTransform.rotation;		
             }
+
+            OnDraggingUpdate.RaiseEvent();
         }
 
         /// <summary>

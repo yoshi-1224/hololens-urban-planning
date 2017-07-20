@@ -22,8 +22,6 @@ GameObject:
   - component: {fileID: 33341166544662222}
   - component: {fileID: 23612341881578568}
   - component: {fileID: 65546736148272328}
-  - component: {fileID: 114581097196352960}
-  - component: {fileID: 114885333145617998}
   m_Layer: 0
   m_Name: CPF_building
   m_TagString: Untagged
@@ -95,27 +93,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 41.471107, y: 171.699, z: 86.80792}
   m_Center: {x: 8.749224, y: 0.00001490116, z: 7.1448603}
---- !u!114 &114581097196352960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1756914681767864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfaed0e633d42a046b0eecc71e4883c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotationSensitivity: 10
---- !u!114 &114885333145617998
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1756914681767864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6b7ee2f0c3057e45912d4d27398fd95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TranslationSensitivity: 10

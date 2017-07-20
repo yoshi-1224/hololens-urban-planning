@@ -8,8 +8,9 @@ namespace Mapbox.Unity.MeshGeneration.Data
 	using System;
 	using Mapbox.Unity.Map;
 	using System.Collections.Generic;
+    using HoloToolkit.Unity;
 
-	public class UnityTile : MonoBehaviour
+    public class UnityTile : MonoBehaviour
 	{
 		float[] _heightData;
 		Texture2D _rasterData;
@@ -117,6 +118,8 @@ namespace Mapbox.Unity.MeshGeneration.Data
             gameObject.name = tileId.ToString();
 			transform.localPosition = position;
 			gameObject.SetActive(true);
+            gameObject.AddComponent<Interpolator>();
+
 		}
 
 		internal void Recycle()

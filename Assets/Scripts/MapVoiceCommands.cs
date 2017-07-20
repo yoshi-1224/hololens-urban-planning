@@ -26,6 +26,7 @@ public class MapVoiceCommands : MonoBehaviour, ISpeechHandler {
 
     private void setUpStreetView() {
         StreetViewManager.Instance.SetUpStreetView();
+        InteractibleMap.Instance.hideMapTools();
     }
 
     private void pinGazedLocation() {

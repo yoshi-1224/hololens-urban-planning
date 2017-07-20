@@ -2,7 +2,6 @@
 using Mapbox.Map;
 using Mapbox.Unity.Map;
 using System;
-using Mapbox.Utils;
 using Mapbox.Unity.Utilities;
 using System.Collections.Generic;
 using System.Collections;
@@ -64,14 +63,21 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     /// <summary>
     /// UnityTiles will put the pair into this dictionary
     /// </summary>
-    public static Dictionary<UnwrappedTileId, GameObject> InstantiatedTiles { get; set; }
+    public static Dictionary<UnwrappedTileId, GameObject> InstantiatedTiles { get; private set; }
+
+    public static Dictionary<UnwrappedTileId, Interpolator> InstantiatedTilesInterpolator { get; private set; }
 
     internal override void OnInitialized() {
         InstantiatedTiles = new Dictionary<UnwrappedTileId, GameObject>();
+        InstantiatedTilesInterpolator = new Dictionary<UnwrappedTileId, Interpolator>();
+        LocationHelper.onTileJump += LocationHelper_onTileJump;
         _currentLoadedRange = TileRangeLimits.Initial;
         OnAllTilesLoaded += OnAllTilesLoadedHandler;
-        //StartCoroutine(LoadNewTiles());
         LoadNewTilesAtStart();
+    }
+
+    private void LocationHelper_onTileJump(UnwrappedTileId obj) {
+        JumpToTile(obj);
     }
 
     public void PanTowards(Direction direction) {
@@ -99,31 +105,18 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     }
 
     private void shiftTiles(Direction direction) {
-        Vector3 shiftAmount = Vector3.zero;
         var centerTileId = CustomMap.Instance.CenterTileId;
-        switch (direction) {
-            // shift in different direction to the pan
-            case Direction.West:
-                shiftAmount.x += CustomMap.Instance.UnityTileLocalSize;
-                break;
-            case Direction.East:
-                shiftAmount.x -= CustomMap.Instance.UnityTileLocalSize;
-                break;
-            case Direction.North:
-                shiftAmount.z -= CustomMap.Instance.UnityTileLocalSize;
-                break;
-            case Direction.South:
-                shiftAmount.z += CustomMap.Instance.UnityTileLocalSize;
-                break;
-        }
         foreach (UnwrappedTileId key in InstantiatedTiles.Keys) {
             GameObject tileObject = InstantiatedTiles[key];
+            Interpolator interpolator = InstantiatedTilesInterpolator[key];
             int xOffset = key.X - centerTileId.X;
             int yOffset = key.Y - centerTileId.Y;
-            Vector3 newLocalPosition = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize,                                 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
-            tileObject.transform.localPosition = newLocalPosition;
 
-            // have to access all the tile objects anyways so just do it this way
+            Vector3 newLocalPosition = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize, 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
+            Vector3 worldP = gameObject.transform.TransformPoint(newLocalPosition);
+
+            interpolator.SetTargetPosition(worldP);
+
             AdjustVisibility(xOffset, yOffset, tileObject);
         }
     }
@@ -131,8 +124,18 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     private static void AdjustVisibility(int xOffset, int yOffset, GameObject tileObject) {
         if (Math.Abs(xOffset) <= visibleRange && Math.Abs(yOffset) <= visibleRange) {
             Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_VISIBLE_TILES);
-        } else {
+        }
+        else {
             Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_INVISIBLE_TILES);
+        }
+    }
+
+    private static bool ShouldRenderVisible(int xOffset, int yOffset, GameObject tileObject) {
+        if (Math.Abs(xOffset) <= visibleRange && Math.Abs(yOffset) <= visibleRange) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -146,6 +149,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
 
     public static void CacheTileObject(UnwrappedTileId tileId, GameObject tileObject) {
         InstantiatedTiles[tileId] = tileObject;
+        InstantiatedTilesInterpolator[tileId] = tileObject.GetComponent<Interpolator>();
         AdjustVisibility(tileObject);
         OnTileObjectAdded.Invoke(tileId);
     }
@@ -176,6 +180,10 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         }
 
         UnwrappedTileId newCenterTileId = new UnwrappedTileId(CustomMap.Instance.Zoom, newCenterXId, newCenterYId);
+        updateMapCenterMercatorAndCenterCoord(newCenterTileId);
+    }
+
+    private void updateMapCenterMercatorAndCenterCoord(UnwrappedTileId newCenterTileId) {
         var referenceTileRect = Conversions.TileBounds(newCenterTileId);
 
         CustomMap.Instance.CenterMercator = referenceTileRect.Center;
@@ -217,9 +225,10 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     internal IEnumerator LoadNewTiles() {
         var centerTile = CustomMap.Instance.CenterTileId;
         yield return null;
-
-        for (int x = (int)(centerTile.X - _preLoadedRange.x); x <= (centerTile.X + _preLoadedRange.z); x++) {
-            for (int y = (int)(centerTile.Y - _preLoadedRange.y); y <= (centerTile.Y + _preLoadedRange.w); y++) {
+        Vector4 rangeToLoad = _preLoadedRange;
+        rangeToLoad /= 2; // just load half of it
+        for (int x = (int)(centerTile.X - rangeToLoad.x); x <= (centerTile.X + rangeToLoad.z); x++) {
+            for (int y = (int)(centerTile.Y - rangeToLoad.y); y <= (centerTile.Y + rangeToLoad.w); y++) {
                 AddTile(new UnwrappedTileId(_map.Zoom, x, y));
                 yield return null; // stop here and resume at next frame
             }
@@ -229,7 +238,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     }
 
     /// <summary>
-    /// loads new tiles upon zoom or change of area in the background
+    /// loads new tiles at the start
     /// </summary>
     internal void LoadNewTilesAtStart() {
         var centerTile = CustomMap.Instance.CenterTileId;
@@ -248,6 +257,25 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             InteractibleMap.Instance.PlacementStart();
             AtStart = false;
         }
+    }
+
+    public void JumpToTile(UnwrappedTileId tileIdtoJumpTo) {
+        UnwrappedTileId centerTileId = tileIdtoJumpTo;
+        foreach (UnwrappedTileId key in InstantiatedTiles.Keys) {
+            GameObject tileObject = InstantiatedTiles[key];
+            Interpolator interpolator = InstantiatedTilesInterpolator[key];
+            int xOffset = key.X - centerTileId.X;
+            int yOffset = key.Y - centerTileId.Y;
+
+            Vector3 newLocalPosition = new Vector3(xOffset * CustomMap.Instance.UnityTileLocalSize, 0, -yOffset * CustomMap.Instance.UnityTileLocalSize);
+            Vector3 worldP = gameObject.transform.TransformPoint(newLocalPosition);
+
+            interpolator.SetTargetPosition(worldP);
+
+            AdjustVisibility(xOffset, yOffset, tileObject);
+        }
+
+        updateMapCenterMercatorAndCenterCoord(centerTileId);
     }
 
 }

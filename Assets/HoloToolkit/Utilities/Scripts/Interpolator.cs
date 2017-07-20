@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -10,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class Interpolator : MonoBehaviour
     {
+
         [Tooltip("When interpolating, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         public bool UseUnscaledTime = true;
 
@@ -506,5 +508,6 @@ namespace HoloToolkit.Unity
                 return transform.localScale;
             }
         }
+
     }
 }

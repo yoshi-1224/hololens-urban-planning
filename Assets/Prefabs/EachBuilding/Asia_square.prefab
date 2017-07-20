@@ -23,8 +23,6 @@ GameObject:
   - component: {fileID: 23972686302467474}
   - component: {fileID: 65180432770386822}
   - component: {fileID: 114387490156049146}
-  - component: {fileID: 114032631892423280}
-  - component: {fileID: 114872008835154728}
   m_Layer: 0
   m_Name: Asia_square
   m_TagString: Untagged
@@ -96,18 +94,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 139.30664, y: 222.872, z: 136.89844}
   m_Center: {x: 0.0009765625, y: 0, z: 0.000030517578}
---- !u!114 &114032631892423280
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1479389452111804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfaed0e633d42a046b0eecc71e4883c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotationSensitivity: 10
 --- !u!114 &114387490156049146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -120,16 +106,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gazeDurationTillGuideDisplay: 4
-  tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
---- !u!114 &114872008835154728
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1479389452111804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6b7ee2f0c3057e45912d4d27398fd95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TranslationSensitivity: 10

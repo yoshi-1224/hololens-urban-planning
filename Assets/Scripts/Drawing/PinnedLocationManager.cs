@@ -31,7 +31,7 @@ public class PinnedLocationManager: HoloToolkit.Unity.Singleton<PinnedLocationMa
     }
 
     public void InstantiatePin(Vector3 point) {
-        Vector2d pointLatLong = LocationHelper.worldPositionToGeoCoordinate(point);
+        Vector2d pointLatLong = LocationHelper.WorldPositionToGeoCoordinate(point);
         BuildingManager.CoordinateBoundObjects newPin = new BuildingManager.CoordinateBoundObjects();
         newPin.latitude = (float) pointLatLong.x;
         newPin.longitude = (float) pointLatLong.y;
@@ -43,6 +43,9 @@ public class PinnedLocationManager: HoloToolkit.Unity.Singleton<PinnedLocationMa
         newPin.prefab = pinObject;
         pinObject.transform.SetParent(parentTile.transform, true);
         pinsInScene.Add(newPin);
+
+        // add to the dropdown
+        DropDownPinnedLocations.Instance.AddPinToDropDown(pinObject.name);
     }
 
     public void pinGazedLocation() {

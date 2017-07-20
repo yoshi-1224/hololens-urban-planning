@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TriangleNet4.Geometry;
+using TriangleNet.Geometry;
 // the TriangleNet source code is different to the one I downloaded.
 // So the one I downloaded is renamed to TriangleNet4
 
@@ -152,7 +152,7 @@ public static class PolygonGenerator {
     /// (i.e. top-surface vertex at index i has a bottom-surface vertex at index (i + halfLength) )
     /// </summary>
     private static int[] generateWallsTriangles(Vector3[] vertices, Dictionary<int, int> neighbourMap) {
-        List<int> triangles = new List<int>(vertices.Length * 6);
+        List<int> triangles = new List<int>(vertices.Length * 6); // 2 * 3 = 6
         int halfWay = vertices.Length / 2;
         for (int i = 0; i < halfWay; i++) {
             int neighbourIndex = neighbourMap[i];

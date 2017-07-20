@@ -11,41 +11,25 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     private HandDraggable handDraggableComponent;
     [SerializeField]
     private LineRenderer line;
-    private bool shouldUpdateLinePositions;
     private FeedbackSound feedbackSoundComponent;
 
     private void Start() {
         // Set the number of vertex fo the Line Renderer
         line.positionCount = 2;
         UpdateLinePositions();
-        shouldUpdateLinePositions = false;
         handDraggableComponent = GetComponent<HandDraggable>();
         feedbackSoundComponent = GetComponent<FeedbackSound>();
-        handDraggableComponent.StartedDragging += HandDraggable_StartedDragging;
-        handDraggableComponent.StoppedDragging += HandDraggable_StoppedDragging;
+        handDraggableComponent.OnDraggingUpdate += HandDraggableComponent_OnDraggingUpdate;
     }
 
-    private void HandDraggable_StartedDragging() {
-        if (feedbackSoundComponent != null)
-            feedbackSoundComponent.PlayFeedbackSound();
-        shouldUpdateLinePositions = true;
-    }
-
-    private void HandDraggable_StoppedDragging() {
-        shouldUpdateLinePositions = false;
+    private void HandDraggableComponent_OnDraggingUpdate() {
+        UpdateLinePositions();
     }
 
     private void OnDestroy() {
         if (handDraggableComponent != null) {
-            handDraggableComponent.StartedDragging -= HandDraggable_StartedDragging;
-            handDraggableComponent.StoppedDragging -= HandDraggable_StoppedDragging;
+            handDraggableComponent.OnDraggingUpdate -= HandDraggableComponent_OnDraggingUpdate;
         }
-    }
-
-    private void Update() {
-        if (!shouldUpdateLinePositions)
-            return;
-        UpdateLinePositions();
     }
 
     public void OnFocusEnter() {

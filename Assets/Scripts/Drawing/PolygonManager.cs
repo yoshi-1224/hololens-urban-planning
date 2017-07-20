@@ -59,7 +59,7 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
     /// and set its transform to polygon's parent transform
     /// </summary>
     private Vector2d setPolygonParentToMapTile(GameObject polygon) {
-        Vector2d polygonCoordinates = LocationHelper.worldPositionToGeoCoordinate(polygon.transform.position);
+        Vector2d polygonCoordinates = LocationHelper.WorldPositionToGeoCoordinate(polygon.transform.position);
         UnwrappedTileId parentTileId = TileCover.CoordinateToTileId(polygonCoordinates, CustomMap.Instance.Zoom);
         GameObject parentTileObject = null;
         if (CustomRangeTileProvider.InstantiatedTiles.TryGetValue(parentTileId, out parentTileObject)) {

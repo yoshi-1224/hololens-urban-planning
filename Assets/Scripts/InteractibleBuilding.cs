@@ -13,7 +13,7 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     private GameObject guideObject;
 
     [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
-    public float gazeDurationTillGuideDisplay;
+    public float gazeDurationTillGuideDisplay = 4;
 
     public static bool shouldShowGuide {
         get {
@@ -47,11 +47,24 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
                 defaultMaterials[i].SetColor("_EmissionColor", new Color(0.1176471f, 0.1176471f, 0.1176471f));
             }
         }
-        rotatableComponent = GetComponent<Rotatable>();
+        rotatableComponent = gameObject.AddComponent<Rotatable>();
         rotatableComponent.OnUnregisterForRotation += RotatableComponent_OnUnregisterForRotation;
-        movableComponent = GetComponent<Movable>();
+        movableComponent = gameObject.AddComponent<Movable>();
         movableComponent.OnUnregisterForTranslation += MovableComponent_OnUnregisterForTranslation;
         isTableAlreadyExists = false;
+
+        InteractibleMap.Instance.OnBeforeMapPlacingStart += Instance_OnBeforeMapPlacingStart;
+        InteractibleMap.Instance.OnMapPlaced += Instance_OnMapPlaced;
+    }
+
+    private void Instance_OnMapPlaced() {
+        gameObject.SetActive(true);
+    }
+
+    private void Instance_OnBeforeMapPlacingStart() {
+        HideDetails();
+        gameObject.SetActive(false);
+
     }
 
     private void MovableComponent_OnUnregisterForTranslation() {
@@ -63,11 +76,16 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     }
 
     private void OnDestroy() {
-        if (movableComponent!= null)
+        if (movableComponent != null)
             movableComponent.OnUnregisterForTranslation -= MovableComponent_OnUnregisterForTranslation;
 
         if (rotatableComponent != null)
             rotatableComponent.OnUnregisterForRotation -= RotatableComponent_OnUnregisterForRotation;
+
+        if (InteractibleMap.Instance != null) {
+            InteractibleMap.Instance.OnBeforeMapPlacingStart -= Instance_OnBeforeMapPlacingStart;
+            InteractibleMap.Instance.OnMapPlaced -= Instance_OnMapPlaced;
+        }
     }
 
     public void OnFocusEnter() {
@@ -276,6 +294,5 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     }
 
 #endregion
-
 
 }

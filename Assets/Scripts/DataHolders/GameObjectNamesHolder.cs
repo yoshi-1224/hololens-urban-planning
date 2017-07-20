@@ -12,6 +12,7 @@ public static class GameObjectNamesHolder {
     public static string NAME_TOOL_BAR = "Toolbar";
     public static string NAME_MAP_DATA_HOLDER = "DataHolder";
     public static string NAME_CURSOR = "CustomCursorWithFeedback";
+    public static string NAME_PREFAB_DROPDOWN = "PrefabsDropDown";
 
     // within data holder
     public static string NAME_DATA_MAP_ZOOM = "Zoom";
@@ -23,5 +24,6 @@ public static class GameObjectNamesHolder {
     public static int LAYER_MAP_OBJECTS = LayerMask.NameToLayer("MapObjects");
     public static int LAYER_VISIBLE_TILES = LayerMask.NameToLayer("VisibleTiles");
     public static int LAYER_INVISIBLE_TILES = LayerMask.NameToLayer("InvisibleTiles");
+    public static int LAYER_OBJECT_BEING_PLACED = LayerMask.NameToLayer("ObjectToPlace");
 
 }

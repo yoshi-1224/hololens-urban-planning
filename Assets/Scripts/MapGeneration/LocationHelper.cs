@@ -4,6 +4,7 @@ using UnityEngine;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using Mapbox.Map;
+using System;
 
 public static class LocationHelper {
 
@@ -22,8 +23,8 @@ public static class LocationHelper {
         position.y = CustomMap.Instance.transform.position.y;
         return position;
     }
-
-    public static Vector2d worldPositionToGeoCoordinate(Vector3 position) {
+    
+    public static Vector2d WorldPositionToGeoCoordinate(Vector3 position) {
         // ignore the height diff and convert to local position wrt the map
         Vector2d displacementFromMapCenter = CustomMap.Instance.transform.InverseTransformPoint(position).ToVector2d();
         // note that the displacement in localSpace is much bigger than that in worldspace because of the mapScaling
@@ -32,7 +33,7 @@ public static class LocationHelper {
         Vector2d positionInMeters = displacementFromMapCenter + mapCenterInMeters;
         return Conversions.MetersToLatLon(positionInMeters);
     }
-
+    public static event Action<UnwrappedTileId> onTileJump;
     /// <summary>
     /// finds the tile object that should parent the building with a latitude/longitude
     /// </summary>
@@ -45,5 +46,19 @@ public static class LocationHelper {
         else {
             return null;
         }
+    }
+
+    public static void MoveMapToWorldPositionAsCenter(Vector3 worldPositionToMoveTowards) {
+        Vector2d coordinates = WorldPositionToGeoCoordinate(worldPositionToMoveTowards);
+        MoveMapToCoordinateAsCenter(coordinates);
+    }
+
+    public static void MoveMapToCoordinateAsCenter(Vector2d CoordinateToMoveTowards) {
+        // find the tile id of the parent
+        UnwrappedTileId parentTileId = TileCover.CoordinateToTileId(CoordinateToMoveTowards, CustomMap.Instance.Zoom);
+
+        // using event just as a placeholder
+        onTileJump.Invoke(parentTileId);
+
     }
 }

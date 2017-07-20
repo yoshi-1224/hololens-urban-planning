@@ -23,8 +23,6 @@ GameObject:
   - component: {fileID: 23698894760898788}
   - component: {fileID: 65851363160261960}
   - component: {fileID: 114522534864068220}
-  - component: {fileID: 114439865713254944}
-  - component: {fileID: 114356261790262328}
   m_Layer: 0
   m_Name: AXA_tower
   m_TagString: Untagged
@@ -96,30 +94,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 87.87512, y: 255.04796, z: 80.15061}
   m_Center: {x: 15.105917, y: 1.6166269, z: -4.3404326}
---- !u!114 &114356261790262328
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1545302438157104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfaed0e633d42a046b0eecc71e4883c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotationSensitivity: 10
---- !u!114 &114439865713254944
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1545302438157104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6b7ee2f0c3057e45912d4d27398fd95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TranslationSensitivity: 10
 --- !u!114 &114522534864068220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,4 +106,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gazeDurationTillGuideDisplay: 4
-  tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}

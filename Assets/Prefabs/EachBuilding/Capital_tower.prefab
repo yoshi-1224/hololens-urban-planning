@@ -23,8 +23,6 @@ GameObject:
   - component: {fileID: 23656835297960404}
   - component: {fileID: 65095536938032670}
   - component: {fileID: 114254341896795330}
-  - component: {fileID: 114591502364744374}
-  - component: {fileID: 114121628684522282}
   m_Layer: 0
   m_Name: Capital_tower
   m_TagString: Untagged
@@ -96,18 +94,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 98.50781, y: 247.91199, z: 112.59375}
   m_Center: {x: 0.000015258789, y: 0, z: -0.000015258789}
---- !u!114 &114121628684522282
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960750374728310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6b7ee2f0c3057e45912d4d27398fd95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TranslationSensitivity: 10
 --- !u!114 &114254341896795330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -120,16 +106,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gazeDurationTillGuideDisplay: 4
-  tableSound: {fileID: 8300000, guid: 510146eba7c8639459e5c6e6d471fe9c, type: 3}
---- !u!114 &114591502364744374
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960750374728310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfaed0e633d42a046b0eecc71e4883c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotationSensitivity: 10

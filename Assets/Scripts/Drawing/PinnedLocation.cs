@@ -23,7 +23,7 @@ public class PinnedLocation : MonoBehaviour, IFocusable {
     }
 
     public void setCoordinates() {
-        this.Coordinates = LocationHelper.worldPositionToGeoCoordinate(transform.position);
+        this.Coordinates = LocationHelper.WorldPositionToGeoCoordinate(transform.position);
     }
 
     private void displayInfo() {

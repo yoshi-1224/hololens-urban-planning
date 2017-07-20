@@ -55,7 +55,7 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
     }
 
     private void setCoordinates() {
-        Coordinates = LocationHelper.worldPositionToGeoCoordinate(transform.position);
+        Coordinates = LocationHelper.WorldPositionToGeoCoordinate(transform.position);
     }
 
     private void ScalableScript_OnScalingUpdated(bool isExceedingLimit) {

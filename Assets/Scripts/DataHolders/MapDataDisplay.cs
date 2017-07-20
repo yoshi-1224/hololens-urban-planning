@@ -45,27 +45,22 @@ public class MapDataDisplay : Singleton<MapDataDisplay> {
 
     public void UpdateZoomInfo(int newZoom) {
         MapZoom = newZoom;
-        TextMesh_MapZoom.text = RenderBold("Zoom Level: ") + MapZoom;
+        TextMesh_MapZoom.text = PrefabHolder.renderBold("Zoom Level: ") + MapZoom;
     }
 
     public void UpdateWorldRelativeScaleInfo(float newScale) {
         MapWorldRelativeScale = newScale;
-        TextMesh_MapWorldRelativeScale.text = RenderBold("World-relative Scale: ") + string.Format("{0:0.0000}", MapWorldRelativeScale);
+        TextMesh_MapWorldRelativeScale.text = PrefabHolder.renderBold("World-relative Scale: ") + string.Format("{0:0.0000}", MapWorldRelativeScale);
     }
 
     public void UpdateCenterCoordinatesInfo(string newCoordinates) {
         var coordinatesSplit = newCoordinates.Split(',');
         MapCentreCoordinates = string.Format("{0:0.00000}, {1:0.0000}", double.Parse(coordinatesSplit[0]), double.Parse(coordinatesSplit[1]));
-        TextMesh_MapCenterCoordinates.text = RenderBold("Center Coordinates: ") + "\n" + MapCentreCoordinates;
+        TextMesh_MapCenterCoordinates.text = PrefabHolder.renderBold("Center Coordinates: ") + "\n" + MapCentreCoordinates;
     }
 
     public void UpdateThemeInfo() {
-        TextMesh_MapTheme.text = RenderBold("Theme: ") + "Street";
+        TextMesh_MapTheme.text = PrefabHolder.renderBold("Theme: ") + "Street";
     }
 
-    private string RenderBold(string str) {
-        return "<b>" + str + "</b>";
-    }
-
-    
 }
