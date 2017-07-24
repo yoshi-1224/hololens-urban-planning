@@ -12,40 +12,70 @@ public class PinnedLocationManager: HoloToolkit.Unity.Singleton<PinnedLocationMa
     [SerializeField]
     private GameObject pinPrefab;
 
-    public const string COMMAND_PIN_LOCATION = "pin location";
+    public const string COMMAND_PIN_LOCATION = "save location";
 
     /// <summary>
     /// contains all the pins list/dictionary of something
     /// </summary>
-    private List<BuildingManager.CoordinateBoundObjects> pinsInScene;
+    public Dictionary<string, BuildingManager.CoordinateBoundObject> pinsInScene { get; set; }
+
+    private Queue<BuildingManager.CoordinateBoundObject> PinsToLoad;
+    private bool shouldStartLoadingPins;
 
     protected override void Awake() {
         base.Awake();
-        pinsInScene = new List<BuildingManager.CoordinateBoundObjects>();
+        PinsToLoad = new Queue<BuildingManager.CoordinateBoundObject>();
+        pinsInScene = new Dictionary<string, BuildingManager.CoordinateBoundObject>();
         CustomRangeTileProvider.OnTileObjectAdded += CustomRangeTileProvider_OnTileObjectAdded;
+        CustomRangeTileProvider.OnAllTilesLoaded += CustomRangeTileProvider_OnAllTilesLoaded;
+        shouldStartLoadingPins = false;
     }
+
+    private void CustomRangeTileProvider_OnAllTilesLoaded() {
+        // this is necessary not just for performance but also for correctly setting
+        // the layer of the pins (off by one frame or so)
+        shouldStartLoadingPins = true;
+    }
+
 
     private void CustomRangeTileProvider_OnTileObjectAdded(UnwrappedTileId tileIdLoaded) {
         if (pinsInScene.Count > 0)
             queryPinsWithinTileBound(tileIdLoaded);
     }
 
+    private void Update() {
+        if (shouldStartLoadingPins && PinsToLoad.Count > 0) {
+            LoadPin(PinsToLoad.Dequeue());
+            if (PinsToLoad.Count == 0)
+                shouldStartLoadingPins = false;
+        }
+    }
+
     public void InstantiatePin(Vector3 point) {
         Vector2d pointLatLong = LocationHelper.WorldPositionToGeoCoordinate(point);
-        BuildingManager.CoordinateBoundObjects newPin = new BuildingManager.CoordinateBoundObjects();
+        BuildingManager.CoordinateBoundObject newPin = new BuildingManager.CoordinateBoundObject();
         newPin.latitude = (float) pointLatLong.x;
         newPin.longitude = (float) pointLatLong.y;
         GameObject parentTile = LocationHelper.FindParentTile(pointLatLong);
-        if (parentTile == null)
-            Debug.Log("Parent not found for the new pin");
         GameObject pinObject = Instantiate(pinPrefab, point, Quaternion.identity);
         pinObject.name = "pin #" + pinsInScene.Count;
-        newPin.prefab = pinObject;
+        newPin.gameObject = pinObject;
         pinObject.transform.SetParent(parentTile.transform, true);
-        pinsInScene.Add(newPin);
+        pinsInScene[pinObject.name] = newPin;
 
         // add to the dropdown
         DropDownPinnedLocations.Instance.AddPinToDropDown(pinObject.name);
+    }
+
+    public void LoadPin(BuildingManager.CoordinateBoundObject pin) {
+        GameObject pinObject = pin.gameObject;
+        if (pinObject == null) // if deleted
+            return;
+        GameObject parentTile = LocationHelper.FindParentTile(pin.coordinates);
+        pinObject.transform.position = LocationHelper.geoCoordinateToWorldPosition(pin.coordinates);
+        pinObject.transform.parent = parentTile.transform;
+        pinObject.SetActive(true);
+        pinObject.layer = parentTile.layer; // this is set too early for some reason
     }
 
     public void pinGazedLocation() {
@@ -54,13 +84,18 @@ public class PinnedLocationManager: HoloToolkit.Unity.Singleton<PinnedLocationMa
     }
 
     public void OnZoomChanged() {
-        for (int i = 0; i < pinsInScene.Count; i++) {
-            pinsInScene[i].prefab.transform.parent = null;
+        foreach (BuildingManager.CoordinateBoundObject pin in pinsInScene.Values) {
+            GameObject pinObject = pin.gameObject;
+            if (pinObject == null)
+                continue;
+
+            pinObject.transform.parent = null;
+
             /// since the scale of the map changes (*2 or /2) before the tiles get destroyed,
             /// before the parent is set to null the size gets multiplied by the difference
             /// so just set the localscale to pinPrefab's localScale to restore the original scale
-            pinsInScene[i].prefab.transform.localScale = pinPrefab.transform.localScale;
-            pinsInScene[i].prefab.SetActive(false);
+            pinObject.transform.localScale = pinPrefab.transform.localScale;
+            pinObject.SetActive(false);
         }
     }
 
@@ -68,19 +103,15 @@ public class PinnedLocationManager: HoloToolkit.Unity.Singleton<PinnedLocationMa
     private void queryPinsWithinTileBound(UnwrappedTileId tileId) {
         Vector2dBounds bounds = Conversions.TileIdToBounds(tileId);
         var pinsWithinBound = pinsInScene.Where((pin) => {
-            if (pin.coordinates.x.InRange(bounds.North, bounds.South) && 
-            pin.coordinates.y.InRange(bounds.West, bounds.East)) 
+            if (pin.Value.coordinates.x.InRange(bounds.North, bounds.South) && 
+            pin.Value.coordinates.y.InRange(bounds.West, bounds.East)) 
                 return true;
 
             return false;
         });
 
-        foreach(BuildingManager.CoordinateBoundObjects pin in pinsWithinBound) {
-            // set its position properly
-            pin.prefab.transform.position = LocationHelper.geoCoordinateToWorldPosition(pin.coordinates);
-            pin.prefab.transform.parent = CustomRangeTileProvider.InstantiatedTiles[tileId].transform;
-            pin.prefab.SetActive(true);
-            pin.prefab.layer = CustomRangeTileProvider.InstantiatedTiles[tileId].layer;
+        foreach(var pin in pinsWithinBound) {
+            PinsToLoad.Enqueue(pin.Value);
         }
     }
 

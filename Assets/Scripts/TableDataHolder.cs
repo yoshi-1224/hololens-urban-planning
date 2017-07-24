@@ -30,9 +30,7 @@ public class TableDataHolder : Singleton<TableDataHolder> {
     private string[] classes = { "mixed-use development", "civic & community",
                                 "business, trade"};
 
-    // actual member classes
     public Dictionary<string, TableData> dataDict { get; set; }
-    public Dictionary<string, Vector2d> nameToLocation { get; set; }
 
     protected override void Awake() {
         base.Awake();
@@ -49,13 +47,10 @@ public class TableDataHolder : Singleton<TableDataHolder> {
         dataDict["SCCC_S3_Parent(Clone)"] = new TableData("Chinese Culture Centre", classes[1], 2.76f, 0f, 3);
         dataDict["Singapore_conference_hall"] = new TableData("Singapore Conference Hall", classes[2], 0f, 29.88f, 10);
         dataDict["OUE_downtown"] = new TableData("OUE Downtown", classes[2], 13.88f, 193.56f, 65);
-
-        nameToLocation = new Dictionary<string, Vector2d>();
     }
 
     protected override void OnDestroy() {
         dataDict.Clear();
-        nameToLocation.Clear();
         base.OnDestroy();
     }
 

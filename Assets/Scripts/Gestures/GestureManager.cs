@@ -102,7 +102,6 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     }
 
     public void UnregisterObjectForTranslation() {
-        Debug.Log("Unregistering ");
         currentObjectMovableComponent.UnregisterForTranslation();
         currentObjectMovableComponent = null;
         UnregisterCleanUp();
@@ -127,8 +126,6 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
         }
     
         // clear the stack so that other gameobjects can receive gesture inputs
-        // it might actually be necessary to have the manipulation handler on the object itself
-        // or just register this as global listener!
         InputManager.Instance.ClearModalInputStack();
     }
 

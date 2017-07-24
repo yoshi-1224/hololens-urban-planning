@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using HoloToolkit.Unity.InputModule;
 
-public class Movable : MonoBehaviour {
+public class Movable : MonoBehaviour, ISpeechHandler {
     [SerializeField]
     private float TranslationSensitivity = 10f;
     private Vector3 previousManipulationPosition;
@@ -35,5 +36,11 @@ public class Movable : MonoBehaviour {
 
     public void UnregisterForTranslation() {
         OnUnregisterForTranslation.Invoke();
+    }
+
+    public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
+        if (eventData.RecognizedText.ToLower().Equals(COMMAND_MOVE)) {
+            RegisterForTranslation();
+        }
     }
 }

@@ -7,6 +7,7 @@ using Mapbox.Map;
 using System;
 
 public static class LocationHelper {
+    public static event Action<UnwrappedTileId> onTileJump;
 
     public static Vector3 geoCoordinateToWorldPosition(Vector2d latLng) {
         var mapCenterInMeters = Conversions.LatLonToMeters(CustomMap.Instance.CenterLatitudeLongitude);
@@ -33,7 +34,7 @@ public static class LocationHelper {
         Vector2d positionInMeters = displacementFromMapCenter + mapCenterInMeters;
         return Conversions.MetersToLatLon(positionInMeters);
     }
-    public static event Action<UnwrappedTileId> onTileJump;
+
     /// <summary>
     /// finds the tile object that should parent the building with a latitude/longitude
     /// </summary>
@@ -48,14 +49,12 @@ public static class LocationHelper {
         }
     }
 
-    public static void MoveMapToWorldPositionAsCenter(Vector3 worldPositionToMoveTowards) {
-        Vector2d coordinates = WorldPositionToGeoCoordinate(worldPositionToMoveTowards);
-        MoveMapToCoordinateAsCenter(coordinates);
-    }
-
     public static void MoveMapToCoordinateAsCenter(Vector2d CoordinateToMoveTowards) {
         // find the tile id of the parent
         UnwrappedTileId parentTileId = TileCover.CoordinateToTileId(CoordinateToMoveTowards, CustomMap.Instance.Zoom);
+
+        // hide all building info tables
+        InteractibleMap.Instance.HideAllTables();
 
         // using event just as a placeholder
         onTileJump.Invoke(parentTileId);

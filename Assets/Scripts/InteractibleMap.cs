@@ -32,15 +32,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     [SerializeField]
     private float gazeDurationTillGuideDisplay;
 
-    public static bool shouldShowGuide {
-        get {
-            return GuideStatus.ShouldShowGuide;
-        }
-        set {
-            GuideStatus.ShouldShowGuide = value;
-        }
-    }
-
     [SerializeField]
     private CustomObjectCursor cursorScript;
     private bool wasMapVisible;
@@ -52,8 +43,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     [SerializeField]
     Rotatable rotatableComponent;
 
-    public event Action OnBeforeMapPlacingStart = delegate { };
-    public event Action OnMapPlaced = delegate { };
+    public event Action<bool> OnBeforeUserActionOnMap = delegate { };
+    public event Action OnAfterUserActionOnMap = delegate { };
 
     private void Start() {
         // Make sure we have all the components in the scene we need.
@@ -71,7 +62,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
             rotatableComponent.OnRegisteringForRotation += rotatable_OnRegisteringForRotation;
             rotatableComponent.OnUnregisterForRotation += rotatable_OnUnregisterForRotation;
         }
-
     }
 
     private void Update() {
@@ -123,16 +113,16 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     public void PlacementStart() {
         IsBeingPlaced = true;
         hideMapTools();
-        OnBeforeMapPlacingStart.Invoke();
+        HideTablesAndObjects();
         feedbackSoundComponent.PlayFeedbackSound();
-        DisallowGuideObject();
+        GuideStatus.DestroyGuideIfShown();
         InputManager.Instance.PushModalInputHandler(gameObject);
         wasMapVisible = true; // set to true at the start
     }
 
     private void PlacementStop() {
         showMapTools();
-        OnMapPlaced.Invoke();
+        OnAfterUserActionOnMap.Invoke();
         IsBeingPlaced = false;
         feedbackSoundComponent.PlayFeedbackSound();
         AllowGuideObject();
@@ -147,15 +137,17 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         // wait and then show
         yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
 
-        if (shouldShowGuide) { // if any user action has not been taken during the wait
+        if (GuideStatus.ShouldShowGuide) { // if any user action has not been taken during the wait
             showGuideObject();
         }
     }
 
     private void showGuideObject() {
-        if (guideObject == null)
+        if (guideObject == null) {
             guideObject = Instantiate(PrefabHolder.Instance.guidePrefab);
-        fillGuideDetails();
+            fillGuideDetails();
+            GuideStatus.CurrentlyShownGuide = guideObject;
+        }
         positionGuideObject();
     }
 
@@ -181,11 +173,11 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void AllowGuideObject() {
-        shouldShowGuide = true;
+        GuideStatus.ShouldShowGuide = true;
     }
     
     private void DisallowGuideObject() {
-        shouldShowGuide = false;
+        GuideStatus.ShouldShowGuide = false;
         HideGuideObject();
     }
 
@@ -194,22 +186,25 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 #region scaling-related
 
     private void scalable_OnScalingUpdated(bool isExceedingLimit) {
-        UpdateMapInfo(isExceedingLimit);
+        UpdateMapScaleInfo(isExceedingLimit);
     }
 
     private void scalable_OnRegisteringForScaling() {
-        HideAllTables();
+        HideTablesAndObjects();
         DisallowGuideObject();
-        UpdateMapInfo(false);
+        UpdateMapScaleInfo(false);
+    }
+
+    public void HideTablesAndObjects() {
+        OnBeforeUserActionOnMap.Invoke(true);
     }
 
     public void HideAllTables() {
-        foreach (InteractibleBuilding script in GetComponentsInChildren<InteractibleBuilding>()) {
-            script.HideDetails();
-        }
+        OnBeforeUserActionOnMap.Invoke(false);
     }
 
     public void scalable_OnUnregister() {
+        OnAfterUserActionOnMap.Invoke();
         AllowGuideObject();
     }
 
@@ -217,9 +212,9 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     /// call this whenever the scaling for the map has been changed so that we can 
     /// update the number displayed to the user using mapInfo object
     /// </summary>
-    public void UpdateMapInfo(bool isExceedingLimit) {
+    public void UpdateMapScaleInfo(bool isExceedingLimit) {
         // send any of its scaling component (x, y or z)
-        object[] arguments = { transform.localScale.x, isExceedingLimit };
+        object[] arguments = { scalableComponent.gameObject.transform.localScale.x, isExceedingLimit };
         cursorScript.UpdateCurrentScaling(arguments);
     }
 
@@ -228,9 +223,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 #region rotation-related
     public void rotatable_OnRegisteringForRotation() {
         DisallowGuideObject();
-        foreach (InteractibleBuilding script in GetComponentsInChildren<InteractibleBuilding>()) {
-            script.HideDetails();
-        }
+        HideAllTables();
         axis = Instantiate(axisPrefab, transform.position, Quaternion.identity);
     }
 
@@ -255,7 +248,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     public void OnInputClicked(InputClickedEventData eventData) {
         if (!IsBeingPlaced)
             return;
-        PlacementStop();
+        if (isMapVisible())
+            PlacementStop();
     }
 
     /// <summary>
@@ -263,11 +257,13 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     /// the object gazed (i.e. between the map and other rest)
     /// </summary>
     public void OnFocusEnter() {
-        DrawingManager.Instance.ForceCursorStateChange();
+        if (GlobalVoiceCommands.Instance.IsInDrawingMode)
+            DrawingManager.Instance.ForceCursorStateChange();
     }
 
     public void OnFocusExit() {
-        DrawingManager.Instance.ForceCursorStateChange();
+        if (GlobalVoiceCommands.Instance.IsInDrawingMode)
+            DrawingManager.Instance.ForceCursorStateChange();
     }
 
     public void showMapTools() {
@@ -276,6 +272,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     public void hideMapTools() {
+        Toolbar.Instance.hide(); // works
         if (mapTools.activeSelf)
             mapTools.SetActive(false);
     }

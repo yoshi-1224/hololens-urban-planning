@@ -25,17 +25,24 @@ public class OpenButton : ButtonBase {
     }
 
     private void showButtons() {
-        if (areButtonsShown)
+        if (areButtonsShown || isAnimationAlreadyPlaying())
             return;
         anim.SetTrigger(openButtonTriggerHash);
         areButtonsShown = true;
     }
    
     private void hideButtons() {
-        if (!areButtonsShown)
+        if (!areButtonsShown || isAnimationAlreadyPlaying())
             return;
+        DropDownBuildings.Instance.HideDropdownList();
+        DropDownPinnedLocations.Instance.HideDropdownList();
+        DropDownPrefabs.Instance.HideDropdown();
         anim.SetTrigger(closeButtonTriggetHash);
         areButtonsShown = false;
+    }
+
+    private bool isAnimationAlreadyPlaying() {
+        return anim.GetCurrentAnimatorStateInfo(0).IsName("OpenPanButtons");
     }
 
 

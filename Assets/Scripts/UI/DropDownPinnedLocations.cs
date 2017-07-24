@@ -4,18 +4,17 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using UnityEngine.UI;
 
+/// <summary>
+/// This should not be attached to a gameobject which can be disabled AT THE START.
+/// </summary>
 public class DropDownPinnedLocations : Singleton<DropDownPinnedLocations> {
 
-    /// <summary>
-    /// dropdown component attached to this gameObject
-    /// </summary>
     private Dropdown dropdown;
-
     private List<string> PinnedLocationNamesInDropDown;
 
     protected override void Awake() {
         base.Awake();
-        dropdown = GetComponent<Dropdown>();
+        dropdown = GetComponentInChildren<Dropdown>();
         PinnedLocationNamesInDropDown = new List<string>();
     }
 
@@ -26,10 +25,16 @@ public class DropDownPinnedLocations : Singleton<DropDownPinnedLocations> {
         if (index == 0)
             return;
         index--; // as we have a dummy item at index = 0
-        InteractibleMap.Instance.HideAllTables();
-        // easier to directly find it
-        GameObject pinObjectSelected = GameObject.Find(PinnedLocationNamesInDropDown[index]);
-        LocationHelper.MoveMapToWorldPositionAsCenter(pinObjectSelected.transform.position);
+
+        string pinName = PinnedLocationNamesInDropDown[index];
+        BuildingManager.CoordinateBoundObject pinObjectSelected;
+
+        if (PinnedLocationManager.Instance.pinsInScene.TryGetValue(pinName, out pinObjectSelected)) {
+            if (pinObjectSelected.gameObject == null) // if deleted
+                return;
+            LocationHelper.MoveMapToCoordinateAsCenter(pinObjectSelected.coordinates);
+        }
+        dropdown.value = 0;
     }
 
     /// <summary>
@@ -49,5 +54,16 @@ public class DropDownPinnedLocations : Singleton<DropDownPinnedLocations> {
     /// </summary>
     public void HideDropdownList() {
         dropdown.Hide();
+    }
+
+    public void OnPinDeleted(string pinDeleted) {
+        int indexToDelete = PinnedLocationNamesInDropDown.IndexOf(pinDeleted);
+        PinnedLocationNamesInDropDown.RemoveAt(indexToDelete);
+        DeleteItemAndRefresh(indexToDelete + 1); // off by one
+    }
+
+    private void DeleteItemAndRefresh(int indexToDelete) {
+        dropdown.options.RemoveAt(indexToDelete);
+        dropdown.RefreshShownValue();
     }
 }

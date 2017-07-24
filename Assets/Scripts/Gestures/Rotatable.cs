@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using HoloToolkit.Unity.InputModule;
 
-public class Rotatable : MonoBehaviour {
+public class Rotatable : MonoBehaviour, ISpeechHandler {
     [SerializeField]
     private float RotationSensitivity = 10f;
 
@@ -28,5 +29,11 @@ public class Rotatable : MonoBehaviour {
 
     public void UnregisterForRotation() {
         OnUnregisterForRotation.Invoke();
+    }
+
+    public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
+        if (eventData.RecognizedText.ToLower().Equals(COMMAND_ROTATE)) {
+            RegisterForRotation();
+        }
     }
 }

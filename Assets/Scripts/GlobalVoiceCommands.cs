@@ -142,11 +142,11 @@ public class GlobalVoiceCommands : Singleton<GlobalVoiceCommands>, ISpeechHandle
     /// enable manipulation gesture to scale the map together with the buildings
     /// </summary>
     private void registerMapForScaling() {
-        mapParentInteractible.GetComponent<Scalable>().RegisterForScaling(Scalable.ScalingMode.Navigation);
+        mapParentInteractible.GetComponentInChildren<Scalable>().RegisterForScaling(Scalable.ScalingMode.Navigation);
     }
 
     private void registerMapForRotation() {
-        mapParentInteractible.GetComponent<Rotatable>().RegisterForRotation();
+        mapParentInteractible.GetComponentInChildren<Rotatable>().RegisterForRotation();
     }
 
     /// <summary>

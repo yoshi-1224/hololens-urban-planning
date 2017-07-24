@@ -14,11 +14,11 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
     [SerializeField]
     private Material polygonMaterial;
 
-    private List<BuildingManager.CoordinateBoundObjects> polygonsInScene;
+    private List<BuildingManager.CoordinateBoundObject> polygonsInScene;
 
     protected override void Awake() {
         base.Awake();
-        polygonsInScene = new List<BuildingManager.CoordinateBoundObjects>();
+        polygonsInScene = new List<BuildingManager.CoordinateBoundObject>();
         CustomRangeTileProvider.OnTileObjectAdded += CustomRangeTileProvider_OnAllTilesLoaded;
     }
 
@@ -34,8 +34,10 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
 
     public void OnZoomChanged() {
         for (int i = 0; i < polygonsInScene.Count; i++) {
-            polygonsInScene[i].prefab.transform.parent = null;
-            polygonsInScene[i].prefab.SetActive(false);
+            if (polygonsInScene[i].gameObject == null) // if deleted
+                continue;
+            polygonsInScene[i].gameObject.transform.parent = null;
+            polygonsInScene[i].gameObject.SetActive(false);
         }
     }
 
@@ -47,10 +49,10 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
         UserGeneratedPolygon script = polygon.AddComponent<UserGeneratedPolygon>();
         script.neighbouringVertexMapping = neighbouringVertexMapping;
 
-        BuildingManager.CoordinateBoundObjects polygonWithCoordinates = new BuildingManager.CoordinateBoundObjects();
+        BuildingManager.CoordinateBoundObject polygonWithCoordinates = new BuildingManager.CoordinateBoundObject();
         polygonWithCoordinates.latitude = (float) polygonCoordinates.x;
         polygonWithCoordinates.longitude = (float) polygonCoordinates.y;
-        polygonWithCoordinates.prefab = polygon;
+        polygonWithCoordinates.gameObject = polygon;
         polygonsInScene.Add(polygonWithCoordinates);
     }
 
@@ -80,12 +82,15 @@ public class PolygonManager : HoloToolkit.Unity.Singleton<PolygonManager> {
             return false;
         });
 
-        foreach (BuildingManager.CoordinateBoundObjects polygon in polygonsWithinBound) {
+        foreach (BuildingManager.CoordinateBoundObject polygon in polygonsWithinBound) {
             // set its position properly
-            polygon.prefab.transform.position = LocationHelper.geoCoordinateToWorldPosition(polygon.coordinates);
-            polygon.prefab.transform.parent = CustomRangeTileProvider.InstantiatedTiles[tileId].transform;
-            polygon.prefab.SetActive(true);
-            polygon.prefab.layer = CustomRangeTileProvider.InstantiatedTiles[tileId].layer;
+            if (polygon.gameObject == null) // if deleted
+                continue;
+
+            polygon.gameObject.transform.position = LocationHelper.geoCoordinateToWorldPosition(polygon.coordinates);
+            polygon.gameObject.transform.parent = CustomRangeTileProvider.InstantiatedTiles[tileId].transform;
+            polygon.gameObject.SetActive(true);
+            polygon.gameObject.layer = CustomRangeTileProvider.InstantiatedTiles[tileId].layer;
         }
     }
 

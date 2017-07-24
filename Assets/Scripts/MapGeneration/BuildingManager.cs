@@ -11,7 +11,7 @@ using System;
 
 public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
     [Serializable]
-    public struct CoordinateBoundObjects {
+    public struct CoordinateBoundObject {
         public float latitude;
         public float longitude;
         public Vector2d coordinates {
@@ -19,34 +19,37 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
                 return new Vector2d(latitude, longitude); // note that x = lat, y = long
             }
         }
-        public GameObject prefab;
+        public GameObject gameObject;
     }
 
+    /// <summary>
+    /// This is for the prefabs, not the gameObjects in scene
+    /// </summary>
     [SerializeField]
-    private List<CoordinateBoundObjects> BuildingPrefabList;
+    private List<CoordinateBoundObject> BuildingPrefabList;
 
     /// <summary>
     /// use this to process buildings one by one in order to minimize the computing cost
     /// on each frame
     /// </summary>
-    private Queue<CoordinateBoundObjects> buildingsToLoad;
+    private Queue<CoordinateBoundObject> buildingsToLoad;
 
     /// <summary>
     /// dictionary that keeps track of which buildings are brought into the scene.
     /// Use this to check for duplicates etc. Note how it doesn't make sense to store
     /// reference to parent tile because the tiles can get destroyed upon zoom
     /// </summary>
-    public Dictionary<string, GameObject> BuildingsInScene { get; set; }
+    public Dictionary<string, CoordinateBoundObject> BuildingsInScene { get; set; }
 
-    private bool shouldStartLoadingTiles;
+    private bool shouldStartLoadingBuildings;
 
     protected override void Awake() {
         base.Awake();
-        shouldStartLoadingTiles = false;
+        shouldStartLoadingBuildings = false;
         CustomRangeTileProvider.OnTileObjectAdded += TileProvider_OnTileAdded;
         CustomRangeTileProvider.OnAllTilesLoaded += CustomRangeTileProvider_OnAllTilesLoaded;
-        BuildingsInScene = new Dictionary<string, GameObject>();
-        buildingsToLoad = new Queue<CoordinateBoundObjects>();
+        BuildingsInScene = new Dictionary<string, CoordinateBoundObject>();
+        buildingsToLoad = new Queue<CoordinateBoundObject>();
     }
 
     protected override void OnDestroy() {
@@ -58,7 +61,7 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
     }
 
     private void CustomRangeTileProvider_OnAllTilesLoaded() {
-        shouldStartLoadingTiles = true;
+        shouldStartLoadingBuildings = true;
     }
 
     private void TileProvider_OnTileAdded(UnwrappedTileId tileId) {
@@ -66,15 +69,15 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
     }
 
     private void Update() {
-        if (shouldStartLoadingTiles && buildingsToLoad.Count > 0) {
-            InstantiateBuilding(buildingsToLoad.Dequeue());
-            if (BuildingsInScene.Count == 0)
-                shouldStartLoadingTiles = false;
+        if (shouldStartLoadingBuildings && buildingsToLoad.Count > 0) {
+            LoadBuilding(buildingsToLoad.Dequeue());
+            if (buildingsToLoad.Count == 0)
+                shouldStartLoadingBuildings = false;
         }
     }
 
-    private GameObject InstantiateBuilding(CoordinateBoundObjects buildingModel) {
-        string buildingName = buildingModel.prefab.name;
+    private GameObject LoadBuilding(CoordinateBoundObject buildingModel) {
+        string buildingName = buildingModel.gameObject.name;
 
         GameObject parentTile = LocationHelper.FindParentTile(buildingModel.coordinates);
         if (parentTile == null) {
@@ -83,39 +86,42 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
         }
 
         Vector3 position = LocationHelper.geoCoordinateToWorldPosition(buildingModel.coordinates);
-        GameObject building;
+        CoordinateBoundObject building;
         if (BuildingsInScene.TryGetValue(buildingName, out building)) {
             // if it already has been instantiated but simply hidden
-            building.SetActive(true);
-            building.transform.SetParent(parentTile.transform, false);
+
+            building.gameObject.SetActive(true);
+            building.gameObject.transform.SetParent(parentTile.transform, false);
         } else { //instantiate the prefab for the first time
-            building = Instantiate(buildingModel.prefab, parentTile.transform);
-            building.name = buildingName; // get the (Clone) substring out of it
+            building.gameObject = Instantiate(buildingModel.gameObject, parentTile.transform);
+
+            //copy the coordinate info
+            building.latitude = buildingModel.latitude;
+            building.longitude = buildingModel.longitude;
+
+            building.gameObject.name = buildingName; // get the (Clone) substring out of it
             BuildingsInScene[buildingName] = building;
         }
         
         // adjust its position since the pivot position of the building models
         // are at their center.
-        float halfHeight = building.GetComponent<BoxCollider>().bounds.extents.y;
+        float halfHeight = building.gameObject.GetComponent<BoxCollider>().bounds.extents.y;
         position.y += halfHeight;
-        building.transform.position = position;
+        building.gameObject.transform.position = position;
 
-        // add the mapping for building name to coordinates
-        TableDataHolder.Instance.nameToLocation[buildingName] = buildingModel.coordinates;
+        building.gameObject.layer = parentTile.layer;
 
-        building.layer = parentTile.layer;
-
-        return building;
+        return building.gameObject;
     }
 
     /// <summary>
     /// set the transform parent of all the building models to null as all tiles are going to be     destroyed and hide the buildings models
     /// </summary>
     internal void OnZoomChanged() {
-        foreach(GameObject building in BuildingsInScene.Values) {
+        foreach(CoordinateBoundObject building in BuildingsInScene.Values) {
             // set parent to null in order to avoid getting destroyed with the parent tile
-            building.transform.SetParent(null, false);
-            building.SetActive(false); // simply hide it rather than destroy
+            building.gameObject.transform.SetParent(null, false);
+            building.gameObject.SetActive(false); // simply hide it rather than destroy
         }
     }
 
@@ -129,17 +135,16 @@ public class BuildingManager : HoloToolkit.Unity.Singleton<BuildingManager> {
             && building.coordinates.y.InRange(bounds.West, bounds.East)) {
                 return true;
             }
-
             return false;
         });
 
         List<string> buildingNames = new List<string>();
-        foreach (CoordinateBoundObjects building in buildings) {
+        foreach (CoordinateBoundObject building in buildings) {
             buildingsToLoad.Enqueue(building);
-            buildingNames.Add(building.prefab.name);
+            buildingNames.Add(building.gameObject.name);
         }
 
         /// lets add the building name to dropdown here
-        DropDownBuildings.Instance.AddBuildingsToDropDown(buildingNames);
+        DropDownBuildings.Instance.AddItemsToDropdown(buildingNames);
     }
 }

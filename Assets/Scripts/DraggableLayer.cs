@@ -36,8 +36,10 @@ public class DraggableLayer : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        handDraggable.StartedDragging -= HandDraggable_StartedDragging;
-        handDraggable.StoppedDragging -= HandDraggable_StoppedDragging;
+        if (handDraggable != null) {
+            handDraggable.StartedDragging -= HandDraggable_StartedDragging;
+            handDraggable.StoppedDragging -= HandDraggable_StoppedDragging;
+        }
     }
 
     public void MakeSiblingsChildren() {

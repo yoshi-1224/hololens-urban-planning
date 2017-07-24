@@ -4,24 +4,15 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
 using Mapbox.Utils;
-/// <summary>
-/// This handles the voice commands as well as the gesture inputs on a building.
-/// </summary>
+using HoloToolkit.Unity;
 
 public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     private GameObject tableObject;
+    private DraggableInfoTable tableObjectScript;
     private GameObject guideObject;
 
     [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
     public float gazeDurationTillGuideDisplay = 4;
-
-    public static bool shouldShowGuide {
-        get {
-            return GuideStatus.ShouldShowGuide;
-        } set {
-            GuideStatus.ShouldShowGuide = value;
-        }
-    }
 
     private bool isTableAlreadyExists;
 
@@ -48,48 +39,48 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
             }
         }
         rotatableComponent = gameObject.AddComponent<Rotatable>();
-        rotatableComponent.OnUnregisterForRotation += RotatableComponent_OnUnregisterForRotation;
+        rotatableComponent.OnUnregisterForRotation += unregisterForUserGestures;
+        rotatableComponent.OnRegisteringForRotation += registerForUserGestures;
+        
         movableComponent = gameObject.AddComponent<Movable>();
-        movableComponent.OnUnregisterForTranslation += MovableComponent_OnUnregisterForTranslation;
+        movableComponent.OnUnregisterForTranslation += registerForUserGestures;
+        movableComponent.OnRegisteringForTranslation += registerForUserGestures;
+
         isTableAlreadyExists = false;
 
-        InteractibleMap.Instance.OnBeforeMapPlacingStart += Instance_OnBeforeMapPlacingStart;
-        InteractibleMap.Instance.OnMapPlaced += Instance_OnMapPlaced;
+        InteractibleMap.Instance.OnBeforeUserActionOnMap += InteractibleMap_OnBeforeUserActionOnMap;
+        InteractibleMap.Instance.OnAfterUserActionOnMap += InteractibleMap_OnAfterUserActionOnMap;
     }
 
-    private void Instance_OnMapPlaced() {
+    private void InteractibleMap_OnAfterUserActionOnMap() {
         gameObject.SetActive(true);
     }
 
-    private void Instance_OnBeforeMapPlacingStart() {
-        HideDetails();
-        gameObject.SetActive(false);
-
-    }
-
-    private void MovableComponent_OnUnregisterForTranslation() {
-        AllowGuideObject();
-    }
-
-    private void RotatableComponent_OnUnregisterForRotation() {
-        AllowGuideObject();
+    private void InteractibleMap_OnBeforeUserActionOnMap(bool shouldHideObjectToo) {
+        HideTable();
+        if (shouldHideObjectToo)
+            gameObject.SetActive(false);
     }
 
     private void OnDestroy() {
-        if (movableComponent != null)
-            movableComponent.OnUnregisterForTranslation -= MovableComponent_OnUnregisterForTranslation;
+        if (movableComponent != null) {
+            movableComponent.OnUnregisterForTranslation -= unregisterForUserGestures;
+            movableComponent.OnRegisteringForTranslation -= registerForUserGestures;
+        }
 
-        if (rotatableComponent != null)
-            rotatableComponent.OnUnregisterForRotation -= RotatableComponent_OnUnregisterForRotation;
+        if (rotatableComponent != null) {
+            rotatableComponent.OnUnregisterForRotation -= unregisterForUserGestures;
+            rotatableComponent.OnRegisteringForRotation -= registerForUserGestures;
+        }
 
         if (InteractibleMap.Instance != null) {
-            InteractibleMap.Instance.OnBeforeMapPlacingStart -= Instance_OnBeforeMapPlacingStart;
-            InteractibleMap.Instance.OnMapPlaced -= Instance_OnMapPlaced;
+            InteractibleMap.Instance.OnBeforeUserActionOnMap -= InteractibleMap_OnBeforeUserActionOnMap;
+            InteractibleMap.Instance.OnAfterUserActionOnMap -= InteractibleMap_OnAfterUserActionOnMap;
         }
     }
 
     public void OnFocusEnter() {
-        if (shouldShowGuide)
+        if (GuideStatus.ShouldShowGuide)
             StartCoroutine("ShowGuideCoroutine");
         EnableEmission();
     }
@@ -103,23 +94,10 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData) {
         switch (eventData.RecognizedText.ToLower()) {
             case COMMAND_SHOW_DETAILS:
-                ShowDetails();
+                ShowTable();
                 break;
-
             case COMMAND_HIDE_DETAILS:
-                HideDetails();
-                break;
-
-            case Movable.COMMAND_MOVE:
-                registerForTranslation();
-                break;
-
-            case Rotatable.COMMAND_ROTATE:
-                registerForRotation();
-                break;
-
-            default:
-                // just ignore
+                HideTable();
                 break;
         }
     }
@@ -130,103 +108,86 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     /// waits for gazeDurationTillGuideDisplay seconds and then display the command guide
     /// </summary>
     IEnumerator ShowGuideCoroutine() {
-        if (guideObject != null || !shouldShowGuide) //already exists
+        if (guideObject != null || !GuideStatus.ShouldShowGuide) //already exists
             yield break;
+
         // wait and then display
         yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
-        if (shouldShowGuide)
+        if (GuideStatus.ShouldShowGuide)
             showGuideObject();
     }
 
     private void showGuideObject() {
         if (guideObject == null) {
-            guideObject = Instantiate(PrefabHolder.Instance.guidePrefab);
+            guideObject = Instantiate(GuideStatus.Instance.GuideObjectPrefab);
+            GuideStatus.CurrentlyShownGuide = guideObject;
             fillGuideDetails();
-            guideObject.transform.parent = transform;
         }
-        positionGuideObject();
+        GuideStatus.PositionGuideObject(transform.position);
     }
 
     private void hideGuideObject() {
-        if (guideObject != null)
+        if (guideObject != null) {
             Destroy(guideObject);
-        guideObject = null;
+            guideObject = null;
+        }
     }
 
     private void fillGuideDetails() {
-        TextMesh textMesh = guideObject.GetComponent<TextMesh>();
-        textMesh.text =
-            "<b>Valid commands:</b>\n" + COMMAND_SHOW_DETAILS + "\n" + 
-            COMMAND_HIDE_DETAILS + "\n" + Movable.COMMAND_MOVE + "\n" + Rotatable.COMMAND_ROTATE;
-
+        string text = "<b>Valid commands:</b>\n" + COMMAND_SHOW_DETAILS + "\n" +
+        COMMAND_HIDE_DETAILS + "\n" + Movable.COMMAND_MOVE + "\n" + Rotatable.COMMAND_ROTATE;
         if (GetComponent<DeleteOnVoice>() != null)
-            textMesh.text += "\n" + DeleteOnVoice.COMMAND_DELETE;
-        textMesh.fontSize = 55;
-        float scale = 0.003f;
-        guideObject.transform.localScale = new Vector3(scale, scale, scale);
-    }
-
-    private void positionGuideObject() {
-        float distanceRatio = 0.2f;
-        guideObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
-        guideObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
+            text += "\n" + DeleteOnVoice.COMMAND_DELETE;
+        GuideStatus.fillGuideDetails(text);
     }
 
     private void AllowGuideObject() {
-        shouldShowGuide = true;
+        GuideStatus.ShouldShowGuide = true;
     }
 
     private void DisallowGuideObject() {
-        shouldShowGuide = false;
+        GuideStatus.ShouldShowGuide = false;
         hideGuideObject();
+    }
+    #endregion
+
+    #region gesture-related
+    private void registerForUserGestures() {
+        HideTable();
+        DisallowGuideObject();
+    }
+
+    private void unregisterForUserGestures() {
+        AllowGuideObject();
     }
 
     #endregion
 
-    #region translation-related
-    /// <summary>
-    /// register this object as the one in focus for rotation
-    /// </summary>
-    private void registerForTranslation() {
-        HideDetails();
-        DisallowGuideObject();
-        GestureManager.Instance.RegisterGameObjectForTranslation(movableComponent);
-    }
-
-#endregion
-
-    #region rotation-related
-    /// <summary>
-    /// register this object as the one in focus for rotation
-    /// </summary>
-    private void registerForRotation() {
-        HideDetails();
-        GestureManager.Instance.RegisterGameObjectForRotation(rotatableComponent);
-        DisallowGuideObject();
-    }
-
-#endregion
-
     #region table-related
-    public void ShowDetails() {
+    public void ShowTable() {
         if (isTableAlreadyExists) {
             positionTableObject();
             return;
         }
 
         tableObject = Instantiate(PrefabHolder.Instance.tablePrefab);
-        tableObject.transform.SetParent(gameObject.transform, true);
+        tableObjectScript = tableObject.GetComponentInChildren<DraggableInfoTable>();
+
+        //subscribe to the button clicked event
+        tableObjectScript.OnHideTableButtonClicked += HideTable;
+        tableObjectScript.tableHolderTransform = gameObject.transform;
         positionTableObject();
         FillTableData();
+        tableObjectScript.ParentHasGazeFeedback = true;
         isTableAlreadyExists = true;
-
+        
         hideGuideObject();
     }
 
-    public void HideDetails() {
+    public void HideTable() {
         if (!isTableAlreadyExists)
             return;
-
+        tableObjectScript.OnHideTableButtonClicked -= HideTable;
         Destroy(tableObject);
         tableObject = null;
         isTableAlreadyExists = false;
@@ -234,9 +195,16 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
 
     private void positionTableObject() {
         float distanceRatio = 0.4f;
-        tableObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
+        Vector3 targetPosition = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
         tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
-        tableObject.SendMessage("UpdateLinePositions");
+        tableObject.transform.position = gameObject.transform.position; // at from building
+        tableObject.GetComponentInChildren<Interpolator>().SetTargetPosition(targetPosition);
+        tableObject.GetComponentInChildren<Interpolator>().InterpolationDone += InteractibleBuilding_InterpolationDone;
+    }
+
+    private void InteractibleBuilding_InterpolationDone() {
+        tableObjectScript.UpdateLinePositions();
+        tableObject.GetComponentInChildren<Interpolator>().InterpolationDone -= InteractibleBuilding_InterpolationDone;
     }
 
     private void FillTableData() {
@@ -244,29 +212,31 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         string textToDisplay;
         TableDataHolder.TableData data;
         if (TableDataHolder.Instance.dataDict.TryGetValue(buildingName, out data)) {
-            string name = "<size=60><b>" + data.building_name + "</b></size>";
-            string _class = "<b>Class</b> : " + data.building_class;
-            string GPR = "<b>Gross Plot Ratio</b> : " + data.GPR;
+            string _class = "<b>Class</b> : " + "\n" + data.building_class;
+            string GPR = "<b>Gross Plot Ratio</b> : " + "\n" + data.GPR;
             if (data.building_name == "Chinese Culture Centre") {
                 string type = "(Prefab Type " + data.storeys_above_ground + ")";
-                textToDisplay = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
+                //textToDisplay = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
+                textToDisplay = type + "\n\n" + _class + "\n" + GPR;
             } else {
-                string measured_height = "<b>Measured Height</b> : " + data.measured_height + "m";
-                string numStoreys = "<b>Number of Storeys</b> : " + data.storeys_above_ground;
-                Vector2d coordinates = TableDataHolder.Instance.nameToLocation[buildingName];
+                string measured_height = "<b>Measured Height</b> : " + "\n" + data.measured_height + "m";
+                string numStoreys = "<b>Number of Storeys</b> : " + "\n" + data.storeys_above_ground;
+                Vector2d coordinates = BuildingManager.Instance.BuildingsInScene[buildingName].coordinates;
                 string coordinatesString = PrefabHolder.formatLatLong(coordinates);
-                textToDisplay = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
+                //textToDisplay = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
+                textToDisplay = _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
             }
         } else {
             textToDisplay = "status unknown";
         }
-        tableObject.GetComponent<DraggableInfoTable>().FillTableData(textToDisplay);
+        tableObjectScript.FillTableData(buildingName, textToDisplay);
     }
 
     #endregion
 
     public void OnInputClicked(InputClickedEventData eventData) {
-        ShowDetails();
+        // don't set the table to be child of building since it propagates the click event
+        ShowTable();
     }
 
 #region visual feedbacks
@@ -294,5 +264,4 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     }
 
 #endregion
-
 }

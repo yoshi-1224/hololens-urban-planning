@@ -1,25 +1,48 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-
-/// <summary>
-/// Component that allows dragging an object with your hand on HoloLens.
-/// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions, and then repositioning the object based on that.
-/// </summary>
+using UnityEngine.UI;
+using System;
+using System.Collections;
 
 [RequireComponent(typeof(HandDraggable))]
-public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
+public class DraggableInfoTable : MonoBehaviour {
     private HandDraggable handDraggableComponent;
+
     [SerializeField]
     private LineRenderer line;
     private FeedbackSound feedbackSoundComponent;
 
+    [SerializeField]
+    private Text tableInfoTextComponent;
+
+    public Transform tableHolderTransform { get; set; }
+    public bool ParentHasGazeFeedback { get; set; }
+
+    [SerializeField]
+    private HideButton hideButtonComponent;
+    public event Action OnHideTableButtonClicked = delegate { };
+
     private void Start() {
-        // Set the number of vertex fo the Line Renderer
+        if (line == null)
+            line = GetComponent<LineRenderer>();
         line.positionCount = 2;
-        UpdateLinePositions();
+        StartCoroutine(disableLineBeforeAnimationCompletes());
+
         handDraggableComponent = GetComponent<HandDraggable>();
         feedbackSoundComponent = GetComponent<FeedbackSound>();
         handDraggableComponent.OnDraggingUpdate += HandDraggableComponent_OnDraggingUpdate;
+        hideButtonComponent.OnButtonClicked += DraggableInfoTable_OnButtonClicked;
+        ParentHasGazeFeedback = false;
+    }
+
+    private IEnumerator disableLineBeforeAnimationCompletes() {
+        line.enabled = false;
+        yield return new WaitForSeconds(2.5f);
+        line.enabled = true;
+    }
+
+    private void DraggableInfoTable_OnButtonClicked() {
+        OnHideTableButtonClicked.Invoke();
     }
 
     private void HandDraggableComponent_OnDraggingUpdate() {
@@ -30,22 +53,11 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
         if (handDraggableComponent != null) {
             handDraggableComponent.OnDraggingUpdate -= HandDraggableComponent_OnDraggingUpdate;
         }
+
+        if (hideButtonComponent != null)
+            hideButtonComponent.OnButtonClicked -= DraggableInfoTable_OnButtonClicked;
     }
 
-    public void OnFocusEnter() {
-        //SendMessageUpwards("EnableEmission");
-    }
-
-    public void OnFocusExit() {
-        //SendMessageUpwards("DisableEmission");
-    }
-    
-
-    public void OnInputClicked(InputClickedEventData eventData) {
-        SendMessageUpwards("HideDetails");
-        //SendMessageUpwards("DisableEmission");
-    }
-    
     /// <summary>
     /// called when this table is being dragged, as well as when the original position
     /// of this table is set by Interactible
@@ -53,16 +65,14 @@ public class DraggableInfoTable : MonoBehaviour, IInputClickHandler {
     public void UpdateLinePositions() {
         if (line == null)
             return;
-        line.SetPosition(0, transform.parent.position); //building position
+        line.SetPosition(0, tableHolderTransform.position); //building position
         line.SetPosition(1, transform.position);
     }
 
-    public void FillTableData(string textToDisplay) {
-        TextMesh textMesh = GetComponent<TextMesh>();
-        textMesh.text = textToDisplay;
-
-        // add box collider at run time so that it fits the dynamically-set text sizes
-        gameObject.AddComponent<BoxCollider>();
+    public void FillTableData(string title, string tableInfo) {
+        title = title.Replace('_', ' ');
+        GetComponentInChildren<Text>().text = PrefabHolder.renderBold(title);
+        tableInfoTextComponent.text = "\n" + tableInfo;
     }
  
  }

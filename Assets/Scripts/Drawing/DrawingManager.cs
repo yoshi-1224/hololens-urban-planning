@@ -58,6 +58,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         changeCursorToDrawingPoint();
         InputManager.Instance.PushModalInputHandler(gameObject);
         CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
+        InteractibleMap.Instance.HideAllTables();
     }
 
     public void StopDrawing() {

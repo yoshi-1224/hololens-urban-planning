@@ -142,7 +142,6 @@ namespace Mapbox.Unity.MeshGeneration
 				factory.Unregister(unityTile);
 			}
 
-            /// TODO:
             CustomRangeTileProvider.InstantiatedTiles.Remove(tileId);
         }
 

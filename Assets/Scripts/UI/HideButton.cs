@@ -6,7 +6,12 @@ using System;
 
 public class HideButton : MonoBehaviour, IInputClickHandler {
 
+    /// <summary>
+    /// use this event to detect when the button is clicked and act accordingly
+    /// </summary>
+    public event Action OnButtonClicked = delegate { };
+
     public void OnInputClicked(InputClickedEventData eventData) {
-        GlobalVoiceCommands.Instance.HideTools();
+        OnButtonClicked.Invoke();
     }
 }

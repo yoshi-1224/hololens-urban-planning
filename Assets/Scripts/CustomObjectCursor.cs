@@ -214,8 +214,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
 
     public void EnterDrawingMode() {
         isDrawing = true;
-        cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
-        cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition -= new Vector3(0.04f, 0, 0);
 
         // force cursor state change
         OnCursorStateChange(CursorStateEnum.ObserveHover);
@@ -226,15 +224,17 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         OnCursorStateChange(CursorStateEnum.ObserveHover);
         if (DrawPointCursor.activeSelf)
             HidePointCursor();
-        cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition += new Vector3(0.04f, 0, 0);
-        cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition += new Vector3(0.04f, 0, 0);
     }
 
     public void HidePointCursor() {
+        cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition = Vector3.zero;
+        cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition = Vector3.zero;
         DrawPointCursor.SetActive(false);
     }
 
     public void ShowPointCursor() {
+        cursorStatesDict[CursorStateEnum.InteractHover].CursorObject.transform.localPosition = new Vector3(-0.04f, 0, 0);
+        cursorStatesDict[CursorStateEnum.Select].CursorObject.transform.localPosition = new Vector3(-0.04f, 0, 0);
         DrawPointCursor.SetActive(true);
     }
 

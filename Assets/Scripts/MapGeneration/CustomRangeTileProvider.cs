@@ -102,6 +102,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
                 yield return null;
             }
         }
+        OnAllTilesLoaded.Invoke();
     }
 
     private void shiftTiles(Direction direction) {
@@ -199,6 +200,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         } else if (zoom == ZoomDirection.Out) {
             CustomMap.Instance.Zoom -= zoomResponsiveness;
         }
+        InteractibleMap.Instance.HideTablesAndObjects();
         RemoveAllTiles();
         StartCoroutine(LoadNewTiles());
     }
@@ -276,6 +278,10 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         }
 
         updateMapCenterMercatorAndCenterCoord(centerTileId);
+
+        // just load the tile, and the buildings will come as they come
+        StartCoroutine(LoadNewTiles());
+
     }
 
 }

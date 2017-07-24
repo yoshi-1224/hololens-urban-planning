@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4749421583876116}
   - component: {fileID: 114408168641870480}
-  - component: {fileID: 114583978068900852}
   - component: {fileID: 114251845057845890}
   m_Layer: 0
   m_Name: SCCC_S2_Parent
@@ -206,14 +205,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gazeDurationTillGuideDisplay: 4
---- !u!114 &114583978068900852
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1180412917405796}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d6ff7e68d5f10c4685b0caf35dfd1e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

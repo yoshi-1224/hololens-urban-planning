@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TriangleNet.Geometry;
+using TriangleNetForPolygon.Geometry;
 // the TriangleNet source code is different to the one I downloaded.
 // So the one I downloaded is renamed to TriangleNet4
 
@@ -25,13 +25,12 @@ public static class PolygonGenerator {
         List<Vector2> pointsIn2d = vector3Tovector2(points);
         Triangulate(pointsIn2d, out topSurfaceTriangles, out bottomSurfaceVertices);
 
-        correctHeightwrtMap(bottomSurfaceVertices);
+        fixHeightwrtMap(bottomSurfaceVertices);
         List<Vector3> topSurfaceVertices = generateVerticesAboveHeight(bottomSurfaceVertices, 0.06f);
 
         Vector3[] finalVertices = concatTwoArrays(bottomSurfaceVertices.ToArray(), topSurfaceVertices.ToArray());
-
         mesh.vertices = finalVertices;
-        // use mesh.setVertices(List<Vector3>()) => fast!
+        // use mesh.setVertices(List<Vector3>()) => faster
 
         // reverse the triangles for the bottom one to make it visible from bottom
         List<int> bottomSurfaceTriangles = createReversedTriangles(topSurfaceTriangles);
@@ -43,7 +42,7 @@ public static class PolygonGenerator {
                 bottomSurfaceTriangles.Add(topSurfaceTriangles[i] + bottomSurfaceVerticesLength);
         }
 
-        neighbouringVertexMapping = GenerateNeighbouringVectorMapping(points, topSurfaceVertices);
+        neighbouringVertexMapping = GenerateNeighbouringVectorMapping(points, bottomSurfaceVertices);
 
         mesh.triangles = concatTwoArrays(bottomSurfaceTriangles.ToArray(), generateWallsTriangles(finalVertices, neighbouringVertexMapping));
 
@@ -66,6 +65,7 @@ public static class PolygonGenerator {
     /// </summary>
     public static Dictionary<int, int> GenerateNeighbouringVectorMapping(List<Vector3> original, List<Vector3> shuffled) {
         Dictionary<int, int> neighbourMap = new Dictionary<int, int>(original.Count);
+        string precisionFormat = "F4";
 
         Dictionary<string, string> findNeighbour = new Dictionary<string, string>(original.Count);
         for (int i = 0; i < original.Count; i++) {
@@ -79,20 +79,20 @@ public static class PolygonGenerator {
                 neighbour = original[i + 1];
             }
             neighbour.y = 0;
-            findNeighbour[vector.ToString("F1")] = neighbour.ToString("F1");
+            findNeighbour[vector.ToString(precisionFormat)] = neighbour.ToString(precisionFormat);
         }
 
         Dictionary<string, int> findIndexToVector = new Dictionary<string, int>();
         for (int i = 0; i < shuffled.Count; i++) {
             Vector3 vector = shuffled[i];
             vector.y = 0;
-            findIndexToVector[vector.ToString("F1")] = i;
+            findIndexToVector[vector.ToString(precisionFormat)] = i;
         }
 
         for (int i = 0; i < shuffled.Count; i++) {
             Vector3 vector = shuffled[i];
             vector.y = 0;
-            int neighbourIndex = findIndexToVector[findNeighbour[vector.ToString("F1")]];
+            int neighbourIndex = findIndexToVector[findNeighbour[vector.ToString(precisionFormat)]];
             neighbourMap[i] = neighbourIndex;
         }
         return neighbourMap;
@@ -112,7 +112,7 @@ public static class PolygonGenerator {
         return reversedTriangles;
     }
 
-    private static void correctHeightwrtMap(List<Vector3> points) {
+    private static void fixHeightwrtMap(List<Vector3> points) {
         float mapHeight = GameObject.Find(GameObjectNamesHolder.NAME_MAP_COLLIDER).transform.position.y;
         for (int i = 0; i < points.Count; i++) {
             Vector3 tempVector = points[i];
@@ -121,9 +121,9 @@ public static class PolygonGenerator {
         }
     }
 
-    private static void debugInside(Vector3[] list) {
+    public static void debugInside(Vector3[] list) {
         for (int i = 0; i < list.Length; i++)
-            Debug.Log("value at [" + i + "] = " + list[i]);
+            Debug.Log("value at [" + i + "] = " + list[i].ToString("F3"));
     }
 
     private static void correctPositionAtCentre(GameObject polygon) {

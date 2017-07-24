@@ -7,24 +7,30 @@ using HoloToolkit.Unity;
 
 public class DropDownPrefabs : Singleton<DropDownPrefabs> {
 
-    private GameObject instantiated;
+    private GameObject instantiatedPrefab;
 
     [Tooltip("Prefabs to instantiate when this button is clicked")]
     [SerializeField]
     private List<GameObject> prefabList;
 
+    /// <summary>
+    /// dropdown component for prefabs. This should not be attached to a gameobject
+    /// which can be disabled AT THE START.
+    /// </summary>
     private Dropdown dropdown;
-    float distanceDownFromParent = -0.25f;
+
+    float distanceDownFromParent = 0.10f;
 
     /// <summary>
     /// object instantiated and ready to be dragged onto the map. Only one should
     /// exist at any point
     /// </summary>
     private GameObject objectReadyToPlace = null;
+    private bool isAtStart = true;
 
     protected override void Awake() {
         base.Awake();
-        dropdown = GetComponent<Dropdown>();    
+        dropdown = GetComponentInChildren<Dropdown>();
     }
 
     /// <summary>
@@ -37,12 +43,19 @@ public class DropDownPrefabs : Singleton<DropDownPrefabs> {
         if (objectReadyToPlace != null)
             Destroy(objectReadyToPlace);
         GameObject prefabTypeToInstantiate = prefabList[index];
-        instantiated = Instantiate(prefabTypeToInstantiate);
-        instantiated.transform.position = transform.position + new Vector3(0, distanceDownFromParent, 0);
-        objectReadyToPlace = instantiated;
+        instantiatedPrefab = Instantiate(prefabTypeToInstantiate);
+        instantiatedPrefab.transform.position = transform.position + new Vector3(0, -distanceDownFromParent, 0);
+        objectReadyToPlace = instantiatedPrefab;
+        objectReadyToPlace.AddComponent<DeleteOnVoice>().OnBeforeDelete += DropDownPrefabs_OnBeforeDelete;
+        
     }
 
-        // should also be an event handler
+    private void DropDownPrefabs_OnBeforeDelete(DeleteOnVoice component) {
+        component.OnBeforeDelete -= DropDownPrefabs_OnBeforeDelete;
+        objectReadyToPlace = null;
+    }
+
+    // should also be an event handler
     public void AllowNewObjectCreated() {
         objectReadyToPlace = null;
         dropdown.value = 0; // return to the first unused item
@@ -53,6 +66,10 @@ public class DropDownPrefabs : Singleton<DropDownPrefabs> {
         if (objectReadyToPlace != null)
             Destroy(objectReadyToPlace);
         objectReadyToPlace = null;
+        HideDropdown();
+    }
+
+    public void HideDropdown() {
         dropdown.Hide();
     }
 
