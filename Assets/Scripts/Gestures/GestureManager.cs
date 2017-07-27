@@ -1,19 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
-using System;
 
 /// <summary>
-/// This class listens to the gesture events and sends messages to the focused building
-/// in order to perform transforms (i.e. manipulation and rotation)
+/// This class listens to the gesture events and sends messages to the register game object
+/// in order to perform transforms (i.e. scaling, tranlation and rotation)
 /// </summary>
-///
-/// <remark>
-/// The reason why this class exists is because if we implement the event handlers in interactible.cs,
-/// all the buildings become event handlers which leads to inefficiency.
-/// </remark>
+
 public class GestureManager : Singleton<GestureManager>, IManipulationHandler, INavigationHandler {
     public bool IsTranslating { get; private set; }
     public bool IsRotating { get; private set; }
@@ -36,7 +29,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
         IsScalingUsingManipulation = false;
     }
 
-    #region registering
+    #region registering game object component
     public bool RegisterGameObjectForRotation(Rotatable rotatableComponent) {
         if (isAnotherObjectAlreadyRegistered())
             return false;
@@ -88,7 +81,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
 
     #endregion
 
-    #region unregistering
+    #region unregistering game object component
     public void UnregisterObjectForScaling() {
         currentObjectScalableComponent.UnregisterForScaling();
         currentObjectScalableComponent = null;

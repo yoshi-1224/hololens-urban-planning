@@ -2,43 +2,62 @@
 using HoloToolkit.Unity.InputModule;
 using UnityEngine.UI;
 using System;
-using System.Collections;
+using HoloToolkit.Unity;
 
+/// <summary>
+/// This class works together with HandDraggable component to make a draggable table that can display text information
+/// </summary>
 [RequireComponent(typeof(HandDraggable))]
 public class DraggableInfoTable : MonoBehaviour {
     private HandDraggable handDraggableComponent;
+    private Interpolator interpolatorComponent;
 
     [SerializeField]
     private LineRenderer line;
-    private FeedbackSound feedbackSoundComponent;
 
     [SerializeField]
     private Text tableInfoTextComponent;
+    private Text tableTitleTextComponent;
 
     public Transform tableHolderTransform { get; set; }
-    public bool ParentHasGazeFeedback { get; set; }
+    public bool TableHolderHasGazeFeedback { get; set; }
 
     [SerializeField]
     private HideButton hideButtonComponent;
     public event Action OnHideTableButtonClicked = delegate { };
 
-    private void Start() {
+    private Transform parentTransform;
+
+    private bool isAtStart { get; set; }
+
+    private void Awake() {
         if (line == null)
             line = GetComponent<LineRenderer>();
         line.positionCount = 2;
-        StartCoroutine(disableLineBeforeAnimationCompletes());
+
+        interpolatorComponent = GetComponentInParent<Interpolator>();
+        interpolatorComponent.InterpolationDone += InterpolationDone;
+        parentTransform = interpolatorComponent.gameObject.transform;
 
         handDraggableComponent = GetComponent<HandDraggable>();
-        feedbackSoundComponent = GetComponent<FeedbackSound>();
+        tableTitleTextComponent = GetComponentInChildren<Text>();
         handDraggableComponent.OnDraggingUpdate += HandDraggableComponent_OnDraggingUpdate;
         hideButtonComponent.OnButtonClicked += DraggableInfoTable_OnButtonClicked;
-        ParentHasGazeFeedback = false;
+        TableHolderHasGazeFeedback = false;
+        isAtStart = true;
     }
 
-    private IEnumerator disableLineBeforeAnimationCompletes() {
+    private void OnEnable() { // this is basically when the table is to be displayed
+        if (!isAtStart) {
+            PositionTableObject();
+        }
+    }
+
+    private void OnDisable() { // this is when the table is dismissed
+        isAtStart = false;
+        tableHolderTransform = null;
+        TableHolderHasGazeFeedback = false;
         line.enabled = false;
-        yield return new WaitForSeconds(2.5f);
-        line.enabled = true;
     }
 
     private void DraggableInfoTable_OnButtonClicked() {
@@ -71,9 +90,31 @@ public class DraggableInfoTable : MonoBehaviour {
 
     public void FillTableData(string title, string tableInfo) {
         title = title.Replace('_', ' ');
-        GetComponentInChildren<Text>().text = PrefabHolder.renderBold(title);
+        tableTitleTextComponent.text = Utils.RenderBold(title); 
         tableInfoTextComponent.text = "\n" + tableInfo;
     }
- 
- }
+
+    public void PositionTableObject() {
+        if (tableHolderTransform == null) {
+            Debug.Log("tableholder transform is null");
+            return;
+        }
+
+        line.enabled = false;
+
+        float distanceRatio = 0.4f;
+        Vector3 targetPosition = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * tableHolderTransform.position;
+        parentTransform.rotation = Quaternion.LookRotation(tableHolderTransform.position - Camera.main.transform.position, Vector3.up);
+
+        parentTransform.position = tableHolderTransform.position; // start animation from where this table object holder is
+
+        interpolatorComponent.SetTargetPosition(targetPosition);
+    }
+
+    private void InterpolationDone() {
+        line.enabled = true;
+        UpdateLinePositions();
+    }
+
+}
 

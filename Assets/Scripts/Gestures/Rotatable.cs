@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
+/// <summary>
+/// This component can be attached to a game object in order to make it rotatable with voice command. Note that GestureManager is required in the scene.
+/// </summary>
 public class Rotatable : MonoBehaviour, ISpeechHandler {
     [SerializeField]
     private float RotationSensitivity = 10f;
@@ -14,6 +15,9 @@ public class Rotatable : MonoBehaviour, ISpeechHandler {
     public event Action OnRotationUpdated = delegate { };
 
     public void RegisterForRotation() {
+        if (GestureManager.Instance == null)
+            return;
+        
         GestureManager.Instance.RegisterGameObjectForRotation(this);
         OnRegisteringForRotation.Invoke();
     }

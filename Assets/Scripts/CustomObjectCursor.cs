@@ -1,10 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 
 /// <summary>
@@ -21,6 +17,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
 
     [SerializeField]
     public ObjectCursorDatum[] CursorStateData;
+
     /// <summary>
     /// Sprite renderer to change.  If null find one in children
     /// </summary>
@@ -35,8 +32,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     public GameObject DirectionalIndicator;
     public GameObject DrawPointCursor;
 
-    private float currentScaling;
-    private TextMesh messageTextMesh;
     private bool isDrawing;
 
     private Dictionary<CursorStateEnum, ObjectCursorDatum> cursorStatesDict = new Dictionary<CursorStateEnum, ObjectCursorDatum>();
@@ -55,7 +50,6 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         }
 
         base.OnEnable();
-        messageTextMesh = MessageToUser.GetComponent<TextMesh>();
 
         // initialize dictionary
         for (int i = 0; i < CursorStateData.Length; i++) {
@@ -89,9 +83,8 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
             newActive.CursorObject.SetActive(true);
 
             // cursorstate does NOT change if going from building => map (still observeHover)
-            // targeted object is NOT updated until the state changes => use HitObject
+            // targeted object is NOT updated until the state changes => use GazeManager.HitObject
 
-            // maybe just do branching?
             if (isDrawing) {
                 GameObject hitObject = GazeManager.Instance.HitObject;
                 if (hitObject != null) {
@@ -102,7 +95,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
                         return; // note that this is return
 
                     } else if (hitObject.name.Contains("Point")) {
-                        //This is for the first cursor collision
+                        //This is for the first-drawn-point object
                         HidePointCursor();
                         if (newActive.CursorState == CursorStateEnum.ObserveHover)
                             newActive.CursorObject.SetActive(false);
@@ -114,8 +107,7 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         }
     }
 
-    /// The below codes are for navigation and manipulation feedback
-    /// To be called by objects that implement IFocusable
+#region gesture-feedbacks
     public void ShowRotationFeedback() {
         if (rotationFeedbackObject == null || rotationFeedbackObject.activeSelf)
             return;
@@ -165,11 +157,11 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     public void HideScalingFeedback() {
         if (rotationFeedbackObject == null || !rotationFeedbackObject.activeSelf)
             return;
-        //put everything back to before state
+        //put everything back to previous state
         rotationFeedbackObject.transform.Rotate(new Vector3(0, 0, -90));
         rotationFeedbackObject.SetActive(false);
         //MessageToUser.SetActive(false);
-        ScreenMessageManager.Instance.deactivateMessage();
+        ScreenMessageManager.Instance.DeactivateMessage();
     }
 
     public void ShowScalingFeedback() {
@@ -181,37 +173,26 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
         //MessageToUser.SetActive(true);
     }
 
-    /// <summary>
-    /// shows the current scaling for the user. arguments array MUST BE an array
-    /// with first element being float value and second element boolean
-    /// </summary>
-    /// <param name="arguments"></param>
-    public void UpdateCurrentScaling(object[] arguments) {
-        currentScaling = (float)arguments[0];
-        if (messageTextMesh == null)
-            messageTextMesh = GetComponent<TextMesh>();
-        messageTextMesh.text = string.Format("Current Scale: {0:0.0000}", currentScaling);
-        bool isExceedingLimit = (bool)arguments[1];
-        if (isExceedingLimit) {
-            messageTextMesh.color = Color.red;
-        } else {
-            messageTextMesh.color = Color.white;
-        }
-    }
+    #endregion
 
+#region directional indicator
     public void TellUserToLookLower() {
-        if (MessageToUser.activeSelf) // this is a guess game. It should be inactive
+        if (MessageToUser.activeSelf)
             return;
         MessageToUser.SetActive(true);
         DirectionalIndicator.SetActive(true);
-        messageTextMesh.text = "Look lower";
     }
 
-    public void DisableUserMessage() {
-        MessageToUser.SetActive(false);
-        DirectionalIndicator.SetActive(false);
+    public void DisableLookLowerMessage() {
+        if (MessageToUser.activeSelf)
+            MessageToUser.SetActive(false);
+        if (DirectionalIndicator.activeSelf)
+            DirectionalIndicator.SetActive(false);
     }
 
+#endregion
+
+#region for drawing-feedbacks
     public void EnterDrawingMode() {
         isDrawing = true;
 
@@ -239,26 +220,13 @@ public class CustomObjectCursor : HoloToolkit.Unity.InputModule.Cursor {
     }
 
     public void OnMapFocused() {
-        // this not enough for the start when the user is already looking at the map
-        // but still want to show the pointcursor
         OnCursorStateChange(CursorStateEnum.ObserveHover);
-        // why not add to CursorStateEnum? Which can be called with manually
     }
 
     public void OnMapFocusExit() {
         OnCursorStateChange(CursorStateEnum.Observe);
     }
-    
-    public void UpdateCurrentHeightInfo(object[] arguments) {
-        float currentHeight = (float)arguments[0];
-        int numOfStoreys = (int)arguments[1];
-        if (messageTextMesh == null)
-            messageTextMesh = GetComponent<TextMesh>();
-        string text = string.Format("Height: {000:0.0}m", currentHeight);
-        text += string.Format("\nnumber of storeys = {0:00}", numOfStoreys);
 
-        //messageTextMesh.text = text;
-        ScreenMessageManager.Instance.activateMessage(text);
-    }
+    #endregion
 
 }

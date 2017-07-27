@@ -7,6 +7,21 @@ using System.Collections.Generic;
 using System.Collections;
 using HoloToolkit.Unity;
 
+public enum Direction {
+    East,
+    West,
+    North,
+    South
+}
+
+public enum ZoomDirection {
+    In,
+    Out
+}
+
+/// <summary>
+/// This class commands the mapbox-related classes to load new tiles or destroy the current ones.
+/// </summary>
 public class CustomRangeTileProvider : AbstractTileProvider {
     [SerializeField]
     Vector4 _preLoadedRange;
@@ -20,48 +35,13 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     [SerializeField]
     private int minZoomLevel = 11;
 
-    public enum ZoomDirection {
-        In,
-        Out
-    }
-    /// <summary>
-    /// used to identify which tile should be loaded next
-    /// when the user pans the map in certain direction
-    /// Note that when the zoom level changes this field should be updated
-    /// appropriately
-    /// </summary>
-    public struct TileRangeLimits {
-        public int maxXId;
-        public int minXId;
-        public int maxYId;
-        public int minYId;
-        public TileRangeLimits(int maxX, int minX, int maxY, int minY) {
-            this.maxXId = maxX;
-            this.minXId = minX;
-            this.maxYId = maxY;
-            this.minYId = minY;
-        }
-
-        public static TileRangeLimits Initial {
-            get {
-                return new TileRangeLimits(-1, int.MaxValue, -1, int.MaxValue);
-            }
-        }
-    }
-
-    private TileRangeLimits _currentLoadedRange;
-    public enum Direction {
-        East,
-        West,
-        North,
-        South
-    }
-    public static event Action OnAllTilesLoaded;
+    public static event Action OnAllTilesAdded;
     public static event Action<UnwrappedTileId> OnTileObjectAdded;
+
     private bool AtStart = true;
 
     /// <summary>
-    /// UnityTiles will put the pair into this dictionary
+    /// UnityTile.cs will put the pair into this dictionary
     /// </summary>
     public static Dictionary<UnwrappedTileId, GameObject> InstantiatedTiles { get; private set; }
 
@@ -71,8 +51,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         InstantiatedTiles = new Dictionary<UnwrappedTileId, GameObject>();
         InstantiatedTilesInterpolator = new Dictionary<UnwrappedTileId, Interpolator>();
         LocationHelper.onTileJump += LocationHelper_onTileJump;
-        _currentLoadedRange = TileRangeLimits.Initial;
-        OnAllTilesLoaded += OnAllTilesLoadedHandler;
+        OnAllTilesAdded += OnAllTilesLoadedHandler;
         LoadNewTilesAtStart();
     }
 
@@ -87,8 +66,8 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     }
 
     /// <summary>
-    /// tries to load all the tiles that should be visible. If the tile already exists 
-    /// then it skips and load the next one
+    /// attempts to load all the tiles that should be visible. If a tile already exists 
+    /// then it is skipped
     /// </summary>
     /// <returns></returns>
     private IEnumerator addVisibleTiles() {
@@ -102,7 +81,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
                 yield return null;
             }
         }
-        OnAllTilesLoaded.Invoke();
+        OnAllTilesAdded.Invoke();
     }
 
     private void shiftTiles(Direction direction) {
@@ -122,21 +101,14 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         }
     }
 
+    /// <summary>
+    /// Changes the layer mask of the given tileObject and its children according to whether it is within the visible range or not
+    /// </summary>
     private static void AdjustVisibility(int xOffset, int yOffset, GameObject tileObject) {
         if (Math.Abs(xOffset) <= visibleRange && Math.Abs(yOffset) <= visibleRange) {
-            Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_VISIBLE_TILES);
-        }
-        else {
-            Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_INVISIBLE_TILES);
-        }
-    }
-
-    private static bool ShouldRenderVisible(int xOffset, int yOffset, GameObject tileObject) {
-        if (Math.Abs(xOffset) <= visibleRange && Math.Abs(yOffset) <= visibleRange) {
-            return true;
-        }
-        else {
-            return false;
+            HoloToolkit.Unity.Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_VISIBLE_TILES);
+        } else {
+            HoloToolkit.Unity.Utils.SetLayerRecursively(tileObject, GameObjectNamesHolder.LAYER_INVISIBLE_TILES);
         }
     }
 
@@ -191,13 +163,13 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         CustomMap.Instance.CenterLatitudeLongitude = Conversions.TileIdToCenterLatitudeLongitude(newCenterTileId.X, newCenterTileId.Y, CustomMap.Instance.Zoom);
     }
 
-    public void ChangeZoom(ZoomDirection zoom) {
-        if (!isNextZoomLevelWithinLimit(zoom))
+    public void ChangeZoom(ZoomDirection zoomDirection) {
+        if (!isNextZoomLevelWithinLimit(zoomDirection))
             return;
 
-        if (zoom == ZoomDirection.In) {
+        if (zoomDirection == ZoomDirection.In) {
             CustomMap.Instance.Zoom += zoomResponsiveness;
-        } else if (zoom == ZoomDirection.Out) {
+        } else if (zoomDirection == ZoomDirection.Out) {
             CustomMap.Instance.Zoom -= zoomResponsiveness;
         }
         InteractibleMap.Instance.HideTablesAndObjects();
@@ -222,7 +194,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
     }
 
     /// <summary>
-    /// loads new tiles upon zoom or change of area in the background
+    /// loads new tiles upon zoom
     /// </summary>
     internal IEnumerator LoadNewTiles() {
         var centerTile = CustomMap.Instance.CenterTileId;
@@ -236,7 +208,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             }
         }
 
-        OnAllTilesLoaded.Invoke();
+        OnAllTilesAdded.Invoke();
     }
 
     /// <summary>
@@ -251,16 +223,20 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             }
         }
 
-        OnAllTilesLoaded.Invoke();
+        OnAllTilesAdded.Invoke();
     }
 
     public void OnAllTilesLoadedHandler() {
         if (AtStart) {
-            InteractibleMap.Instance.PlacementStart();
+            InteractibleMap.Instance.PlacementStart(); // allows the user to place the map
             AtStart = false;
         }
     }
 
+    /// <summary>
+    /// jumps to the the tile with the given Id. Called by LocationHelper class in response to 
+    /// a game object selected in dropdown lists.
+    /// </summary>
     public void JumpToTile(UnwrappedTileId tileIdtoJumpTo) {
         UnwrappedTileId centerTileId = tileIdtoJumpTo;
         foreach (UnwrappedTileId key in InstantiatedTiles.Keys) {
@@ -279,9 +255,9 @@ public class CustomRangeTileProvider : AbstractTileProvider {
 
         updateMapCenterMercatorAndCenterCoord(centerTileId);
 
-        // just load the tile, and the buildings will come as they come
         StartCoroutine(LoadNewTiles());
 
+        // reason why pins and polygons not showing?
     }
 
 }

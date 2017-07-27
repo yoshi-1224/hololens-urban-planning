@@ -1,21 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System;
 
+/// <summary>
+/// This component should be attached to the point first drawn by DrawingManager. This class notifies DrawingManager whether the instantiation of a polygon is possible or not when the user gaze focuse son this game object.
+/// </summary>
 public class FirstDrawnPoint : MonoBehaviour, IFocusable {
     private float scalingFactor = 1.3f;
     private bool isEnlarged;
 
     private void Start() {
-        // make the cursor sphere the only one with rigidbody?
-        // if we make it with our hands then we might need to do onTriggerEnter
-        // but with gaze, just use onFocusEnter/onFocusExit
-
-        // adding this collider shifts the first sphere by a bit in upwards direction
         SphereCollider collider = gameObject.AddComponent<SphereCollider>();
-        collider.radius *= 3;
+        collider.radius *= 3; //make it an easier target to hit
 
         isEnlarged = false;
     }
@@ -37,21 +32,19 @@ public class FirstDrawnPoint : MonoBehaviour, IFocusable {
             DrawingManager.Instance.CanPolygonBeEnclosedAndCursorOnFirstPoint = true;
             enlargeToShowFeedback();
             DrawingManager.Instance.FixLineEndAtFirstSphere();
-            //DrawingManager.Instance.ForceCursorStateChange();
-            DrawingManager.Instance.instantiateGuide(transform.position);
+            DrawingManager.Instance.DisplayGuide(transform.position);
         }
     }
 
     public void OnFocusExit() {
         DrawingManager.Instance.CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
         returnToNormalScale();
-        DrawingManager.Instance.destroyGuide();
-        //DrawingManager.Instance.ForceCursorStateChange();
+        DrawingManager.Instance.HideGuide();
     }
 
     private void OnDestroy() {
         if (DrawingManager.Instance != null)
-            DrawingManager.Instance.destroyGuide();
+            DrawingManager.Instance.HideGuide();
     }
 
 }

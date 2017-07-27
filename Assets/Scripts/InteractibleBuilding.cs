@@ -15,6 +15,7 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     public float gazeDurationTillGuideDisplay = 4;
 
     private bool isTableAlreadyExists;
+    private bool isThisObjectShowingGuide;
 
     /// <summary>
     /// recognised voice commands. Make sure they are all in lower case
@@ -47,7 +48,7 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         movableComponent.OnRegisteringForTranslation += registerForUserGestures;
 
         isTableAlreadyExists = false;
-
+        isThisObjectShowingGuide = false;
         InteractibleMap.Instance.OnBeforeUserActionOnMap += InteractibleMap_OnBeforeUserActionOnMap;
         InteractibleMap.Instance.OnAfterUserActionOnMap += InteractibleMap_OnAfterUserActionOnMap;
     }
@@ -118,18 +119,19 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     }
 
     private void showGuideObject() {
-        if (guideObject == null) {
-            guideObject = Instantiate(GuideStatus.Instance.GuideObjectPrefab);
-            GuideStatus.CurrentlyShownGuide = guideObject;
-            fillGuideDetails();
-        }
+        if (isThisObjectShowingGuide)
+            return;
+
+        GuideStatus.GuideObjectInstance.SetActive(true);
+        fillGuideDetails();
         GuideStatus.PositionGuideObject(transform.position);
+        isThisObjectShowingGuide = true;
     }
 
     private void hideGuideObject() {
-        if (guideObject != null) {
-            Destroy(guideObject);
-            guideObject = null;
+        if (isThisObjectShowingGuide && GuideStatus.GuideObjectInstance.activeSelf) {
+            GuideStatus.GuideObjectInstance.SetActive(false);
+            isThisObjectShowingGuide = false;
         }
     }
 
@@ -166,19 +168,19 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     #region table-related
     public void ShowTable() {
         if (isTableAlreadyExists) {
-            positionTableObject();
+            tableObjectScript.PositionTableObject();
             return;
         }
 
-        tableObject = Instantiate(PrefabHolder.Instance.tablePrefab);
+        tableObject = PrefabHolder.Instance.GetPooledTable();
         tableObjectScript = tableObject.GetComponentInChildren<DraggableInfoTable>();
+        tableObjectScript.tableHolderTransform = gameObject.transform; // do this before active
+        tableObject.SetActive(true);
 
         //subscribe to the button clicked event
         tableObjectScript.OnHideTableButtonClicked += HideTable;
-        tableObjectScript.tableHolderTransform = gameObject.transform;
-        positionTableObject();
         FillTableData();
-        tableObjectScript.ParentHasGazeFeedback = true;
+        tableObjectScript.TableHolderHasGazeFeedback = true;
         isTableAlreadyExists = true;
         
         hideGuideObject();
@@ -188,23 +190,10 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         if (!isTableAlreadyExists)
             return;
         tableObjectScript.OnHideTableButtonClicked -= HideTable;
-        Destroy(tableObject);
+        tableObject.SetActive(false);
         tableObject = null;
+        tableObjectScript = null;
         isTableAlreadyExists = false;
-    }
-
-    private void positionTableObject() {
-        float distanceRatio = 0.4f;
-        Vector3 targetPosition = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * transform.position;
-        tableObject.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position, Vector3.up);
-        tableObject.transform.position = gameObject.transform.position; // at from building
-        tableObject.GetComponentInChildren<Interpolator>().SetTargetPosition(targetPosition);
-        tableObject.GetComponentInChildren<Interpolator>().InterpolationDone += InteractibleBuilding_InterpolationDone;
-    }
-
-    private void InteractibleBuilding_InterpolationDone() {
-        tableObjectScript.UpdateLinePositions();
-        tableObject.GetComponentInChildren<Interpolator>().InterpolationDone -= InteractibleBuilding_InterpolationDone;
     }
 
     private void FillTableData() {
@@ -221,8 +210,8 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
             } else {
                 string measured_height = "<b>Measured Height</b> : " + "\n" + data.measured_height + "m";
                 string numStoreys = "<b>Number of Storeys</b> : " + "\n" + data.storeys_above_ground;
-                Vector2d coordinates = BuildingManager.Instance.BuildingsInScene[buildingName].coordinates;
-                string coordinatesString = PrefabHolder.formatLatLong(coordinates);
+                Vector2d coordinates = BuildingManager.Instance.GameObjectsInScene[buildingName].coordinates;
+                string coordinatesString = Utils.FormatLatLong(coordinates);
                 //textToDisplay = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
                 textToDisplay = _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
             }

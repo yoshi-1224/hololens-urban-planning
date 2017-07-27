@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System;
 
 /// <summary>
-/// attach to the map so that this is available only when the map is gazed at
+/// Voice command Listener component that allows the map to respond to the voice commands
+/// ONLY WHEN the map is in focus.
 /// </summary>
 public class MapVoiceCommands : MonoBehaviour, ISpeechHandler {
 
@@ -17,10 +15,6 @@ public class MapVoiceCommands : MonoBehaviour, ISpeechHandler {
             case PinnedLocationManager.COMMAND_PIN_LOCATION:
                 pinGazedLocation();
                 break;
-
-            default:
-                //ignore
-                break;
         }
     }
 
@@ -30,7 +24,7 @@ public class MapVoiceCommands : MonoBehaviour, ISpeechHandler {
     }
 
     private void pinGazedLocation() {
-        PinnedLocationManager.Instance.pinGazedLocation();
+        PinnedLocationManager.Instance.pinLocation(GazeManager.Instance.HitPosition);
     }
 
 }

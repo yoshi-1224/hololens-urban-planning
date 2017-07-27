@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TriangleNetForPolygon.Geometry;
-// the TriangleNet source code is different to the one I downloaded.
-// So the one I downloaded is renamed to TriangleNet4
 
+/// <summary>
+/// Utility class that generates a polygon mesh from a given set of vertices
+/// </summary>
 public static class PolygonGenerator {
 
     /// <summary>
@@ -25,12 +25,11 @@ public static class PolygonGenerator {
         List<Vector2> pointsIn2d = vector3Tovector2(points);
         Triangulate(pointsIn2d, out topSurfaceTriangles, out bottomSurfaceVertices);
 
-        fixHeightwrtMap(bottomSurfaceVertices);
+        fixHeightAtMapHeight(bottomSurfaceVertices);
         List<Vector3> topSurfaceVertices = generateVerticesAboveHeight(bottomSurfaceVertices, 0.06f);
 
         Vector3[] finalVertices = concatTwoArrays(bottomSurfaceVertices.ToArray(), topSurfaceVertices.ToArray());
         mesh.vertices = finalVertices;
-        // use mesh.setVertices(List<Vector3>()) => faster
 
         // reverse the triangles for the bottom one to make it visible from bottom
         List<int> bottomSurfaceTriangles = createReversedTriangles(topSurfaceTriangles);
@@ -112,7 +111,7 @@ public static class PolygonGenerator {
         return reversedTriangles;
     }
 
-    private static void fixHeightwrtMap(List<Vector3> points) {
+    private static void fixHeightAtMapHeight(List<Vector3> points) {
         float mapHeight = GameObject.Find(GameObjectNamesHolder.NAME_MAP_COLLIDER).transform.position.y;
         for (int i = 0; i < points.Count; i++) {
             Vector3 tempVector = points[i];
@@ -121,11 +120,9 @@ public static class PolygonGenerator {
         }
     }
 
-    public static void debugInside(Vector3[] list) {
-        for (int i = 0; i < list.Length; i++)
-            Debug.Log("value at [" + i + "] = " + list[i].ToString("F3"));
-    }
-
+    /// <summary>
+    /// re-position the mesh vertices such that the pivot of this game object will be at the center
+    /// </summary>
     private static void correctPositionAtCentre(GameObject polygon) {
         Renderer renderer = polygon.GetComponent<Renderer>();
         Vector3 rendererCentre = renderer.bounds.center;
@@ -178,8 +175,6 @@ public static class PolygonGenerator {
     }
 
     private static List<Vector3> generateVerticesAboveHeight(List<Vector3> vertices, float height) {
-        // capacity of a list is different to length/size.
-        // capacity does not allocate null values
         List<Vector3> newVertices = new List<Vector3>(vertices.Count);
         for (int i = 0; i < vertices.Count; i++) {
             newVertices.Add(vertices[i] + new Vector3(0, height, 0));

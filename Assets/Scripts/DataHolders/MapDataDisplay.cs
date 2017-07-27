@@ -4,10 +4,9 @@ using UnityEngine;
 using HoloToolkit.Unity;
 
 /// <summary>
-/// holds the map data and is responsible for updating the map data display
-/// in toolbar. 
+/// This class holds the map data and is responsible for updating the map data display in toolbar. 
 /// Each field value should be updated in the setter in the corresponding value
-/// stored in the relavant classes e.g. CustomMap
+/// stored in the relavant classes e.g. CustomMap.Zoom
 /// </summary>
 public class MapDataDisplay : Singleton<MapDataDisplay> {
     [SerializeField]
@@ -45,22 +44,22 @@ public class MapDataDisplay : Singleton<MapDataDisplay> {
 
     public void UpdateZoomInfo(int newZoom) {
         MapZoom = newZoom;
-        TextMesh_MapZoom.text = PrefabHolder.renderBold("Zoom Level: ") + MapZoom;
+        TextMesh_MapZoom.text = Utils.RenderBold("Zoom Level: ") + MapZoom;
     }
 
     public void UpdateWorldRelativeScaleInfo(float newScale) {
         MapWorldRelativeScale = newScale;
-        TextMesh_MapWorldRelativeScale.text = PrefabHolder.renderBold("World-relative Scale: ") + string.Format("{0:0.0000}", MapWorldRelativeScale);
+        TextMesh_MapWorldRelativeScale.text = Utils.RenderBold("World-relative Scale: ") + string.Format("{0:0.0000}", MapWorldRelativeScale);
     }
 
     public void UpdateCenterCoordinatesInfo(string newCoordinates) {
         var coordinatesSplit = newCoordinates.Split(',');
         MapCentreCoordinates = string.Format("{0:0.00000}, {1:0.0000}", double.Parse(coordinatesSplit[0]), double.Parse(coordinatesSplit[1]));
-        TextMesh_MapCenterCoordinates.text = PrefabHolder.renderBold("Center Coordinates: ") + "\n" + MapCentreCoordinates;
+        TextMesh_MapCenterCoordinates.text = Utils.RenderBold("Center Coordinates: ") + "\n" + MapCentreCoordinates;
     }
 
     public void UpdateThemeInfo() {
-        TextMesh_MapTheme.text = PrefabHolder.renderBold("Theme: ") + "Street";
+        TextMesh_MapTheme.text = Utils.RenderBold("Theme: ") + "Street";
     }
 
 }

@@ -42,7 +42,7 @@ public class PlaceOnMap : MonoBehaviour {
         initializeBoundsObject();
 
         layerToAvoidRaycast = GameObjectNamesHolder.LAYER_OBJECT_BEING_PLACED;
-        Utils.SetLayerRecursively(gameObject, layerToAvoidRaycast);
+        HoloToolkit.Unity.Utils.SetLayerRecursively(gameObject, layerToAvoidRaycast);
     }
 
     private void OnDestroy() {
@@ -68,7 +68,7 @@ public class PlaceOnMap : MonoBehaviour {
             positionBottomOnTheMap();
             gameObject.GetComponent<InteractibleBuilding>().enabled = true;
             gameObject.GetComponent<DeleteOnVoice>().enabled = true;
-            Utils.SetLayerRecursively(gameObject, parentTile.layer);
+            HoloToolkit.Unity.Utils.SetLayerRecursively(gameObject, parentTile.layer);
             // remove this component
             Destroy(this);
             DropDownPrefabs.Instance.AllowNewObjectCreated();

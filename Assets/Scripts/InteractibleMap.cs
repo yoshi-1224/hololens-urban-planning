@@ -107,7 +107,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void hideDirectionalIndicator() {
-        cursorScript.DisableUserMessage();
+        cursorScript.DisableLookLowerMessage();
     }
 
     public void PlacementStart() {
@@ -115,12 +115,13 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         hideMapTools();
         HideTablesAndObjects();
         feedbackSoundComponent.PlayFeedbackSound();
-        GuideStatus.DestroyGuideIfShown();
+        GuideStatus.GuideObjectInstance.SetActive(false);
         InputManager.Instance.PushModalInputHandler(gameObject);
         wasMapVisible = true; // set to true at the start
     }
 
     private void PlacementStop() {
+        hideDirectionalIndicator();
         showMapTools();
         OnAfterUserActionOnMap.Invoke();
         IsBeingPlaced = false;
@@ -143,12 +144,11 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     private void showGuideObject() {
-        if (guideObject == null) {
-            guideObject = Instantiate(PrefabHolder.Instance.guidePrefab);
-            fillGuideDetails();
-            GuideStatus.CurrentlyShownGuide = guideObject;
-        }
-        positionGuideObject();
+        //if (guideObject == null) {
+        //    guideObject = Instantiate(PrefabHolder.Instance.guideObject);
+        //    fillGuideDetails();
+        //    GuideStatus.CurrentlyShownGuide = guideObject;
+        //}
     }
 
     private void fillGuideDetails() {
@@ -164,12 +164,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         if (guideObject != null)
             Destroy(guideObject);
         guideObject = null;
-    }
-
-    private void positionGuideObject() {
-        float distanceRatio = 0.2f;
-        guideObject.transform.position = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * GazeManager.Instance.HitPosition;
-        guideObject.transform.rotation = Quaternion.LookRotation(GazeManager.Instance.HitPosition - Camera.main.transform.position, Vector3.up);
     }
 
     private void AllowGuideObject() {
@@ -214,8 +208,10 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     /// </summary>
     public void UpdateMapScaleInfo(bool isExceedingLimit) {
         // send any of its scaling component (x, y or z)
-        object[] arguments = { scalableComponent.gameObject.transform.localScale.x, isExceedingLimit };
-        cursorScript.UpdateCurrentScaling(arguments);
+        float currentScale = scalableComponent.gameObject.transform.localScale.x;
+        string text = string.Format("Current Scale: " + Utils.FormatNumberInDecimalPlace(currentScale, 4));
+        Color messageColor = isExceedingLimit ? Color.red : Color.black;
+        ScreenMessageManager.Instance.DisplayMessage(text, messageColor);
     }
 
 #endregion
@@ -272,7 +268,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     public void hideMapTools() {
-        Toolbar.Instance.hide(); // works
+        GameObject.Find("Toolbar").SetActive(false);
         if (mapTools.activeSelf)
             mapTools.SetActive(false);
     }

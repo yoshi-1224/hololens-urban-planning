@@ -73,8 +73,6 @@ public class SpatialProcessing : Singleton<SpatialProcessing> {
             // After scanning is over, switch to the secondary (occlusion) material.
             SpatialMappingManager.Instance.SetSurfaceMaterial(secondaryMaterial);
             disableRoomMesh();
-            // hide the scanning message and instantiate the map
-            MapPlacement.Instance.InstantiateMap();
         } else {
             // Re-process spatial data after scanning completes since we don't have enough walls and floors
             SpatialMappingManager.Instance.StartObserver();

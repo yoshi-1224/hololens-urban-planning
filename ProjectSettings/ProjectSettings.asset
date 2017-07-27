@@ -516,7 +516,7 @@ PlayerSettings:
   metroCertificateNotAfter: 004102089bfdd301
   metroApplicationDescription: URA_Project
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: MapBox
   metroCommandLineArgsFile: 
   metroTileShowName: 0
   metroMediumTileShowName: 0

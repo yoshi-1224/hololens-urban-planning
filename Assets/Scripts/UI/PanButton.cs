@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System;
 
 public class PanButton : ButtonBase {
     [Tooltip("Direction in which to pan the map")]
-    public CustomRangeTileProvider.Direction direction;
+    public Direction direction;
     private GameObject MapBox;
 
     //protected override void Start() {

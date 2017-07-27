@@ -1,10 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System;
 
+/// <summary>
+/// This component can be attached to make a game object deletable using a voice command.
+/// </summary>
 public class DeleteOnVoice : MonoBehaviour, ISpeechHandler {
+
     public const string COMMAND_DELETE = "delete";
     public event Action<DeleteOnVoice> OnBeforeDelete = delegate { };
 

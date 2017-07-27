@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using HoloToolkit.Unity.InputModule;
 
+/// <summary>
+/// This component can be attached to a game object in order to make it movable with voice command. Note that GestureManager is required in the scene.
+/// </summary>
 public class Movable : MonoBehaviour, ISpeechHandler {
     [SerializeField]
     private float TranslationSensitivity = 10f;
@@ -15,12 +16,14 @@ public class Movable : MonoBehaviour, ISpeechHandler {
     public event Action OnPositionUpdated = delegate { };
 
     public void RegisterForTranslation() {
+        if (GestureManager.Instance == null)
+            return;
+
         GestureManager.Instance.RegisterGameObjectForTranslation(this);
         OnRegisteringForTranslation.Invoke();
     }
 
     public void PerformTranslationStarted(Vector3 cumulativeDelta) {
-        // here doesn't have to be adjusted to camera space
         previousManipulationPosition = cumulativeDelta;
     }
 
@@ -29,8 +32,7 @@ public class Movable : MonoBehaviour, ISpeechHandler {
         moveVector = cumulativeDelta - previousManipulationPosition;
         previousManipulationPosition = cumulativeDelta;
         
-        // disable the y-move as it doesn't make sense to have buildings flying around,
-        // and also it makes it easier just to limit to this script for translation (vs placeable.cs)
+        // disable the y-move as it doesn't make sense to have buildings flying around
         transform.position += new Vector3(moveVector.x * TranslationSensitivity, 0, moveVector.z * TranslationSensitivity);
     }
 

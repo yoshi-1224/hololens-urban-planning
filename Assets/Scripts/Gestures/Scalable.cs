@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This component can be attached to a game object in order to make it scalable. Note that GestureManager is required in the scene, and unlike Rotatable.cs or Movable.cs, the registering for gesture inputs is done via another script.
+/// </summary>
 public class Scalable : MonoBehaviour {
     public float ScalingSensitivity;
     public float minimumScale = 0.0005f;
@@ -21,6 +22,9 @@ public class Scalable : MonoBehaviour {
     private Transform parentTransform;
 
     public void RegisterForScaling(ScalingMode mode) {
+        if (GestureManager.Instance == null)
+            return;
+
         OnRegisteringForScaling.Invoke();
         if (mode == ScalingMode.Manipulation)
             GestureManager.Instance.RegisterGameObjectForScalingUsingManipulation(this);

@@ -1,40 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity;
+using UnityEngine.UI;
 
+/// <summary>
+/// This class is used to manage the screen message that gets displayed right before the user's field of view.
+/// </summary>
 [RequireComponent(typeof(Interpolator))]
 public class ScreenMessageManager : Singleton<ScreenMessageManager> {
 
     private float distanceFromUser = 1.0f;
-    private float horizontalOffsetFromGaze = 0.11f;
+    private float horizontalOffsetFromGaze = 0.15f;
     private float verticalOffsetFromGaze = 0.08f;
     private Interpolator interpolator;
     private Transform cameraTransform;
-    private TextMesh textMesh;
+
+    [SerializeField]
+    private Text textComponent;
 
     private void Start() {
         interpolator = GetComponent<Interpolator>();
         interpolator.PositionPerSecond = 10f;
-        textMesh = GetComponent<TextMesh>();
-        gameObject.SetActive(false);
+        textComponent = GetComponentInChildren<Text>();
+        cameraTransform = Camera.main.transform;
+        gameObject.SetActive(false); // hide at the start
     }
 
     void LateUpdate() {
-        cameraTransform = Camera.main.transform;
         Vector3 offsetVector = new Vector3(horizontalOffsetFromGaze, verticalOffsetFromGaze, distanceFromUser);
         offsetVector = cameraTransform.TransformVector(offsetVector);
         interpolator.SetTargetPosition(cameraTransform.position + offsetVector);
         interpolator.SetTargetRotation(Quaternion.LookRotation(cameraTransform.forward));
     }
 
-    public void activateMessage(string textToDisplay) {
+    public void DisplayMessage(string textToDisplay, Color messageColor) {
         if (!gameObject.activeSelf)
             gameObject.SetActive(true);
-        textMesh.text = textToDisplay;
+        textComponent.text = textToDisplay;
+        textComponent.color = messageColor;
     }
 
-    public void deactivateMessage() {
+    public void DeactivateMessage() {
         gameObject.SetActive(false);
     }
 }

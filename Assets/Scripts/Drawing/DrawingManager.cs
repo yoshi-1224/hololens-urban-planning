@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
-using System;
-using Mapbox.Utils;
-using Mapbox.Map;
+using UnityEngine.UI;
 
+/// <summary>
+/// This class handles the drawing of polygons.
+/// </summary>
 public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     [SerializeField]
     private CustomObjectCursor cursor;
@@ -14,13 +14,14 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     // using this object's position is more accurate than using GazeManager.hitPosition
     [SerializeField]
     private Transform drawingPointOnCursorTransform;
+
     /// <summary>
     /// stores the positions of instantiated spheres
     /// </summary>
     private List<Vector3> polygonVertices;
 
     /// <summary>
-    /// transform parent of the instantiated spheres. A simple new gameobject created
+    /// transform parent of the instantiated spheres. A simple new gameobject that parents all the point objects in order to make it easier to destroy them.
     /// </summary>
     private GameObject pointsContainerObject;
 
@@ -28,27 +29,27 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     /// message to the user that shows up when the polygon can be enclosed with a click
     /// </summary>
     [SerializeField]
-    private GameObject EncloseGuide;
-    private GameObject instantiatedGuideObj;
+    private GameObject EncloseGuidePrefab;
+    private GameObject guideObjectInstance;
     private float guidePositionAbovePoint = 0.05f;
 
     public bool CanPolygonBeEnclosedAndCursorOnFirstPoint {
         get; set;
     }
 
-    public GameObject SpherePrefab;
+    [SerializeField]
+    private GameObject SpherePrefab;
     private bool isAnyPointDrawnYet; // whether or not to call the update function to render line
     private LineRenderer currentlyDrawnLine;
 
     private GameObject lastDrawnPoint;
 
-    [SerializeField]
-    private GameObject map;
-
     private float lineWidth = 0.002f;
 
-    protected override void Awake() {
-        base.Awake();
+    private void Start() {
+        guideObjectInstance = Instantiate(EncloseGuidePrefab);
+        guideObjectInstance.GetComponentInChildren<Text>().text = "Click to instantiate this polygon";
+        guideObjectInstance.SetActive(false); // just pool it
     }
 
     public void StartDrawing() {
@@ -134,16 +135,10 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
     /// args should take in pointsDrawn
     /// </summary>
     private void instantiatePolygon() {
-        PolygonManager.Instance.GeneratePolygonFromVertices(polygonVertices);
+        PolygonManager.Instance.InstantiatePolygonFromVertices(polygonVertices);
         StopDrawing();
     }
 
-    /// <summary>
-    /// should be called when
-    /// 1) cancelling the drawing action
-    /// 2) the map is moved without confirming the instantiation of the polygon
-    /// 3) polygon is created successfully
-    /// </summary>
     private void clearPoints() {
         Destroy(pointsContainerObject);
         polygonVertices.Clear();
@@ -155,7 +150,7 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
             clearPoints();
             isAnyPointDrawnYet = false;
             CanPolygonBeEnclosedAndCursorOnFirstPoint = false;
-        } else if (GazeManager.Instance.HitObject == map){
+        } else if (GazeManager.Instance.HitObject.name.Equals(GameObjectNamesHolder.NAME_MAP_COLLIDER)){
             Vector3 drawPointPosition = drawingPointOnCursorTransform.position;
             createSphereAt(drawPointPosition);
             isAnyPointDrawnYet = true;
@@ -170,20 +165,26 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         currentlyDrawnLine.positionCount = 2;
         currentlyDrawnLine.SetPosition(0, lastDrawnPoint.transform.position);
         currentlyDrawnLine.SetPosition(1, drawingPointOnCursorTransform.position);
-        currentlyDrawnLine.startWidth = lineWidth;
-        currentlyDrawnLine.endWidth = lineWidth;
+        currentlyDrawnLine.endWidth = 0.001f;
+        currentlyDrawnLine.startWidth = 0.001f;
     }
 
     public void FixLineEndAtFirstSphere() {
         currentlyDrawnLine.SetPosition(1, polygonVertices[0]);
     }
 
-    public void instantiateGuide(Vector3 firstSpherePosition) {
-        instantiatedGuideObj = Instantiate(EncloseGuide, firstSpherePosition + new Vector3(0, guidePositionAbovePoint, 0), Quaternion.LookRotation(firstSpherePosition - Camera.main.transform.position, Vector3.up));
-        TextMesh textMesh = instantiatedGuideObj.GetComponent<TextMesh>();
-        textMesh.fontSize = 56;
-        textMesh.color = Color.black;
-        textMesh.text = "Click to enclose this polygon";
+    /// <summary>
+    /// This displays the guide which notifies the user that the polygon can now be enclosed with a tap gesture.
+    /// </summary>
+    public void DisplayGuide(Vector3 firstSpherePosition) {
+        guideObjectInstance.transform.position = firstSpherePosition + new Vector3(0, guidePositionAbovePoint, 0);
+        guideObjectInstance.transform.LookAt(Camera.main.transform.position, Vector3.up);
+        guideObjectInstance.SetActive(true);
+    }
+
+    public void HideGuide() {
+        if (guideObjectInstance.activeSelf)
+            guideObjectInstance.SetActive(false); // just hide it
     }
 
     public void ForceCursorStateChange() {
@@ -192,10 +193,4 @@ public class DrawingManager : Singleton<DrawingManager>, IInputClickHandler {
         cursor.OnCursorStateChange(HoloToolkit.Unity.InputModule.Cursor.CursorStateEnum.Observe);
     }
 
-    public void destroyGuide() {
-        if (instantiatedGuideObj != null)
-            Destroy(instantiatedGuideObj);
-        instantiatedGuideObj = null;
-        
-    }
 }
