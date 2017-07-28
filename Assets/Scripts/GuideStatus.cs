@@ -12,6 +12,9 @@ public class GuideStatus : Singleton<GuideStatus> {
     private GameObject GuideObjectPrefab;
     public static GameObject GuideObjectInstance;
 
+    [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
+    public const float GazeDurationTillGuideDisplay = 4;
+
     public static bool ShouldShowGuide {
         get; set;
     }
@@ -22,7 +25,7 @@ public class GuideStatus : Singleton<GuideStatus> {
         GuideObjectInstance = Instantiate(GuideObjectPrefab);
         GuideText = GuideObjectInstance.GetComponentInChildren<Text>();
         GuideObjectInstance.SetActive(false); // pool this object
-        ShouldShowGuide = true;
+        ShouldShowGuide = false;
     }
 
     public static void PositionGuideObject(Vector3 tableHostPosition) {
@@ -31,7 +34,7 @@ public class GuideStatus : Singleton<GuideStatus> {
         GuideObjectInstance.transform.rotation = Quaternion.LookRotation(tableHostPosition - Camera.main.transform.position, Vector3.up);
     }
 
-    public static void fillGuideDetails(string textToDisplay) {
-        GuideText.text = textToDisplay;
+    public static void FillCommandDetails(string textToDisplay) {
+        GuideText.text = "<b>Valid commands:</b>\n" + textToDisplay;
     }
 }

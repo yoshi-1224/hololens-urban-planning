@@ -13,6 +13,12 @@ public static class Utils {
         return lat + " " + lng;
     }
 
+    public static string FormatLatLong(double lat, double lng) {
+        string latStr = RenderBold("Lat: ") + string.Format(" {0:0.000}", lat);
+        string lngStr = RenderBold("Long: ") + string.Format(" {0:0.000}", lng);
+        return latStr + " " + lngStr;
+    }
+
     public static string ChangeTextSize(string str, int size) {
         return "<size=" + size + ">" + str + "</size>";
     }

@@ -4,6 +4,8 @@ using HoloToolkit.Unity.InputModule;
 using System;
 using Mapbox.Utils;
 using Mapbox.Unity.Utilities;
+using System.Collections;
+using System.Text;
 
 /// <summary>
 /// This class is to be attached to a polygon game object created by user. It enables height and area calculations and scaling
@@ -38,9 +40,12 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
     }
     private Mesh mesh;
 
-    private GameObject tableObject;
+    private GameObject tableObjectInstance;
     private DraggableInfoTable tableObjectScript;
     private bool isTableAlreadyExists;
+
+    private GameObject guideObjectInstance;
+    private bool isThisObjectShowingGuide;
 
     private void Start() {
         mesh = GetComponent<MeshFilter>().mesh;
@@ -71,6 +76,9 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
         // delete this object from the list
         if (DropDownPolygons.Instance != null)
             DropDownPolygons.Instance.OnItemDeleted(gameObject.name);
+
+        hideGuideObject();
+        HideTable();
     }
 
     private void OnDestroy() {
@@ -200,10 +208,10 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
             return;
         }
 
-        tableObject = PrefabHolder.Instance.GetPooledTable();
-        tableObjectScript = tableObject.GetComponentInChildren<DraggableInfoTable>();
+        tableObjectInstance = PrefabHolder.Instance.GetPooledTable();
+        tableObjectScript = tableObjectInstance.GetComponentInChildren<DraggableInfoTable>();
         tableObjectScript.tableHolderTransform = gameObject.transform; // do this before setting it active
-        tableObject.SetActive(true);
+        tableObjectInstance.SetActive(true);
 
         //subscribe to the button clicked event
         FillTableData();
@@ -216,30 +224,72 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
         if (!isTableAlreadyExists)
             return;
         tableObjectScript.OnHideTableButtonClicked -= HideTable;
-        tableObject.SetActive(false);
-        tableObject = null;
+        tableObjectInstance.SetActive(false);
+        tableObjectInstance = null;
         tableObjectScript = null;
         isTableAlreadyExists = false;
     }
 
     private void FillTableData() {
-        string textToDisplay;
+        StringBuilder str = new StringBuilder();
 
-        //show area, height and coordinates
         string name = Utils.RenderBold(Utils.ChangeTextSize(gameObject.name, 60));
-        string area = Utils.RenderBold("Area: \n") + string.Format("{0:0.00}m\xB2", RealWorldArea);
+        str.AppendLine(Utils.RenderBold("Area:"));
+        str.AppendLine(string.Format("{0:0.00}m\xB2", RealWorldArea));
+        str.AppendLine(Utils.RenderBold("Height:"));
+        str.AppendLine(Utils.FormatNumberInDecimalPlace(RealWorldHeight, 2) + "m");
+        str.Append(Utils.FormatLatLong(Coordinates));
 
-        string height = Utils.RenderBold("Height: \n") + Utils.FormatNumberInDecimalPlace(RealWorldHeight, 2);
-
-        string coordinatesString = Utils.FormatLatLong(Coordinates);
-
-        textToDisplay = area + "\n" + height + "m\n" + coordinatesString;
-        tableObjectScript.FillTableData(name, textToDisplay);
+        tableObjectScript.FillTableData(name, str.ToString());
     }
 
     public void OnFocusEnter() {
+        if (GuideStatus.ShouldShowGuide)
+            StartCoroutine("ShowGuideCoroutine");
     }
 
     public void OnFocusExit() {
+        hideGuideObject();
+        StopCoroutine("ShowGuideCoroutine");
+    }
+
+    /// <summary>
+    /// waits for gazeDurationTillGuideDisplay seconds and then display the command guide
+    /// </summary>
+    IEnumerator ShowGuideCoroutine() {
+        if (guideObjectInstance != null || !GuideStatus.ShouldShowGuide) //already exists
+            yield break;
+
+        // wait and then display
+        yield return new WaitForSeconds(GuideStatus.GazeDurationTillGuideDisplay);
+        if (GuideStatus.ShouldShowGuide)
+            showGuideObject();
+    }
+
+    private void showGuideObject() {
+        if (isThisObjectShowingGuide)
+            return;
+
+        GuideStatus.GuideObjectInstance.SetActive(true);
+        fillGuideDetails();
+        GuideStatus.PositionGuideObject(transform.position);
+        isThisObjectShowingGuide = true;
+    }
+
+    private void hideGuideObject() {
+        if (isThisObjectShowingGuide && GuideStatus.GuideObjectInstance.activeSelf) {
+            GuideStatus.GuideObjectInstance.SetActive(false);
+            isThisObjectShowingGuide = false;
+        }
+    }
+
+    private void fillGuideDetails() {
+        StringBuilder str = new StringBuilder();
+        str.AppendLine(COMMAND_SCALE);
+        str.AppendLine(Movable.COMMAND_MOVE);
+        str.AppendLine(Rotatable.COMMAND_ROTATE);
+        str.Append(DeleteOnVoice.COMMAND_DELETE);
+
+        GuideStatus.FillCommandDetails(str.ToString());
     }
 }

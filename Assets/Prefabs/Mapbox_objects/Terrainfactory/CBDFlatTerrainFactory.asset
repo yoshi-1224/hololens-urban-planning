@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a6523094c07d4ee683da5d826fce510, type: 3}
   m_Name: CBDFlatTerrainFactory
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 2100000, guid: f127be725a4be104790af75543be5e0c, type: 2}
+  _baseMaterial: {fileID: 2100000, guid: f9638ad574da3c244b19272144dbfeb4, type: 2}
   _addCollider: 0
   _addToLayer: 0
   _layerId: 28

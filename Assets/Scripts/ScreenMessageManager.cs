@@ -9,8 +9,8 @@ using UnityEngine.UI;
 public class ScreenMessageManager : Singleton<ScreenMessageManager> {
 
     private float distanceFromUser = 1.0f;
-    private float horizontalOffsetFromGaze = 0.15f;
-    private float verticalOffsetFromGaze = 0.08f;
+    private float horizontalOffsetFromGaze = 0.1f;
+    private float verticalOffsetFromGaze = 0.04f;
     private Interpolator interpolator;
     private Transform cameraTransform;
 

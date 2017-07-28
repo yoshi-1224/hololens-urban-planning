@@ -51,13 +51,13 @@ public class DraggableInfoTable : MonoBehaviour {
         if (!isAtStart) {
             PositionTableObject();
         }
+        line.enabled = false;
     }
 
     private void OnDisable() { // this is when the table is dismissed
         isAtStart = false;
         tableHolderTransform = null;
         TableHolderHasGazeFeedback = false;
-        line.enabled = false;
     }
 
     private void DraggableInfoTable_OnButtonClicked() {
@@ -99,8 +99,6 @@ public class DraggableInfoTable : MonoBehaviour {
             Debug.Log("tableholder transform is null");
             return;
         }
-
-        line.enabled = false;
 
         float distanceRatio = 0.4f;
         Vector3 targetPosition = distanceRatio * Camera.main.transform.position + (1 - distanceRatio) * tableHolderTransform.position;

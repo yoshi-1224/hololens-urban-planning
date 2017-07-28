@@ -3,6 +3,7 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections;
 using System;
+using System.Text;
 
 [RequireComponent(typeof(Interpolator))]
 public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IFocusable {
@@ -42,6 +43,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     Scalable scalableComponent;
     [SerializeField]
     Rotatable rotatableComponent;
+    private bool isThisObjectShowingGuide;
+    private object guideObjectInstance;
 
     public event Action<bool> OnBeforeUserActionOnMap = delegate { };
     public event Action OnAfterUserActionOnMap = delegate { };
@@ -62,6 +65,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
             rotatableComponent.OnRegisteringForRotation += rotatable_OnRegisteringForRotation;
             rotatableComponent.OnUnregisterForRotation += rotatable_OnUnregisterForRotation;
         }
+
+        isThisObjectShowingGuide = false;
     }
 
     private void Update() {
@@ -116,6 +121,7 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         HideTablesAndObjects();
         feedbackSoundComponent.PlayFeedbackSound();
         GuideStatus.GuideObjectInstance.SetActive(false);
+        GuideStatus.ShouldShowGuide = false;
         InputManager.Instance.PushModalInputHandler(gameObject);
         wasMapVisible = true; // set to true at the start
     }
@@ -128,54 +134,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         feedbackSoundComponent.PlayFeedbackSound();
         AllowGuideObject();
         InputManager.Instance.PopModalInputHandler();
-    }
-
-#region guide-related
-
-    IEnumerator ShowGuideCoroutine() {
-        if (guideObject != null) //already exists
-            yield break;
-        // wait and then show
-        yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
-
-        if (GuideStatus.ShouldShowGuide) { // if any user action has not been taken during the wait
-            showGuideObject();
-        }
-    }
-
-    private void showGuideObject() {
-        //if (guideObject == null) {
-        //    guideObject = Instantiate(PrefabHolder.Instance.guideObject);
-        //    fillGuideDetails();
-        //    GuideStatus.CurrentlyShownGuide = guideObject;
-        //}
-    }
-
-    private void fillGuideDetails() {
-        TextMesh textMesh = guideObject.GetComponent<TextMesh>();
-        textMesh.text =
-            "<b>Valid commands:</b>\nRotate Map\nScale Map\nMove Map\nStreet View";
-        textMesh.fontSize = 52;
-        float scale = 0.005f;
-        guideObject.transform.localScale = new Vector3(scale, scale, scale);
-    }
-
-    public void HideGuideObject() {
-        if (guideObject != null)
-            Destroy(guideObject);
-        guideObject = null;
-    }
-
-    private void AllowGuideObject() {
         GuideStatus.ShouldShowGuide = true;
     }
-    
-    private void DisallowGuideObject() {
-        GuideStatus.ShouldShowGuide = false;
-        HideGuideObject();
-    }
-
-#endregion
 
 #region scaling-related
 
@@ -255,11 +215,15 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     public void OnFocusEnter() {
         if (GlobalVoiceCommands.Instance.IsInDrawingMode)
             DrawingManager.Instance.ForceCursorStateChange();
+        if (GuideStatus.ShouldShowGuide)
+            StartCoroutine("ShowGuideCoroutine");
     }
 
     public void OnFocusExit() {
         if (GlobalVoiceCommands.Instance.IsInDrawingMode)
             DrawingManager.Instance.ForceCursorStateChange();
+        hideGuideObject();
+        StopCoroutine("ShowGuideCoroutine");
     }
 
     public void showMapTools() {
@@ -272,4 +236,57 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         if (mapTools.activeSelf)
             mapTools.SetActive(false);
     }
+
+
+#region guide-related
+
+    /// <summary>
+    /// waits for gazeDurationTillGuideDisplay seconds and then display the command guide
+    /// </summary>
+    IEnumerator ShowGuideCoroutine() {
+        if (guideObjectInstance != null || !GuideStatus.ShouldShowGuide) //already exists
+            yield break;
+
+        // wait and then display
+        yield return new WaitForSeconds(GuideStatus.GazeDurationTillGuideDisplay);
+        if (GuideStatus.ShouldShowGuide)
+            showGuideObject();
+    }
+
+    private void showGuideObject() {
+        if (isThisObjectShowingGuide)
+            return;
+
+        GuideStatus.GuideObjectInstance.SetActive(true);
+        fillGuideDetails();
+        GuideStatus.PositionGuideObject(GazeManager.Instance.HitPosition);
+        isThisObjectShowingGuide = true;
+    }
+
+    private void hideGuideObject() {
+        if (isThisObjectShowingGuide && GuideStatus.GuideObjectInstance.activeSelf) {
+            GuideStatus.GuideObjectInstance.SetActive(false);
+            isThisObjectShowingGuide = false;
+        }
+    }
+
+    private void fillGuideDetails() {
+        StringBuilder str = new StringBuilder();
+        str.AppendLine(PinnedLocationManager.COMMAND_PIN_LOCATION);
+        str.AppendLine(StreetViewManager.COMMAND_STREET_VIEW);
+        str.AppendLine(GlobalVoiceCommands.COMMAND_MOVE_MAP);
+        str.Append(Rotatable.COMMAND_ROTATE);
+        GuideStatus.FillCommandDetails(str.ToString());
+    }
+
+    private void AllowGuideObject() {
+        GuideStatus.ShouldShowGuide = true;
+    }
+
+    private void DisallowGuideObject() {
+        GuideStatus.ShouldShowGuide = false;
+        hideGuideObject();
+    }
+#endregion
+
 }

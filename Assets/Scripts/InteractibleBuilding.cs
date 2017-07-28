@@ -1,18 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System;
-using Mapbox.Utils;
-using HoloToolkit.Unity;
+using System.Text;
 
 public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
-    private GameObject tableObject;
+    private GameObject tableObjectInstance;
     private DraggableInfoTable tableObjectScript;
-    private GameObject guideObject;
-
-    [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
-    public float gazeDurationTillGuideDisplay = 4;
+    private GameObject guideObjectInstance;
 
     private bool isTableAlreadyExists;
     private bool isThisObjectShowingGuide;
@@ -78,6 +72,9 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
             InteractibleMap.Instance.OnBeforeUserActionOnMap -= InteractibleMap_OnBeforeUserActionOnMap;
             InteractibleMap.Instance.OnAfterUserActionOnMap -= InteractibleMap_OnAfterUserActionOnMap;
         }
+
+        hideGuideObject();
+        HideTable();
     }
 
     public void OnFocusEnter() {
@@ -109,11 +106,11 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     /// waits for gazeDurationTillGuideDisplay seconds and then display the command guide
     /// </summary>
     IEnumerator ShowGuideCoroutine() {
-        if (guideObject != null || !GuideStatus.ShouldShowGuide) //already exists
+        if (guideObjectInstance != null || !GuideStatus.ShouldShowGuide) //already exists
             yield break;
 
         // wait and then display
-        yield return new WaitForSeconds(gazeDurationTillGuideDisplay);
+        yield return new WaitForSeconds(GuideStatus.GazeDurationTillGuideDisplay);
         if (GuideStatus.ShouldShowGuide)
             showGuideObject();
     }
@@ -136,31 +133,25 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
     }
 
     private void fillGuideDetails() {
-        string text = "<b>Valid commands:</b>\n" + COMMAND_SHOW_DETAILS + "\n" +
-        COMMAND_HIDE_DETAILS + "\n" + Movable.COMMAND_MOVE + "\n" + Rotatable.COMMAND_ROTATE;
+        StringBuilder str = new StringBuilder();
         if (GetComponent<DeleteOnVoice>() != null)
-            text += "\n" + DeleteOnVoice.COMMAND_DELETE;
-        GuideStatus.fillGuideDetails(text);
+            str.AppendLine(DeleteOnVoice.COMMAND_DELETE);
+        str.AppendLine(COMMAND_SHOW_DETAILS);
+        str.AppendLine(COMMAND_HIDE_DETAILS);
+        str.AppendLine(Movable.COMMAND_MOVE);
+        str.Append(Rotatable.COMMAND_ROTATE);
+        GuideStatus.FillCommandDetails(str.ToString());
     }
 
-    private void AllowGuideObject() {
-        GuideStatus.ShouldShowGuide = true;
-    }
-
-    private void DisallowGuideObject() {
-        GuideStatus.ShouldShowGuide = false;
-        hideGuideObject();
-    }
     #endregion
 
     #region gesture-related
     private void registerForUserGestures() {
         HideTable();
-        DisallowGuideObject();
+        hideGuideObject();
     }
 
     private void unregisterForUserGestures() {
-        AllowGuideObject();
     }
 
     #endregion
@@ -172,10 +163,10 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
             return;
         }
 
-        tableObject = PrefabHolder.Instance.GetPooledTable();
-        tableObjectScript = tableObject.GetComponentInChildren<DraggableInfoTable>();
+        tableObjectInstance = PrefabHolder.Instance.GetPooledTable();
+        tableObjectScript = tableObjectInstance.GetComponentInChildren<DraggableInfoTable>();
         tableObjectScript.tableHolderTransform = gameObject.transform; // do this before active
-        tableObject.SetActive(true);
+        tableObjectInstance.SetActive(true);
 
         //subscribe to the button clicked event
         tableObjectScript.OnHideTableButtonClicked += HideTable;
@@ -190,34 +181,22 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         if (!isTableAlreadyExists)
             return;
         tableObjectScript.OnHideTableButtonClicked -= HideTable;
-        tableObject.SetActive(false);
-        tableObject = null;
+        tableObjectInstance.SetActive(false);
+        tableObjectInstance = null;
         tableObjectScript = null;
         isTableAlreadyExists = false;
     }
 
     private void FillTableData() {
-        string buildingName = gameObject.name;
+        string buildingName = BuildingManager.Instance.GetBuildingName(gameObject.name);
         string textToDisplay;
-        TableDataHolder.TableData data;
-        if (TableDataHolder.Instance.dataDict.TryGetValue(buildingName, out data)) {
-            string _class = "<b>Class</b> : " + "\n" + data.building_class;
-            string GPR = "<b>Gross Plot Ratio</b> : " + "\n" + data.GPR;
-            if (data.building_name == "Chinese Culture Centre") {
-                string type = "(Prefab Type " + data.storeys_above_ground + ")";
-                //textToDisplay = name + "\n" + type + "\n\n" + _class + "\n" + GPR;
-                textToDisplay = type + "\n\n" + _class + "\n" + GPR;
-            } else {
-                string measured_height = "<b>Measured Height</b> : " + "\n" + data.measured_height + "m";
-                string numStoreys = "<b>Number of Storeys</b> : " + "\n" + data.storeys_above_ground;
-                Vector2d coordinates = BuildingManager.Instance.GameObjectsInScene[buildingName].coordinates;
-                string coordinatesString = Utils.FormatLatLong(coordinates);
-                //textToDisplay = name + "\n\n" + _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
-                textToDisplay = _class + "\n" + GPR + "\n" + measured_height + "\n" + numStoreys + "\n" + coordinatesString;
-            }
+        if (buildingName == null) { // entry not found
+            buildingName = "unknown";
+            textToDisplay = "unknown";
         } else {
-            textToDisplay = "status unknown";
+            textToDisplay = BuildingManager.Instance.GetBuildingInformation(gameObject.name);
         }
+        
         tableObjectScript.FillTableData(buildingName, textToDisplay);
     }
 

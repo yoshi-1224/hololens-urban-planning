@@ -40,7 +40,7 @@ public class PolygonManager : CoordinateBoundObjectsManagerBase<PolygonManager> 
     public void InstantiatePolygonFromVertices(List<Vector3> polygonVertices) {
         Dictionary<int, int> neighbouringVertexMapping;
         GameObject polygon = PolygonGenerator.GeneratePolygonFromVertices(polygonVertices, 0.1f, polygonMaterial, out neighbouringVertexMapping);
-        polygon.name = "polygon #" + GameObjectsInScene.Count;
+        polygon.name = "polygon " + GameObjectsInScene.Count;
         Vector2d polygonCoordinates = setPolygonParentToMapTile(polygon);
         UserGeneratedPolygon script = polygon.AddComponent<UserGeneratedPolygon>();
         script.neighbouringVertexMapping = neighbouringVertexMapping;

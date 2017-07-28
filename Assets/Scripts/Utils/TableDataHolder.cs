@@ -50,7 +50,6 @@ public class TableDataHolder : Singleton<TableDataHolder> {
     }
 
     protected override void OnDestroy() {
-        dataDict.Clear();
         base.OnDestroy();
     }
 

@@ -27,4 +27,6 @@ public static class GameObjectNamesHolder {
     public static int LAYER_INVISIBLE_TILES = LayerMask.NameToLayer("InvisibleTiles");
     public static int LAYER_OBJECT_BEING_PLACED = LayerMask.NameToLayer("ObjectToPlace");
 
+    public static string NAME_SCENE_MAIN = "main";
+
 }

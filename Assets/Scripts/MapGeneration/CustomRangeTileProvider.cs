@@ -52,7 +52,8 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         InstantiatedTilesInterpolator = new Dictionary<UnwrappedTileId, Interpolator>();
         LocationHelper.onTileJump += LocationHelper_onTileJump;
         OnAllTilesAdded += OnAllTilesLoadedHandler;
-        LoadNewTilesAtStart();
+        //LoadNewTilesAtStart();
+        StartCoroutine(LoadNewTiles());
     }
 
     private void LocationHelper_onTileJump(UnwrappedTileId obj) {

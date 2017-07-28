@@ -33,6 +33,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     public bool RegisterGameObjectForRotation(Rotatable rotatableComponent) {
         if (isAnotherObjectAlreadyRegistered())
             return false;
+
+        DisallowGuideObject();
         IsRotating = true;
         currentObjectRotatableComponent = rotatableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
@@ -46,6 +48,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     public bool RegisterGameObjectForScalingUsingNavigation(Scalable scalableComponent) {
         if (isAnotherObjectAlreadyRegistered())
             return false;
+
+        DisallowGuideObject();
         IsScalingUsingNavigation = true;
         currentObjectScalableComponent = scalableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
@@ -56,6 +60,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     public bool RegisterGameObjectForScalingUsingManipulation(Scalable scalableComponent) {
         if (isAnotherObjectAlreadyRegistered())
             return false;
+
+        DisallowGuideObject();
         IsScalingUsingManipulation = true;
         currentObjectScalableComponent = scalableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
@@ -66,6 +72,8 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     public bool RegisterGameObjectForTranslation(Movable movableComponent) {
         if (isAnotherObjectAlreadyRegistered())
             return false;
+
+        DisallowGuideObject();
         IsTranslating = true;
         currentObjectMovableComponent = movableComponent;
         InputManager.Instance.PushModalInputHandler(gameObject);
@@ -120,6 +128,7 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     
         // clear the stack so that other gameobjects can receive gesture inputs
         InputManager.Instance.ClearModalInputStack();
+        AllowGuideObject();
     }
 
 #endregion
@@ -184,5 +193,14 @@ public class GestureManager : Singleton<GestureManager>, IManipulationHandler, I
     }
 
     #endregion
+
+    private void AllowGuideObject() {
+        GuideStatus.ShouldShowGuide = true;
+    }
+
+    private void DisallowGuideObject() {
+        GuideStatus.ShouldShowGuide = false;
+        GuideStatus.GuideObjectInstance.SetActive(false);
+    }
 
 }

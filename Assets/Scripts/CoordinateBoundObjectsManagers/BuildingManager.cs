@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Mapbox.Utils;
 using Mapbox.Map;
 using Mapbox.Unity.Utilities;
@@ -9,13 +8,13 @@ using Mapbox.Unity.Utilities;
 /// </summary>
 public class BuildingManager : CoordinateBoundObjectsManagerBase<BuildingManager> {
 
-    /// <summary>
-    /// This is for the building prefabs, not the game objects in scene
-    /// </summary>
     [SerializeField]
-    private List<CoordinateBoundObject> BuildingPrefabList;
+    private BuildingPrefabsHolder prefabsHolder;
 
     protected override void loadObject(CoordinateBoundObject buildingModel) {
+        if (buildingModel.gameObject == null)
+            return;
+
         string buildingName = buildingModel.gameObject.name;
 
         GameObject parentTile = LocationHelper.FindParentTile(buildingModel.coordinates);
@@ -34,6 +33,9 @@ public class BuildingManager : CoordinateBoundObjectsManagerBase<BuildingManager
         }
         else { //instantiate the prefab for the first time
             building.gameObject = Instantiate(buildingModel.gameObject, parentTile.transform);
+
+            prefabsHolder.CorrectTransformAtMeshCenter(building.gameObject);
+            building.gameObject.AddComponent<BoxCollider>();
 
             //copy the coordinate info
             building.latitude = buildingModel.latitude;
@@ -65,13 +67,23 @@ public class BuildingManager : CoordinateBoundObjectsManagerBase<BuildingManager
     }
 
     protected override void queryObjectsWithinTileBounds(UnwrappedTileId tileId) {
+
         Vector2dBounds bounds = Conversions.TileIdToBounds(tileId);
-        for (int i = 0; i < BuildingPrefabList.Count; i++) {
-            CoordinateBoundObject building = BuildingPrefabList[i];
+        for (int i = 0; i < prefabsHolder.BuildingPrefabList.Count; i++) {
+            CoordinateBoundObject building = prefabsHolder.BuildingPrefabList[i];
             if (building.coordinates.x.InRange(bounds.North, bounds.South)
             && building.coordinates.y.InRange(bounds.West, bounds.East)) {
                 ObjectsToLoad.Enqueue(building);
             }
         }
     }
+
+    public string GetBuildingName(string gameObjectName) {
+        return prefabsHolder.GetBuildingName(gameObjectName);
+    }
+
+    public string GetBuildingInformation(string gameObjectName) {
+        return prefabsHolder.getBuildingInformation(gameObjectName);
+    }
+
 }
