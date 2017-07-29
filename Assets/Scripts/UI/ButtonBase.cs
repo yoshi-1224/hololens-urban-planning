@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System;
 
 public class ButtonBase : MonoBehaviour, IFocusable, IInputClickHandler {
 
@@ -20,13 +17,11 @@ public class ButtonBase : MonoBehaviour, IFocusable, IInputClickHandler {
     private AudioSource audioSource;
 
     public virtual void OnFocusEnter() {
-        //if (faceRenderer != null )
-            faceRenderer.material.SetColor(colorString, FocusedColor);
+        faceRenderer.material.SetColor(colorString, FocusedColor);
     }
 
     public virtual void OnFocusExit() {
-        //if (faceRenderer != null )
-            faceRenderer.material.SetColor(colorString, originalColor);
+        faceRenderer.material.SetColor(colorString, originalColor);
     }
 
     public virtual void OnInputClicked(InputClickedEventData eventData) {

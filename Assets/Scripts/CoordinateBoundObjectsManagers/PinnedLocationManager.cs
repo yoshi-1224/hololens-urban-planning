@@ -26,7 +26,7 @@ public class PinnedLocationManager : CoordinateBoundObjectsManagerBase<PinnedLoc
         pinObject.transform.position = LocationHelper.geoCoordinateToWorldPosition(pin.coordinates);
         pinObject.transform.SetParent(parentTile.transform);
         pinObject.SetActive(true);
-        pinObject.layer = parentTile.layer; // this is set too early for some reason
+        HoloToolkit.Unity.Utils.SetLayerRecursively(pinObject, parentTile.layer);
     }
 
     public override void OnZoomChanged() {

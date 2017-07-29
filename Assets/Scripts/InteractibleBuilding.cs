@@ -3,6 +3,10 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System.Text;
 
+/// <summary>
+/// Attaching this component can make a building object interactible, including re-positioning,
+/// rotation, showing informative table and voice command guide.
+/// </summary>
 public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, IInputClickHandler {
     private GameObject tableObjectInstance;
     private DraggableInfoTable tableObjectScript;
@@ -191,12 +195,15 @@ public class InteractibleBuilding : MonoBehaviour, IFocusable, ISpeechHandler, I
         string buildingName = BuildingManager.Instance.GetBuildingName(gameObject.name);
         string textToDisplay;
         if (buildingName == null) { // entry not found
-            buildingName = "unknown";
+            buildingName = "Name unknown";
             textToDisplay = "unknown";
         } else {
             textToDisplay = BuildingManager.Instance.GetBuildingInformation(gameObject.name);
         }
-        
+
+        if (buildingName.Equals(string.Empty))
+            buildingName = "Name Unknown";
+
         tableObjectScript.FillTableData(buildingName, textToDisplay);
     }
 

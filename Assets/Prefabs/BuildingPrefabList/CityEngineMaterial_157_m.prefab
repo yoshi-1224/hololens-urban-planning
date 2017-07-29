@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1012749020096452}
+  m_RootGameObject: {fileID: 1632966894585516}
   m_IsPrefabParent: 1
---- !u!1 &1012749020096452
+--- !u!1 &1632966894585516
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4337997461676276}
-  - component: {fileID: 33911746695666600}
-  - component: {fileID: 23684828103960520}
+  - component: {fileID: 4961404654811228}
+  - component: {fileID: 33784188956759540}
+  - component: {fileID: 23946238377186882}
   m_Layer: 0
   m_Name: CityEngineMaterial_157_m
   m_TagString: Untagged
@@ -28,25 +28,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4337997461676276
+--- !u!4 &4961404654811228
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1012749020096452}
+  m_GameObject: {fileID: 1632966894585516}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -302.8271, y: 0.04171997, z: -288.4136}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23684828103960520
+--- !u!23 &23946238377186882
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1012749020096452}
+  m_GameObject: {fileID: 1632966894585516}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -73,10 +73,10 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33911746695666600
+--- !u!33 &33784188956759540
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1012749020096452}
+  m_GameObject: {fileID: 1632966894585516}
   m_Mesh: {fileID: 4300400, guid: 61625c9d47dfdf1428ca6d00785ee8ae, type: 3}
