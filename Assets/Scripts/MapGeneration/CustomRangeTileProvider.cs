@@ -51,8 +51,7 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         InstantiatedTiles = new Dictionary<UnwrappedTileId, GameObject>();
         InstantiatedTilesInterpolator = new Dictionary<UnwrappedTileId, Interpolator>();
         LocationHelper.onTileJump += LocationHelper_onTileJump;
-        OnAllTilesAdded += OnAllTilesLoadedHandler;
-        //LoadNewTilesAtStart();
+        //OnAllTilesAdded += OnAllTilesLoadedHandler;
         StartCoroutine(LoadNewTiles());
     }
 
@@ -209,27 +208,22 @@ public class CustomRangeTileProvider : AbstractTileProvider {
             }
         }
 
-        OnAllTilesAdded.Invoke();
-    }
-
-    /// <summary>
-    /// loads new tiles at the start
-    /// </summary>
-    internal void LoadNewTilesAtStart() {
-        var centerTile = CustomMap.Instance.CenterTileId;
-
-        for (int x = (int)(centerTile.X - _preLoadedRange.x); x <= (centerTile.X + _preLoadedRange.z); x++) {
-            for (int y = (int)(centerTile.Y - _preLoadedRange.y); y <= (centerTile.Y + _preLoadedRange.w); y++) {
-                AddTile(new UnwrappedTileId(_map.Zoom, x, y));
-            }
-        }
-
-        OnAllTilesAdded.Invoke();
-    }
-
-    public void OnAllTilesLoadedHandler() {
         if (AtStart) {
+            GameObject.Find("Toolbar").SetActive(false);
+            // this is just a hack. Toolbar element cannot be disabled in Editor before Play
+            // since it has many singleton classes attached that needs to be initialized
+            // so we allow it to be active but immediately set active to false at start
+
             InteractibleMap.Instance.PlacementStart(); // allows the user to place the map
+        } else {
+            OnAllTilesAdded.Invoke();
+        }
+            
+    }
+
+    public void LoadBuildingsAfterMapPlaced() { // this is only at the start
+        if (AtStart) {
+            OnAllTilesAdded.Invoke();
             AtStart = false;
         }
     }
@@ -257,8 +251,6 @@ public class CustomRangeTileProvider : AbstractTileProvider {
         updateMapCenterMercatorAndCenterCoord(centerTileId);
 
         StartCoroutine(LoadNewTiles());
-
-        // reason why pins and polygons not showing?
     }
 
 }

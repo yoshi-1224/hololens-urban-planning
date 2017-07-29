@@ -11,12 +11,49 @@ public class BuildingManager : CoordinateBoundObjectsManagerBase<BuildingManager
     [SerializeField]
     private BuildingPrefabsHolder prefabsHolder;
 
+    [Tooltip("Instantiate all the building models at the start to avoid slow down during 3D scene")]
+    [SerializeField]
+    private bool isPoolBuildingsAtStart = true;
+
+    private void Start() {
+        if (isPoolBuildingsAtStart) {
+            for (int i = 0; i < prefabsHolder.BuildingPrefabList.Count; i++) {
+                CoordinateBoundObject buildingModel = prefabsHolder.BuildingPrefabList[i];
+                CoordinateBoundObject building = new CoordinateBoundObject();
+
+                building.gameObject = Instantiate(buildingModel.gameObject);
+                prefabsHolder.CorrectPivotAtMeshCenter(building.gameObject);
+
+                if (!string.IsNullOrEmpty(GetBuildingName(buildingModel.gameObject.name))) {
+                    building.gameObject.AddComponent<InteractibleBuilding>();
+                }
+
+                building.gameObject.AddComponent<BoxCollider>();
+
+                //copy the coordinate info
+                building.latitude = buildingModel.latitude;
+                building.longitude = buildingModel.longitude;
+
+                building.gameObject.name = buildingModel.gameObject.name;
+                GameObjectsInScene[buildingModel.gameObject.name] = building;
+                building.gameObject.transform.localScale *= 99;
+                building.gameObject.SetActive(false);
+            }
+        }
+
+    }
+
+    protected override void Awake() {
+        base.Awake();
+        prefabsHolder.LoadCSV();
+    }
+
     protected override void loadObject(CoordinateBoundObject buildingModel) {
         if (buildingModel.gameObject == null)
             return;
 
         string buildingName = buildingModel.gameObject.name;
-
+        
         GameObject parentTile = LocationHelper.FindParentTile(buildingModel.coordinates);
         if (parentTile == null) {
             Debug.Log("Not instantiating since no parent tile found"); // this should not happen
@@ -33,18 +70,24 @@ public class BuildingManager : CoordinateBoundObjectsManagerBase<BuildingManager
         }
         else { //instantiate the prefab for the first time
             building.gameObject = Instantiate(buildingModel.gameObject, parentTile.transform);
+            prefabsHolder.CorrectPivotAtMeshCenter(building.gameObject);
 
-            prefabsHolder.CorrectTransformAtMeshCenter(building.gameObject);
+            if (!string.IsNullOrEmpty(GetBuildingName(buildingModel.gameObject.name))) {
+                building.gameObject.AddComponent<InteractibleBuilding>();
+            }
+
             building.gameObject.AddComponent<BoxCollider>();
 
             //copy the coordinate info
             building.latitude = buildingModel.latitude;
             building.longitude = buildingModel.longitude;
 
-            building.gameObject.name = buildingName; // get the (Clone) substring out of it
+            building.gameObject.name = buildingName;
             GameObjectsInScene[buildingName] = building;
-            DropDownBuildings.Instance.AddItemToDropdown(buildingName);
+            building.gameObject.transform.localScale *= 99;
         }
+
+        DropDownBuildings.Instance.AddItemToDropdown(buildingName);
 
         // adjust its vertical position since the pivot position of the building models
         // are at their center.

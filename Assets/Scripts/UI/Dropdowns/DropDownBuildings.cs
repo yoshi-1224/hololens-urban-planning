@@ -1,4 +1,5 @@
-﻿/// <summary>
+﻿using UnityEngine.UI;
+/// <summary>
 /// This class manages the Unity UI dropdown for buildings in scene and dictates
 /// how the scene responds when a building is selected
 /// </summary>
@@ -23,6 +24,20 @@ public class DropDownBuildings : DropDownManagerBase<DropDownBuildings> {
         }
 
         dropdown.value = 0; // go back to the dummy value at the top of the list
+    }
+
+    public override void AddItemToDropdown(string itemName) {
+        string buildingName = BuildingManager.Instance.GetBuildingName(itemName);
+        if (string.IsNullOrEmpty(buildingName))
+            buildingName = itemName;
+
+        if (ItemNamesInDropdown.Contains(buildingName))
+            return;
+
+        // add the actual name of the building
+        dropdown.options.Add(new Dropdown.OptionData(buildingName));
+        ItemNamesInDropdown.Add(itemName);
+        dropdown.RefreshShownValue();
     }
 
 }

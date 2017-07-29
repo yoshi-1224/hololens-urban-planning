@@ -59,9 +59,7 @@ public class DropDownManagerBase<T> : MonoBehaviour where T : DropDownManagerBas
     }
 
     public virtual void AddItemToDropdown(string itemName) {
-        if (ItemNamesInDropdown.Contains(itemName))
-            return;
-
+        // add the actual name of the building
         dropdown.options.Add(new Dropdown.OptionData(itemName));
         ItemNamesInDropdown.Add(itemName);
         dropdown.RefreshShownValue();

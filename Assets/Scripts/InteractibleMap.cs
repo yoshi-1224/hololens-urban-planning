@@ -5,6 +5,11 @@ using System.Collections;
 using System;
 using System.Text;
 
+/// <summary>
+/// This class makes a map object interactible, allowing user to place the map.
+/// Rotation and Scaling is also possible, but the repositioning of map tools was not completed
+/// and therefore temporarily disabled.
+/// </summary>
 [RequireComponent(typeof(Interpolator))]
 public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IFocusable {
 
@@ -18,6 +23,8 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     [SerializeField]
     private GameObject mapTools;
+    [SerializeField]
+    private GameObject toolBar;
 
     /// <summary>
     /// Keeps track of if the user is moving the object or not.
@@ -27,12 +34,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
     public bool IsBeingPlaced;
 
-    private GameObject guideObject;
-
-    [Tooltip("The duration in seconds for which user should gaze the object at to see the guide")]
-    [SerializeField]
-    private float gazeDurationTillGuideDisplay;
-
     [SerializeField]
     private CustomObjectCursor cursorScript;
     private bool wasMapVisible;
@@ -40,11 +41,13 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     [SerializeField]
     private FeedbackSound feedbackSoundComponent;
     [SerializeField]
+
     Scalable scalableComponent;
     [SerializeField]
     Rotatable rotatableComponent;
+
     private bool isThisObjectShowingGuide;
-    private object guideObjectInstance;
+    private GameObject guideObjectInstance;
 
     public event Action<bool> OnBeforeUserActionOnMap = delegate { };
     public event Action OnAfterUserActionOnMap = delegate { };
@@ -135,6 +138,9 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         AllowGuideObject();
         InputManager.Instance.PopModalInputHandler();
         GuideStatus.ShouldShowGuide = true;
+
+        // load the buildings AFTER the map is placed, only at the start
+        GameObject.Find(GameObjectNamesHolder.NAME_MAPBOX).SendMessage("LoadBuildingsAfterMapPlaced");
     }
 
 #region scaling-related
@@ -145,7 +151,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     private void scalable_OnRegisteringForScaling() {
         HideTablesAndObjects();
-        DisallowGuideObject();
         UpdateMapScaleInfo(false);
     }
 
@@ -159,7 +164,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
 
     public void scalable_OnUnregister() {
         OnAfterUserActionOnMap.Invoke();
-        AllowGuideObject();
     }
 
     /// <summary>
@@ -191,7 +195,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
             Destroy(axis);
             axis = null;
         }
-        AllowGuideObject();
     }
     #endregion
 
@@ -232,7 +235,6 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
     }
 
     public void hideMapTools() {
-        GameObject.Find("Toolbar").SetActive(false);
         if (mapTools.activeSelf)
             mapTools.SetActive(false);
     }
@@ -274,8 +276,9 @@ public class InteractibleMap: Singleton<InteractibleMap>, IInputClickHandler, IF
         StringBuilder str = new StringBuilder();
         str.AppendLine(PinnedLocationManager.COMMAND_PIN_LOCATION);
         str.AppendLine(StreetViewManager.COMMAND_STREET_VIEW);
-        str.AppendLine(GlobalVoiceCommands.COMMAND_MOVE_MAP);
-        str.Append(Rotatable.COMMAND_ROTATE);
+        str.Append(GlobalVoiceCommands.COMMAND_MOVE_MAP);
+        //str.Append(Rotatable.COMMAND_ROTATE);
+        //str.Append("scale map");
         GuideStatus.FillCommandDetails(str.ToString());
     }
 

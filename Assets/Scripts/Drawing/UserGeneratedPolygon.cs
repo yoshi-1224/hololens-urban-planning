@@ -13,8 +13,7 @@ using System.Text;
 public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHandler, IFocusable {
     public const string COMMAND_SCALE = "scale";
     private float minimumHeightScale = 0.01f;
-    private Vector3 previousManipulationPosition;
-    private static float heightOfAStorey = 5;
+    private static float StoreyHeight = 5;
 
     private Scalable scalableComponent;
     private Movable movableComponent;
@@ -154,7 +153,7 @@ public class UserGeneratedPolygon : MonoBehaviour, ISpeechHandler, IInputClickHa
     }
 
     private int estimateNumOfStoreys(float buildingHeight) {
-        return (int)(buildingHeight / heightOfAStorey) + 1;
+        return (int)(buildingHeight / StoreyHeight) + 1;
     }
 
     /// <summary>

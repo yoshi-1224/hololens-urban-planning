@@ -12,2709 +12,1149 @@ MonoBehaviour:
   m_Name: BuildingPrefabs
   m_EditorClassIdentifier: 
   BuildingPrefabList:
-  - latitude: 1.27316
-    longitude: 103.848
-    gameObject: {fileID: 1743102388520604, guid: 288e7da3827a0544e83fcc657c959f41,
-      type: 2}
-  - latitude: 1.27316
-    longitude: 103.848
-    gameObject: {fileID: 1866710740855938, guid: 288e7da3827a0544e83fcc657c959f41,
-      type: 2}
-  - latitude: 1.28131
-    longitude: 103.847
-    gameObject: {fileID: 1958981787692238, guid: 27417053de81c9e49b9ddbc90a802e9c,
-      type: 2}
-  - latitude: 1.28125
-    longitude: 103.848
-    gameObject: {fileID: 1409364297272814, guid: abc8f9896301cbb4aa9e1473f7de35c1,
-      type: 2}
-  - latitude: 1.28233
-    longitude: 103.847
-    gameObject: {fileID: 1642144668661142, guid: da8ff7e4fdafc34409312b9dbf58e02f,
-      type: 2}
-  - latitude: 1.28104
-    longitude: 103.846
-    gameObject: {fileID: 1432145264956638, guid: 144feb876a96b0041b51d18de43b7677,
-      type: 2}
-  - latitude: 1.28251
-    longitude: 103.847
-    gameObject: {fileID: 1456086342694192, guid: 6c15caeddc5460d438b639c12da97246,
-      type: 2}
-  - latitude: 1.27648
-    longitude: 103.845
-    gameObject: {fileID: 1236883274421416, guid: e3bb5905cdc27554faf33b37c2cf72b2,
-      type: 2}
-  - latitude: 1.28024
-    longitude: 103.848
-    gameObject: {fileID: 1900341038259006, guid: c87fac597e99e2949af1544e204755da,
-      type: 2}
-  - latitude: 1.28024
-    longitude: 103.848
-    gameObject: {fileID: 1050515550824504, guid: 7f11fa693675e07409ce0b2416588556,
-      type: 2}
-  - latitude: 1.27713
-    longitude: 103.847
-    gameObject: {fileID: 1726194282621278, guid: 7e8331e24ba6c9043bf416e1acdaa046,
-      type: 2}
-  - latitude: 1.27449
-    longitude: 103.853
-    gameObject: {fileID: 1986837587406784, guid: e3a80c925cab8b14da645fba28fe6cf3,
-      type: 2}
-  - latitude: 1.28169
-    longitude: 103.845
-    gameObject: {fileID: 1758792867506060, guid: 8e9d308348128984baa6d26abfe21f06,
-      type: 2}
-  - latitude: 1.28192
-    longitude: 103.845
-    gameObject: {fileID: 1644284727214402, guid: 7e13070fc48fd8b4bace4cd1c69b5efc,
-      type: 2}
-  - latitude: 1.2815
-    longitude: 103.846
-    gameObject: {fileID: 1575078160422554, guid: 4e6b25c6029874d4d81f44b553f4ae1b,
-      type: 2}
-  - latitude: 1.27733
-    longitude: 103.845
-    gameObject: {fileID: 1227678142654210, guid: 156c16e72ffc1534ea40a6ccb90ae760,
-      type: 2}
-  - latitude: 1.28259
-    longitude: 103.846
-    gameObject: {fileID: 1226605950355062, guid: 8291cebc1059e994fb8edba794fb7843,
-      type: 2}
-  - latitude: 1.27618
-    longitude: 103.849
-    gameObject: {fileID: 1885701937061060, guid: c3d8e365a461a1d4982ea7c0cf43788b,
-      type: 2}
-  - latitude: 1.28137
-    longitude: 103.849
-    gameObject: {fileID: 1509798290803870, guid: 0adda3c82233f6e4e86d9a45b92a55a4,
-      type: 2}
-  - latitude: 1.28378
-    longitude: 103.849
-    gameObject: {fileID: 1290633159246440, guid: 0d1c0c5524247c6419be5f2ff25a1010,
-      type: 2}
-  - latitude: 1.27996
-    longitude: 103.847
-    gameObject: {fileID: 1565364133368722, guid: e01de4bd626e8e54c972c20099b6fef0,
-      type: 2}
-  - latitude: 1.28256
-    longitude: 103.847
-    gameObject: {fileID: 1519036906606850, guid: 57203437c8ebccd4a834dd15470c1de7,
-      type: 2}
-  - latitude: 1.27991
-    longitude: 103.847
-    gameObject: {fileID: 1229008493425436, guid: 991fa32bf1473ab45ad713565dc9cb68,
-      type: 2}
-  - latitude: 1.28249
-    longitude: 103.847
-    gameObject: {fileID: 1877199668540974, guid: e6f59ac78f315e54ba2c615992f933a2,
-      type: 2}
-  - latitude: 1.28062
-    longitude: 103.846
-    gameObject: {fileID: 1686213583446030, guid: 43696cff2e56d9647b0174717d2764f7,
-      type: 2}
-  - latitude: 1.28239
-    longitude: 103.846
-    gameObject: {fileID: 1323039999831496, guid: 1b63fbd32e62fe944952775b11e2c434,
-      type: 2}
-  - latitude: 1.28131
-    longitude: 103.849
-    gameObject: {fileID: 1454553825008666, guid: abdce3351e311fe458945d2f8cbf4624,
-      type: 2}
-  - latitude: 1.28046
-    longitude: 103.846
-    gameObject: {fileID: 1679642293889130, guid: 392becdd6396ce5448d43ef205af68cf,
-      type: 2}
-  - latitude: 1.28116
-    longitude: 103.846
-    gameObject: {fileID: 1739084994708506, guid: 31a1a933ff2b4ae4c886ba5ed5932195,
-      type: 2}
-  - latitude: 1.28287
-    longitude: 103.846
-    gameObject: {fileID: 1522528212767604, guid: 4f878cfb2fc38584eb2baeedfa0a93cc,
-      type: 2}
-  - latitude: 1.2843
-    longitude: 103.848
-    gameObject: {fileID: 1303680343779426, guid: 40f096be59307c94ca81d78d6bd04c49,
-      type: 2}
-  - latitude: 1.27945
-    longitude: 103.845
-    gameObject: {fileID: 1157500137495230, guid: 6cf5e9656b3bed744a6d7074af53deda,
-      type: 2}
-  - latitude: 1.27405
-    longitude: 103.854
-    gameObject: {fileID: 1128987176870736, guid: dbf52cdbc14e5744fa0e44e6a13a5e26,
-      type: 2}
-  - latitude: 1.27667
-    longitude: 103.847
-    gameObject: {fileID: 1972804234693556, guid: f3eb7c0127f4a6b44bd834de979e645a,
-      type: 2}
-  - latitude: 1.27784
-    longitude: 103.853
-    gameObject: {fileID: 1748343744542544, guid: b7126cfec892c9a41acc21da54f6204c,
-      type: 2}
-  - latitude: 1.2806
-    longitude: 103.847
-    gameObject: {fileID: 1277851150068116, guid: 2972ebe98606f1a4a8b76d24e8944642,
-      type: 2}
-  - latitude: 1.27786
-    longitude: 103.853
-    gameObject: {fileID: 1428158318545922, guid: 388acd8ee69373344ad6e7517d0a269d,
-      type: 2}
-  - latitude: 1.28055
-    longitude: 103.848
-    gameObject: {fileID: 1336045900042550, guid: 8a071c62cc7561b40babb697096dc768,
-      type: 2}
-  - latitude: 1.28147
-    longitude: 103.848
-    gameObject: {fileID: 1623566623656094, guid: 5d8d0f14364209341824e6887b3a514a,
-      type: 2}
-  - latitude: 1.28174
-    longitude: 103.845
-    gameObject: {fileID: 1513299093297456, guid: adf206f4bd7d98140aa57199e7abf561,
-      type: 2}
-  - latitude: 1.28165
-    longitude: 103.846
-    gameObject: {fileID: 1173645252709772, guid: 3fa0c9b197fb9904e8ad4153c9a37108,
-      type: 2}
-  - latitude: 1.2801
-    longitude: 103.847
-    gameObject: {fileID: 1637159399684330, guid: cb3390f7ff944424da86827b3eb8d6d0,
-      type: 2}
-  - latitude: 1.28018
-    longitude: 103.847
-    gameObject: {fileID: 1747080626407380, guid: 416385cd579e77946a79eb10e09d174a,
-      type: 2}
-  - latitude: 1.27678
-    longitude: 103.853
-    gameObject: {fileID: 1813405340951290, guid: ffc19107487e4e145a41c200506046f9,
-      type: 2}
-  - latitude: 1.28213
-    longitude: 103.845
-    gameObject: {fileID: 1564787409931644, guid: e8545a503fe436c4fb353bad97d85cb6,
-      type: 2}
-  - latitude: 1.28175
-    longitude: 103.848
-    gameObject: {fileID: 1892691845666586, guid: e4110c051dbb486459c3c762d67bb918,
-      type: 2}
-  - latitude: 1.28074
-    longitude: 103.85
-    gameObject: {fileID: 1201634002706746, guid: a1b0b463b21205b45a57b76035db85ea,
-      type: 2}
-  - latitude: 1.2761
-    longitude: 103.85
-    gameObject: {fileID: 1368621790522504, guid: 4fb0ee97a7d4e4146a59658e34627177,
-      type: 2}
-  - latitude: 1.27696
-    longitude: 103.854
-    gameObject: {fileID: 1921879796844652, guid: 4182c9bd472d258488e2828436307fb2,
-      type: 2}
-  - latitude: 1.28009
-    longitude: 103.847
-    gameObject: {fileID: 1887447440438270, guid: 47e54eb4ed519e7489c18f49f0403ad4,
-      type: 2}
-  - latitude: 1.27446
-    longitude: 103.853
-    gameObject: {fileID: 1709990981428188, guid: f8aa1eace0c6e7241805627e02d9cee0,
-      type: 2}
-  - latitude: 1.28152
-    longitude: 103.846
-    gameObject: {fileID: 1512535346704092, guid: 2e97ffcda02f41c45842a72719a01a8b,
-      type: 2}
-  - latitude: 1.27734
-    longitude: 103.845
-    gameObject: {fileID: 1739924641852858, guid: 10f6b7ea340b450448bf16fc4273a23e,
-      type: 2}
-  - latitude: 1.2819
-    longitude: 103.848
-    gameObject: {fileID: 1586529894331024, guid: ae07dd0f83432b84cb14c7e5d6ff121a,
-      type: 2}
-  - latitude: 1.2826
-    longitude: 103.846
-    gameObject: {fileID: 1920491206347648, guid: e296055f5b2cb4348a36fc439b8eeff1,
-      type: 2}
-  - latitude: 1.28248
-    longitude: 103.846
-    gameObject: {fileID: 1714871668375790, guid: cf12e1b1cd1ab8b4a9b028c87903d583,
-      type: 2}
-  - latitude: 1.28259
-    longitude: 103.846
-    gameObject: {fileID: 1499462214070948, guid: 8d29c9676c88562458a027d70b8fd709,
-      type: 2}
-  - latitude: 1.27729
-    longitude: 103.85
-    gameObject: {fileID: 1526853334333138, guid: c647f385f3cfec047a85219dc876a625,
-      type: 2}
-  - latitude: 1.27562
-    longitude: 103.849
-    gameObject: {fileID: 1265095424064768, guid: 53f2f3f1889b92947b20d7aa6472e1d2,
-      type: 2}
-  - latitude: 1.27526
-    longitude: 103.845
-    gameObject: {fileID: 1942597193667964, guid: 0d5b7dc290155cc4eb6015992753e48c,
-      type: 2}
-  - latitude: 1.2783
-    longitude: 103.853
-    gameObject: {fileID: 1692988131965628, guid: c135af5a92e692747b961fd001277c4e,
-      type: 2}
-  - latitude: 1.28225
-    longitude: 103.848
-    gameObject: {fileID: 1556871195038526, guid: 0c6b20e05a5ae8345812c1f35a859a4a,
-      type: 2}
-  - latitude: 1.27661
-    longitude: 103.853
-    gameObject: {fileID: 1678974333626954, guid: 4b33c3f5126716849afae8696a50bf07,
-      type: 2}
-  - latitude: 1.27395
-    longitude: 103.854
-    gameObject: {fileID: 1774979951662654, guid: 71934e0fe893d8542beb876300d51443,
-      type: 2}
-  - latitude: 1.28089
-    longitude: 103.847
-    gameObject: {fileID: 1741667673025898, guid: 21c5f038af0b67a4ca34d38152b9176d,
-      type: 2}
-  - latitude: 1.28276
-    longitude: 103.846
-    gameObject: {fileID: 1000981836628962, guid: b469680575ab6f84fb566dc17cc85f7d,
-      type: 2}
-  - latitude: 1.2759
-    longitude: 103.85
-    gameObject: {fileID: 1634368735330670, guid: 65d023004228ecb489b0a42efc1591d1,
-      type: 2}
-  - latitude: 1.28059
-    longitude: 103.848
-    gameObject: {fileID: 1938462803059880, guid: eae4c9e7143034b428b9d9c3f48212b4,
-      type: 2}
-  - latitude: 1.27774
-    longitude: 103.845
-    gameObject: {fileID: 1111956729338444, guid: 1b900216e2f4958438e041c1b96d22c7,
-      type: 2}
-  - latitude: 1.28094
-    longitude: 103.847
-    gameObject: {fileID: 1472134402887996, guid: 9e9427249496156468b6f4faa588a81e,
-      type: 2}
-  - latitude: 1.27671
-    longitude: 103.853
-    gameObject: {fileID: 1157346166967726, guid: 03866370763c338448cfbdd0506e8c22,
-      type: 2}
-  - latitude: 1.27465
-    longitude: 103.851
-    gameObject: {fileID: 1079659843480454, guid: cc5fee3ecd585744896d15b091fdc09d,
-      type: 2}
-  - latitude: 1.27807
-    longitude: 103.854
-    gameObject: {fileID: 1876944402668902, guid: 84d5fb77db1bb0246819ee0a4f8b56c1,
-      type: 2}
-  - latitude: 1.2821
-    longitude: 103.846
-    gameObject: {fileID: 1333387987337304, guid: 95cffe7dbd1fd9f42b7f39f4fccc68d3,
-      type: 2}
-  - latitude: 1.28161
-    longitude: 103.848
-    gameObject: {fileID: 1939076344958450, guid: fc19a5f0abe7c6d418bc2e4de6498336,
-      type: 2}
-  - latitude: 1.28009
-    longitude: 103.847
-    gameObject: {fileID: 1412175407151920, guid: 7e2b6f10964450d4186d3816fd7b3f7b,
-      type: 2}
-  - latitude: 1.28109
-    longitude: 103.846
-    gameObject: {fileID: 1294063742072976, guid: ac338423c03f9ea49a1b79b7349d295e,
-      type: 2}
-  - latitude: 1.28147
-    longitude: 103.846
-    gameObject: {fileID: 1633982597482588, guid: ab2dc7e2fd5cdd44a9f1a9ef22b05745,
-      type: 2}
-  - latitude: 1.27858
-    longitude: 103.854
-    gameObject: {fileID: 1326830316128894, guid: 3391cb00c9176b342ad11f59da17bca6,
-      type: 2}
-  - latitude: 1.27771
-    longitude: 103.848
-    gameObject: {fileID: 1500387274649592, guid: 5f5b2c2cf4a2b024ea17847c9f394d02,
-      type: 2}
-  - latitude: 1.27373
-    longitude: 103.848
-    gameObject: {fileID: 1302889997011568, guid: 90dadae0eeb024546a5db60e0889bad4,
-      type: 2}
-  - latitude: 1.27636
-    longitude: 103.853
-    gameObject: {fileID: 1416270433020680, guid: c6684928e85a8ce429c8e49005c3c73f,
-      type: 2}
-  - latitude: 1.28207
-    longitude: 103.846
-    gameObject: {fileID: 1538691642312582, guid: f78b07d1116913647993b60a29037b8d,
-      type: 2}
-  - latitude: 1.27968
-    longitude: 103.848
-    gameObject: {fileID: 1048752681741504, guid: 922ad0f5ce51e73429e0b9ce2cae2c7a,
-      type: 2}
-  - latitude: 1.28127
-    longitude: 103.847
-    gameObject: {fileID: 1471142592490924, guid: db17e85e11fa0264ab6b96c4c2c42f85,
-      type: 2}
-  - latitude: 1.28201
-    longitude: 103.848
-    gameObject: {fileID: 1417126996381140, guid: 264662b21a1cfce49bd95a8104f6a050,
-      type: 2}
-  - latitude: 1.27487
-    longitude: 103.851
-    gameObject: {fileID: 1525972824172698, guid: e286854f8cdbf0f43a1a22baf490a792,
-      type: 2}
-  - latitude: 1.28211
-    longitude: 103.846
-    gameObject: {fileID: 1293680962706396, guid: 4b96d3a442b5ba04b8c4a629e7536906,
-      type: 2}
-  - latitude: 1.28203
-    longitude: 103.847
-    gameObject: {fileID: 1358333511427394, guid: c817d4832627e8646a36316c21bcdf45,
-      type: 2}
-  - latitude: 1.28159
-    longitude: 103.845
-    gameObject: {fileID: 1610241058566172, guid: f26e6e40907efae409ff511b9ce61ee8,
-      type: 2}
-  - latitude: 1.28023
-    longitude: 103.85
-    gameObject: {fileID: 1042605012743596, guid: bb3478ab11164204abbedbda022be84a,
-      type: 2}
-  - latitude: 1.28193
-    longitude: 103.848
-    gameObject: {fileID: 1376248369275010, guid: e1e52a6840c04384a9c8fc4775c46285,
-      type: 2}
-  - latitude: 1.27503
-    longitude: 103.85
-    gameObject: {fileID: 1868158298076310, guid: 12d4c12aba3b27a42a7cc6e3d21ba8dc,
-      type: 2}
-  - latitude: 1.28394
-    longitude: 103.848
-    gameObject: {fileID: 1379828997636942, guid: 0a30a01f719f93a469a152953b531d67,
-      type: 2}
-  - latitude: 1.28125
-    longitude: 103.846
-    gameObject: {fileID: 1065490932513370, guid: 912e1b5a321c2784d88d21bd965a62fd,
-      type: 2}
-  - latitude: 1.28059
-    longitude: 103.847
-    gameObject: {fileID: 1447835112326464, guid: 021f8dc081bde454e8a3ecd1f31045ca,
-      type: 2}
-  - latitude: 1.27718
-    longitude: 103.854
-    gameObject: {fileID: 1403951435704474, guid: f5f5fb21cab69674a8594fa3b5055216,
-      type: 2}
-  - latitude: 1.28159
-    longitude: 103.847
-    gameObject: {fileID: 1151421303891970, guid: a7ab260ac9bdedc4eb47d739a1ce1f69,
-      type: 2}
-  - latitude: 1.28104
-    longitude: 103.846
-    gameObject: {fileID: 1627850268186394, guid: 658f03d0a37d7534fa04d2f0db6c8cd5,
-      type: 2}
-  - latitude: 1.28093
-    longitude: 103.848
-    gameObject: {fileID: 1897253605226204, guid: 04dbd098fc529d342910fb7e2c092fa2,
-      type: 2}
-  - latitude: 1.2729
-    longitude: 103.847
-    gameObject: {fileID: 1638087294790386, guid: 7982d92fa9cb0964db1084c8dea14381,
-      type: 2}
-  - latitude: 1.27279
-    longitude: 103.847
-    gameObject: {fileID: 1279245019479804, guid: c8decc48b3b0ab04daa8176651aec698,
-      type: 2}
-  - latitude: 1.27485
-    longitude: 103.851
-    gameObject: {fileID: 1587172220493614, guid: 83dcb3103de09034a915bdf6fa6f8f17,
-      type: 2}
-  - latitude: 1.28299
-    longitude: 103.849
-    gameObject: {fileID: 1169612595876978, guid: 0261d51401d30fc4c998d8da40d652ef,
-      type: 2}
-  - latitude: 1.28339
-    longitude: 103.848
-    gameObject: {fileID: 1150171686733246, guid: 9ad49b651dfe5ff418d5ebc300052108,
-      type: 2}
-  - latitude: 1.28137
-    longitude: 103.846
-    gameObject: {fileID: 1670546207116960, guid: 32e634c086f86b04190f4883856ae38d,
-      type: 2}
-  - latitude: 1.28293
-    longitude: 103.846
-    gameObject: {fileID: 1690977975453880, guid: 9f8f273b764f17742a2ec3b20b0616a9,
-      type: 2}
-  - latitude: 1.28068
-    longitude: 103.846
-    gameObject: {fileID: 1344662106851484, guid: a9898cf9d4b30bd4da1507e697ced7da,
-      type: 2}
-  - latitude: 1.27718
-    longitude: 103.854
-    gameObject: {fileID: 1087277419393128, guid: 04a6b95af2e84be4999d19747ad99bfb,
-      type: 2}
-  - latitude: 1.28217
-    longitude: 103.846
-    gameObject: {fileID: 1752999990970230, guid: f5ef94f92f572ca45969b4f03a9f8a62,
-      type: 2}
-  - latitude: 1.2817
-    longitude: 103.846
-    gameObject: {fileID: 1839280765022880, guid: c4cc6c38b1035204b9a684994cc71cf8,
-      type: 2}
-  - latitude: 1.27678
-    longitude: 103.846
-    gameObject: {fileID: 1700407275382484, guid: c04d4890b40d6d049b3a6509ce2600da,
-      type: 2}
-  - latitude: 1.27567
-    longitude: 103.854
-    gameObject: {fileID: 1485209827196808, guid: f29ee23f3587d5048a8b4149a44bbd5d,
-      type: 2}
-  - latitude: 1.27444
-    longitude: 103.853
-    gameObject: {fileID: 1544718067737176, guid: a8f65b0c90716be4880271535828fe0e,
-      type: 2}
-  - latitude: 1.28327
-    longitude: 103.846
-    gameObject: {fileID: 1232276028010660, guid: 129ad6fb7e43f4d44b0f0396e45f57bb,
-      type: 2}
-  - latitude: 1.27849
-    longitude: 103.847
-    gameObject: {fileID: 1390718072227136, guid: 49d910bc60fc7e0429ae72c20f3bcadf,
-      type: 2}
-  - latitude: 1.28244
-    longitude: 103.846
-    gameObject: {fileID: 1679849107918830, guid: 68b2f2f1e1d709944841b4577726b066,
-      type: 2}
-  - latitude: 1.27477
-    longitude: 103.851
-    gameObject: {fileID: 1316074304620414, guid: eb9e02cb0c7c2714da7ec8bcad9dfaea,
-      type: 2}
-  - latitude: 1.28239
-    longitude: 103.847
-    gameObject: {fileID: 1766383760892310, guid: 5000d6486cca5614cb80faee0a8d93e8,
-      type: 2}
-  - latitude: 1.27896
-    longitude: 103.851
-    gameObject: {fileID: 1703170878300566, guid: 960ff78b71bd342468ef759d92f9e722,
-      type: 2}
-  - latitude: 1.28292
-    longitude: 103.848
-    gameObject: {fileID: 1735093918580868, guid: aa902c36e56940744a852f6c892529ed,
-      type: 2}
-  - latitude: 1.27819
-    longitude: 103.848
-    gameObject: {fileID: 1935253054337054, guid: d747ceae0dc92e548a657243603297ac,
-      type: 2}
-  - latitude: 1.27509
-    longitude: 103.85
-    gameObject: {fileID: 1115545861385124, guid: 0f19048d99d77d6438944c375550e357,
-      type: 2}
-  - latitude: 1.28094
-    longitude: 103.846
-    gameObject: {fileID: 1758215388696998, guid: d03cdb3d23723e646b01c09cdd7d7714,
-      type: 2}
-  - latitude: 1.2808
-    longitude: 103.848
-    gameObject: {fileID: 1711030489691340, guid: e6018d987a431374fbcd29649fce798b,
-      type: 2}
-  - latitude: 1.28023
-    longitude: 103.847
-    gameObject: {fileID: 1147097394299322, guid: b5a1339537587c24fb8eec18c56e4238,
-      type: 2}
-  - latitude: 1.27462
-    longitude: 103.845
-    gameObject: {fileID: 1116639133140228, guid: b9a44f128e6f0d848a614898c6214c6f,
-      type: 2}
-  - latitude: 1.28243
-    longitude: 103.847
-    gameObject: {fileID: 1844552348324306, guid: f219161fa25fd9046a40656e987ac349,
-      type: 2}
-  - latitude: 1.28269
-    longitude: 103.846
-    gameObject: {fileID: 1142046214134746, guid: 622912f12458d454db28beccf043b38b,
-      type: 2}
-  - latitude: 1.28166
-    longitude: 103.848
-    gameObject: {fileID: 1725075052105750, guid: 6b369059ac50a3b4094a2ddeb1dae118,
-      type: 2}
-  - latitude: 1.27655
-    longitude: 103.853
-    gameObject: {fileID: 1555578691859042, guid: f6fd95219c67efa48b34f27a295fff91,
-      type: 2}
-  - latitude: 1.28258
-    longitude: 103.847
-    gameObject: {fileID: 1142812257515712, guid: 8fd872bfe75617b4193d1d41cbe915cd,
-      type: 2}
-  - latitude: 1.27995
-    longitude: 103.847
-    gameObject: {fileID: 1690700342663768, guid: de345df86b950f44a80fb11de72e87e1,
-      type: 2}
-  - latitude: 1.28143
-    longitude: 103.847
-    gameObject: {fileID: 1970604017482264, guid: a5cedefea0ec9fa4bb5dd3582a9c4ea5,
-      type: 2}
-  - latitude: 1.2797
-    longitude: 103.849
-    gameObject: {fileID: 1450761587748562, guid: 34c0fc1467b73ea45aee708929375ef4,
-      type: 2}
-  - latitude: 1.28049
-    longitude: 103.848
-    gameObject: {fileID: 1573175108828158, guid: 0188e507bf6806a4db26a778012162ff,
-      type: 2}
-  - latitude: 1.2826
-    longitude: 103.847
-    gameObject: {fileID: 1692984140782020, guid: 152249476b3dabe4799b2b312a2b6eab,
-      type: 2}
-  - latitude: 1.27532
-    longitude: 103.856
-    gameObject: {fileID: 1764224974240108, guid: 4379f2e10b1c8954199c56252eb69dd5,
-      type: 2}
-  - latitude: 1.27958
-    longitude: 103.848
-    gameObject: {fileID: 1471124218648764, guid: 2d66b0c6daccd6a4fba558ce4c4151c2,
-      type: 2}
-  - latitude: 1.2822
-    longitude: 103.847
-    gameObject: {fileID: 1704691007929232, guid: b77a533b7ec9432418f33ff00d566a78,
-      type: 2}
-  - latitude: 1.28054
-    longitude: 103.847
-    gameObject: {fileID: 1538571970195958, guid: 46dabc06dd5461743858d432859b3639,
-      type: 2}
-  - latitude: 1.28118
-    longitude: 103.846
-    gameObject: {fileID: 1063203413709164, guid: b960ce1934fe8d64eb1aac4d54984b71,
-      type: 2}
-  - latitude: 1.28115
-    longitude: 103.846
-    gameObject: {fileID: 1186494358762842, guid: c32ccc29a1c8e334cbb264d1d0e2c2f9,
-      type: 2}
-  - latitude: 1.2817
-    longitude: 103.846
-    gameObject: {fileID: 1473097765171042, guid: dd51e228a1c0d5d42a03e49e21615f27,
-      type: 2}
-  - latitude: 1.27396
-    longitude: 103.854
-    gameObject: {fileID: 1562642739503538, guid: a1846ba750848fd4b9513b5705170ee4,
-      type: 2}
-  - latitude: 1.27926
-    longitude: 103.849
-    gameObject: {fileID: 1288473358076138, guid: ee4f954785bc2ed4aa14ab81b0df9ee7,
-      type: 2}
-  - latitude: 1.28135
-    longitude: 103.846
-    gameObject: {fileID: 1162475136747272, guid: a99a2cc902539f74cb0bab04467c3a0d,
-      type: 2}
-  - latitude: 1.28079
-    longitude: 103.847
-    gameObject: {fileID: 1354090484773024, guid: 77330b9fd4e63894d9e450c7e85c5f31,
-      type: 2}
-  - latitude: 1.28168
-    longitude: 103.847
-    gameObject: {fileID: 1515837488513244, guid: cf2667300c34410478832023773b6455,
-      type: 2}
-  - latitude: 1.28235
-    longitude: 103.847
-    gameObject: {fileID: 1636154912152810, guid: 6557ee840d6f7a8438924b15fdf85b13,
-      type: 2}
-  - latitude: 1.2767
-    longitude: 103.853
-    gameObject: {fileID: 1757849750223012, guid: 54e251949fccaed4b902e41bac1a2f76,
-      type: 2}
-  - latitude: 1.28295
-    longitude: 103.846
-    gameObject: {fileID: 1051877197015402, guid: 34f82d8540c47a74ab93794f92a560e9,
-      type: 2}
-  - latitude: 1.28054
-    longitude: 103.847
-    gameObject: {fileID: 1746307419310842, guid: 943a451290b49f946af30a62a9761d7f,
-      type: 2}
-  - latitude: 1.27314
-    longitude: 103.845
-    gameObject: {fileID: 1552544524030810, guid: 8acf5dc915631b149a34a5e987bd1be0,
-      type: 2}
-  - latitude: 1.28184
-    longitude: 103.847
-    gameObject: {fileID: 1709122259832136, guid: 02c40327a79f6034fbd38f15c89c4ee7,
-      type: 2}
-  - latitude: 1.27704
-    longitude: 103.845
-    gameObject: {fileID: 1407836308779922, guid: 1215f44492d3cbc438926198f5016019,
-      type: 2}
-  - latitude: 1.27505
-    longitude: 103.852
-    gameObject: {fileID: 1661005258271578, guid: f336d5bd9cc8b7e4ca92eb870c19684c,
-      type: 2}
-  - latitude: 1.28221
-    longitude: 103.848
-    gameObject: {fileID: 1530322596215150, guid: de3186f3f82ff6c478bba92263197f0a,
-      type: 2}
-  - latitude: 1.27858
-    longitude: 103.85
-    gameObject: {fileID: 1032631673860586, guid: c4a0bab6de8e22e4ebf3574bdfe92a67,
-      type: 2}
-  - latitude: 1.2802
-    longitude: 103.848
-    gameObject: {fileID: 1240443408557410, guid: 95b008aa454eee94481803466031abd7,
-      type: 2}
-  - latitude: 1.28191
-    longitude: 103.849
-    gameObject: {fileID: 1688675094824938, guid: 95bf8965b751c6646b288834430b36b8,
-      type: 2}
-  - latitude: 1.27468
-    longitude: 103.847
-    gameObject: {fileID: 1546294009188034, guid: a742e136aba4ef546b7a1bd660f33886,
-      type: 2}
-  - latitude: 1.27629
-    longitude: 103.85
-    gameObject: {fileID: 1460815622515112, guid: 9cbd4f6defa5d0e438a9d0935c26ec99,
-      type: 2}
-  - latitude: 1.28286
-    longitude: 103.846
-    gameObject: {fileID: 1580382148101408, guid: a1de3b0ddb5fa35478588c4c39bb6b06,
-      type: 2}
-  - latitude: 1.28077
-    longitude: 103.847
-    gameObject: {fileID: 1156035035687212, guid: df52b6b9132631148bc88f763c26d638,
-      type: 2}
-  - latitude: 1.27629
-    longitude: 103.849
-    gameObject: {fileID: 1895199939880864, guid: f55fcb3bc528bc445995c4dea159261b,
-      type: 2}
-  - latitude: 1.2842
-    longitude: 103.847
-    gameObject: {fileID: 1923467670508802, guid: c46ad6fc2df9cd547bcf7a8bd65cb375,
-      type: 2}
-  - latitude: 1.282
-    longitude: 103.848
-    gameObject: {fileID: 1238066491655508, guid: 700b8d99190a8244caeea1e3edabfc48,
-      type: 2}
-  - latitude: 1.27806
-    longitude: 103.85
-    gameObject: {fileID: 1503017676654434, guid: c5444da2ae803a04f83c073ebc301552,
-      type: 2}
-  - latitude: 1.27761
-    longitude: 103.848
-    gameObject: {fileID: 1641799677326192, guid: e3bc637db74ec8a4a9ac90f29c30520f,
-      type: 2}
-  - latitude: 1.27697
-    longitude: 103.854
-    gameObject: {fileID: 1191684907279738, guid: eac65d3d8f41f2448b9c09005e2ec390,
-      type: 2}
-  - latitude: 1.28022
-    longitude: 103.847
-    gameObject: {fileID: 1829216790779556, guid: c8851bb8f40e318408a73e7f84f77617,
-      type: 2}
-  - latitude: 1.2806
-    longitude: 103.85
-    gameObject: {fileID: 1219830840632258, guid: bfd562dcbe9ddc641b7fd34c62966903,
-      type: 2}
-  - latitude: 1.28243
-    longitude: 103.846
-    gameObject: {fileID: 1088145473581208, guid: 12ddd63ab572fea449a3b3c229470eeb,
-      type: 2}
-  - latitude: 1.28276
-    longitude: 103.846
-    gameObject: {fileID: 1974092333423410, guid: 3649e217570270c4489d73efb85a75cf,
-      type: 2}
-  - latitude: 1.27451
-    longitude: 103.852
-    gameObject: {fileID: 1653228941434080, guid: e6af265e574f6bb4b94f12b012fdbf22,
-      type: 2}
-  - latitude: 1.2823
-    longitude: 103.846
-    gameObject: {fileID: 1381767377176364, guid: 0c180c488b9990145afa9d605efcacbb,
-      type: 2}
-  - latitude: 1.27783
-    longitude: 103.852
-    gameObject: {fileID: 1572358963463740, guid: 48f40b08e510e6a478faddd11b4934d1,
-      type: 2}
-  - latitude: 1.28108
-    longitude: 103.848
-    gameObject: {fileID: 1672942820480648, guid: 1e6c753898cb3ab48b8c96c0bd7e244e,
-      type: 2}
-  - latitude: 1.28232
-    longitude: 103.846
-    gameObject: {fileID: 1110826339630894, guid: 0426c16a84c9dd1448f3d95592ad2870,
-      type: 2}
-  - latitude: 1.27749
-    longitude: 103.854
-    gameObject: {fileID: 1446838367495056, guid: 1e5fdbea7dc34c94aa51e7dfde5e132a,
-      type: 2}
-  - latitude: 1.28151
-    longitude: 103.847
-    gameObject: {fileID: 1479224218884054, guid: fdb7d1aec918c4d4499feb25b90be3cc,
-      type: 2}
-  - latitude: 1.28165
-    longitude: 103.845
-    gameObject: {fileID: 1567978655803168, guid: d2a1903c22de33f48a1f789330ea03fd,
-      type: 2}
-  - latitude: 1.2818
-    longitude: 103.845
-    gameObject: {fileID: 1853671895745422, guid: 1fd9d2d08d324b9409daf6c1df27ad40,
-      type: 2}
-  - latitude: 1.28027
-    longitude: 103.848
-    gameObject: {fileID: 1040664540847550, guid: 4f96650a064f73e4bb0b419133cc4fb3,
-      type: 2}
-  - latitude: 1.27718
-    longitude: 103.846
-    gameObject: {fileID: 1164844097378030, guid: a8edd00c7fe5f50418e8fb26245425bf,
-      type: 2}
-  - latitude: 1.28017
-    longitude: 103.848
-    gameObject: {fileID: 1607908900339368, guid: 2e4eff4b98535a14aa93bab7a4153536,
-      type: 2}
-  - latitude: 1.27391
-    longitude: 103.85
-    gameObject: {fileID: 1954580959213136, guid: 1b1bf44f5aeb0064d9fd05dfa82f1b80,
-      type: 2}
-  - latitude: 1.28212
-    longitude: 103.848
-    gameObject: {fileID: 1201618051448302, guid: 4aa61e9c1ba6ac246be1ea55a48b61cf,
-      type: 2}
-  - latitude: 1.28017
-    longitude: 103.847
-    gameObject: {fileID: 1346402678326594, guid: 7f2d93e6eda8b094cb441e05ca0648bb,
-      type: 2}
-  - latitude: 1.28182
-    longitude: 103.848
-    gameObject: {fileID: 1165181856087560, guid: bd2ad51b741dfce449a97856e9c4aa77,
-      type: 2}
-  - latitude: 1.27328
-    longitude: 103.847
-    gameObject: {fileID: 1696628434610670, guid: f4d35e5d0356d3d4ba5721c152f73ee8,
-      type: 2}
-  - latitude: 1.28164
-    longitude: 103.847
-    gameObject: {fileID: 1931962565104618, guid: fa7c1cf186e99d0468c8262c80fe863e,
-      type: 2}
-  - latitude: 1.28119
-    longitude: 103.846
-    gameObject: {fileID: 1537444157913608, guid: 39f9baf198eea2e4caf95d79292bfb2f,
-      type: 2}
-  - latitude: 1.28041
-    longitude: 103.848
-    gameObject: {fileID: 1950694328242806, guid: bed5129fc43f9aa4ab265c61d814c46e,
-      type: 2}
-  - latitude: 1.28092
-    longitude: 103.846
-    gameObject: {fileID: 1116930519056736, guid: dd5fef4ebe57ec64c8529b6427f53379,
-      type: 2}
-  - latitude: 1.28431
-    longitude: 103.847
-    gameObject: {fileID: 1308135448885694, guid: db7b444c65b070144b705cbfca41e0f1,
-      type: 2}
-  - latitude: 1.27994
-    longitude: 103.847
-    gameObject: {fileID: 1912344698886118, guid: 7b2d7e6c0a3d8c54abca9ba6ccd6b20e,
-      type: 2}
-  - latitude: 1.27501
-    longitude: 103.849
-    gameObject: {fileID: 1565344694962462, guid: e3be49548690caa429a3e5309639c1b6,
-      type: 2}
-  - latitude: 1.27473
-    longitude: 103.853
-    gameObject: {fileID: 1810938227935802, guid: c42bae0c686dc7c48a5749eb424db0d5,
-      type: 2}
-  - latitude: 1.27393
-    longitude: 103.844
-    gameObject: {fileID: 1650674690029934, guid: d5b280f4c92c3bf42836262b43c321b3,
-      type: 2}
-  - latitude: 1.27475
-    longitude: 103.847
-    gameObject: {fileID: 1428833765513892, guid: fe57a279d7552a64b99354698a9abbb5,
-      type: 2}
-  - latitude: 1.27817
-    longitude: 103.851
-    gameObject: {fileID: 1169722440986758, guid: f7ada130b9b3bde4eb9665e2eedd58ed,
-      type: 2}
-  - latitude: 1.28082
-    longitude: 103.846
-    gameObject: {fileID: 1105157923374758, guid: 8594e8ba1ec472349b967cbc523f1ba7,
-      type: 2}
-  - latitude: 1.28021
-    longitude: 103.847
-    gameObject: {fileID: 1948338071613774, guid: 6ea79ed5e04bc2d4d86d787b6533010f,
-      type: 2}
-  - latitude: 1.27762
-    longitude: 103.853
-    gameObject: {fileID: 1266031373644824, guid: 3e0e9eb0333be314887faddfcb79d0e0,
-      type: 2}
-  - latitude: 1.28013
-    longitude: 103.847
-    gameObject: {fileID: 1913783993115152, guid: a74ccbc9b2e3f9746a9f00634ab9e853,
-      type: 2}
-  - latitude: 1.2779
-    longitude: 103.854
-    gameObject: {fileID: 1206663388758786, guid: b753510120f7fe34cb9c9f9a24745257,
-      type: 2}
-  - latitude: 1.28206
-    longitude: 103.846
-    gameObject: {fileID: 1112899427623878, guid: 67e94099c13660e40b614f8ed3694169,
-      type: 2}
-  - latitude: 1.28122
-    longitude: 103.848
-    gameObject: {fileID: 1792495686330538, guid: 60c2b453faf2c3142be97efa85872908,
-      type: 2}
-  - latitude: 1.28146
-    longitude: 103.845
-    gameObject: {fileID: 1746461741524740, guid: 8dd71045c21f3394eb9703910520d54d,
-      type: 2}
-  - latitude: 1.2769
-    longitude: 103.853
-    gameObject: {fileID: 1762078085008328, guid: 61b5da847ff955547a22d470c69d7153,
-      type: 2}
-  - latitude: 1.28207
-    longitude: 103.848
-    gameObject: {fileID: 1805025879887682, guid: d53f0a6991fd0824c88f896670781753,
-      type: 2}
-  - latitude: 1.28194
-    longitude: 103.847
-    gameObject: {fileID: 1818393085192080, guid: 09eedc703db8aeb4ab12404b36c6e9d0,
-      type: 2}
-  - latitude: 1.28155
-    longitude: 103.846
-    gameObject: {fileID: 1936553458302440, guid: 615768e47d97368459ccd6e2d831d5ad,
-      type: 2}
-  - latitude: 1.28161
-    longitude: 103.848
-    gameObject: {fileID: 1024736340915988, guid: 50dbc1249730a7f4ba405edd414907b7,
-      type: 2}
-  - latitude: 1.28322
-    longitude: 103.849
-    gameObject: {fileID: 1766642134436948, guid: e9c3bfa8316ef4c46831e565ef61931e,
-      type: 2}
-  - latitude: 1.28018
-    longitude: 103.847
-    gameObject: {fileID: 1561474409384188, guid: e7a4ed42a18d6c2459081465ac8b064a,
-      type: 2}
-  - latitude: 1.27977
-    longitude: 103.851
-    gameObject: {fileID: 1519222472365362, guid: afade05037f9f184d98c30c3e968e44b,
-      type: 2}
-  - latitude: 1.28013
-    longitude: 103.847
-    gameObject: {fileID: 1283483845961070, guid: c948da119199bde4dbd8aa36f4910e62,
-      type: 2}
-  - latitude: 1.27318
-    longitude: 103.844
-    gameObject: {fileID: 1120719607235286, guid: bb11e4cdeaa381c4485a8203e39298bb,
-      type: 2}
-  - latitude: 1.274
-    longitude: 103.854
-    gameObject: {fileID: 1685710326249104, guid: 342d27205cc441047852b171b1436727,
-      type: 2}
-  - latitude: 1.27646
-    longitude: 103.853
-    gameObject: {fileID: 1711419221050414, guid: 8e773e1b647597d469125498d022fdfa,
-      type: 2}
-  - latitude: 1.28068
-    longitude: 103.847
-    gameObject: {fileID: 1125874057167592, guid: a1cc0f549efbe2e43a3500a5a011f45e,
-      type: 2}
-  - latitude: 1.2808
-    longitude: 103.848
-    gameObject: {fileID: 1176936501089372, guid: c2210151eaf1a224f94b597ae53dd5cd,
-      type: 2}
-  - latitude: 1.27801
-    longitude: 103.845
-    gameObject: {fileID: 1540555947943856, guid: 1801ef0819ba074498b5f1795ffa6b7c,
-      type: 2}
-  - latitude: 1.27793
-    longitude: 103.85
-    gameObject: {fileID: 1546926811977072, guid: f09862c1caf05e14c95b344a9902533b,
-      type: 2}
-  - latitude: 1.27571
-    longitude: 103.847
-    gameObject: {fileID: 1901616235295306, guid: 415269f79e14d314b8e3917021afce57,
-      type: 2}
-  - latitude: 1.27449
-    longitude: 103.846
-    gameObject: {fileID: 1031826958860916, guid: 02f92abe62a2ebb4d9d39ef77f8bfdc2,
-      type: 2}
-  - latitude: 1.27583
-    longitude: 103.85
-    gameObject: {fileID: 1967865360916118, guid: d4d23cfe1fd578047ac1845e828c819f,
-      type: 2}
-  - latitude: 1.2749
-    longitude: 103.851
-    gameObject: {fileID: 1164498454528772, guid: c514a0b5713672f49ba564b5e9f941af,
-      type: 2}
-  - latitude: 1.27314
-    longitude: 103.843
-    gameObject: {fileID: 1898031592436408, guid: 974f4b2ba9ad882449a0e617883860e0,
-      type: 2}
-  - latitude: 1.28394
-    longitude: 103.849
-    gameObject: {fileID: 1349157036019852, guid: 142a673ac820b0c46b7c88fc9f1e6dba,
-      type: 2}
-  - latitude: 1.28245
-    longitude: 103.847
-    gameObject: {fileID: 1140296411805670, guid: 38862553f220ae143bfa4d2a26a3f185,
-      type: 2}
-  - latitude: 1.28204
-    longitude: 103.848
-    gameObject: {fileID: 1626722884138094, guid: a08dc9fe0cd5ce441881bdc6fd4671f7,
-      type: 2}
-  - latitude: 1.27904
-    longitude: 103.847
-    gameObject: {fileID: 1334514348707202, guid: d0aabff6db7a5694bb0477e53600d77d,
-      type: 2}
-  - latitude: 1.28176
-    longitude: 103.848
-    gameObject: {fileID: 1362981722061256, guid: fb37b0585f7bb3841a1ecb6ba8397e64,
-      type: 2}
-  - latitude: 1.28115
-    longitude: 103.847
-    gameObject: {fileID: 1981906922264772, guid: 8528eeba55c99014da4539bbf79a9b06,
-      type: 2}
-  - latitude: 1.27524
-    longitude: 103.855
-    gameObject: {fileID: 1840245219942788, guid: e9ea82cb34deb0242935389c40fe718d,
-      type: 2}
-  - latitude: 1.27748
-    longitude: 103.852
-    gameObject: {fileID: 1007462878401806, guid: 79a94cc8a0352ba4a84e8b6a9d2eb76d,
-      type: 2}
-  - latitude: 1.2761
-    longitude: 103.851
-    gameObject: {fileID: 1091300269875654, guid: cc0e65efd9d6d614daeaf4171bda45c3,
-      type: 2}
-  - latitude: 1.28226
-    longitude: 103.846
-    gameObject: {fileID: 1913124758333416, guid: 316d9bf74a745b04d87aea54aa66addb,
-      type: 2}
-  - latitude: 1.27738
-    longitude: 103.854
-    gameObject: {fileID: 1983330460896186, guid: 24c68f8c4fbdfcf4cbed5b9d6e5b3231,
-      type: 2}
-  - latitude: 1.28178
-    longitude: 103.848
-    gameObject: {fileID: 1109173965580200, guid: 395f627ad6483e541975fada41729fa4,
-      type: 2}
-  - latitude: 1.28152
-    longitude: 103.848
-    gameObject: {fileID: 1499513802987146, guid: 71d4965121330eb4c98ef2dc5f7f92ad,
-      type: 2}
-  - latitude: 1.28131
-    longitude: 103.846
-    gameObject: {fileID: 1635882432568204, guid: dcd21216ca09c9549a9417408a4c79b8,
-      type: 2}
-  - latitude: 1.27497
-    longitude: 103.851
-    gameObject: {fileID: 1724705886408676, guid: 0a2000fb88dbeec439b3740d140ec7e3,
-      type: 2}
-  - latitude: 1.27688
-    longitude: 103.852
-    gameObject: {fileID: 1072331753174796, guid: a83ab61d71cce7042a7919638e9b3231,
-      type: 2}
-  - latitude: 1.28066
-    longitude: 103.847
-    gameObject: {fileID: 1985914525508394, guid: 87a3202f0ecf1694dbd21c4477e273a1,
-      type: 2}
-  - latitude: 1.27581
-    longitude: 103.85
-    gameObject: {fileID: 1417947883286698, guid: bb2d1f72a8a20824e8480b5599e7bc70,
-      type: 2}
-  - latitude: 1.28034
-    longitude: 103.848
-    gameObject: {fileID: 1510140254945344, guid: 5bb459d38a5f8b342ad2e67401b09f9c,
-      type: 2}
-  - latitude: 1.28072
-    longitude: 103.845
-    gameObject: {fileID: 1871325268041380, guid: e2c7c90f2b534734cabeb4c40dbe3c16,
-      type: 2}
-  - latitude: 1.28264
-    longitude: 103.846
-    gameObject: {fileID: 1357420136298494, guid: 0476896a2746372489a5b176e2928bb5,
-      type: 2}
-  - latitude: 1.27481
-    longitude: 103.845
-    gameObject: {fileID: 1682267281189422, guid: 539f85f34c256a244b8e4ac25c3b5ffc,
-      type: 2}
-  - latitude: 1.27338
-    longitude: 103.848
-    gameObject: {fileID: 1174267397973174, guid: 21d90d1cdd7d66f49a43233ac3c8ab85,
-      type: 2}
-  - latitude: 1.28283
-    longitude: 103.846
-    gameObject: {fileID: 1689054567636370, guid: 55d169442f0368e4fb87f95f03cf99a3,
-      type: 2}
-  - latitude: 1.28171
-    longitude: 103.848
-    gameObject: {fileID: 1185922688861480, guid: 350dd1eb43d0c5940b5abc9c7937672c,
-      type: 2}
-  - latitude: 1.28043
-    longitude: 103.847
-    gameObject: {fileID: 1695565684393086, guid: 85b41501d01c4e04d889025d080b9e11,
-      type: 2}
-  - latitude: 1.27456
-    longitude: 103.852
-    gameObject: {fileID: 1276833411979026, guid: ee18a4eb0d0a6964391a19dcb699a9b9,
-      type: 2}
-  - latitude: 1.28056
-    longitude: 103.847
-    gameObject: {fileID: 1134123488810494, guid: 60dace17c807ab84b82ae5400680b100,
-      type: 2}
-  - latitude: 1.2824
-    longitude: 103.847
-    gameObject: {fileID: 1161949978835276, guid: 36fb244f00b4f0544897edfe177a38e0,
-      type: 2}
-  - latitude: 1.28135
-    longitude: 103.845
-    gameObject: {fileID: 1173186124725314, guid: 3904aea239270274ab00bf2a38f0be81,
-      type: 2}
-  - latitude: 1.28022
-    longitude: 103.848
-    gameObject: {fileID: 1243003580007932, guid: c823f7fa91d31ae45ad73f76fbb33390,
-      type: 2}
-  - latitude: 1.27329
-    longitude: 103.842
-    gameObject: {fileID: 1169990007481182, guid: a5b9c2d470195d64c9f089502d9d5cd7,
-      type: 2}
-  - latitude: 1.27957
-    longitude: 103.851
-    gameObject: {fileID: 1619648530191114, guid: dfd60051cbd01794e9997176921f07e0,
-      type: 2}
-  - latitude: 1.27711
-    longitude: 103.854
-    gameObject: {fileID: 1812744748482160, guid: cf64cba83aa1175478f53d238e89d28b,
-      type: 2}
-  - latitude: 1.27705
-    longitude: 103.845
-    gameObject: {fileID: 1905126710615384, guid: 3d19cc532f963b24aa3a1548938983f8,
-      type: 2}
-  - latitude: 1.28209
-    longitude: 103.848
-    gameObject: {fileID: 1781575874979264, guid: 7ab47720040cba74ea7b0b43d68e8325,
-      type: 2}
-  - latitude: 1.27586
-    longitude: 103.85
-    gameObject: {fileID: 1697938316108816, guid: 5e652476aed42ae45ac3890532c03d01,
-      type: 2}
-  - latitude: 1.27673
-    longitude: 103.845
-    gameObject: {fileID: 1128954406594944, guid: e6b20dce0323fa545a03c2f068bb627e,
-      type: 2}
-  - latitude: 1.27945
-    longitude: 103.849
-    gameObject: {fileID: 1917636602950964, guid: a0509319378fb4d4fb7653e935a1bbee,
-      type: 2}
-  - latitude: 1.2803
-    longitude: 103.847
-    gameObject: {fileID: 1756868275079106, guid: d987225c93bb3004ba2113b60db4c984,
-      type: 2}
-  - latitude: 1.27667
-    longitude: 103.853
-    gameObject: {fileID: 1461984790547854, guid: 9f97f42e72ea3de4fa449e83ae26738c,
-      type: 2}
-  - latitude: 1.281
-    longitude: 103.846
-    gameObject: {fileID: 1027196784488582, guid: 7ac80b9ab8e93b448acd049acf72c623,
-      type: 2}
-  - latitude: 1.28144
-    longitude: 103.848
-    gameObject: {fileID: 1007949762319648, guid: bf021b18c6f60684e9636f8626bee870,
-      type: 2}
-  - latitude: 1.27649
-    longitude: 103.853
-    gameObject: {fileID: 1388139095572206, guid: 702194e9be0985e459b316c4648afff5,
-      type: 2}
-  - latitude: 1.28233
-    longitude: 103.846
-    gameObject: {fileID: 1114651799741274, guid: af4cbedcb9201e14e99503cb3c01e21a,
-      type: 2}
-  - latitude: 1.28174
-    longitude: 103.848
-    gameObject: {fileID: 1019472485725910, guid: 73c5f599612e99e47b43db16f7f2e83e,
-      type: 2}
-  - latitude: 1.28055
-    longitude: 103.848
-    gameObject: {fileID: 1187611678303932, guid: 216ba60fed967a643b0492413da03935,
-      type: 2}
-  - latitude: 1.28009
-    longitude: 103.847
-    gameObject: {fileID: 1236605086944672, guid: 2fae663d52b4bbe4888b76f8bdc67876,
-      type: 2}
   - latitude: 1.27394
     longitude: 103.854
-    gameObject: {fileID: 1102818651712482, guid: c48396cdb77d9c94491d311430267b5c,
+    gameObject: {fileID: 1606335138345174, guid: 32c7adc3b7a675c40a9bb5036533b4fa,
       type: 2}
-  - latitude: 1.28212
+  - latitude: 1.28055
     longitude: 103.848
-    gameObject: {fileID: 1012812716467766, guid: a20490be0983d424eabc3484ce5fdbf0,
+    gameObject: {fileID: 1299323699736316, guid: f83333ce7494a034bbd9cd8e27adc149,
       type: 2}
-  - latitude: 1.28228
+  - latitude: 1.28233
     longitude: 103.847
-    gameObject: {fileID: 1319260425887132, guid: 51f7c213f3166aa4b9a1281ece21f754,
-      type: 2}
-  - latitude: 1.28072
-    longitude: 103.845
-    gameObject: {fileID: 1789612100838020, guid: 2450b77c9375f3f40baaa739166e3de7,
-      type: 2}
-  - latitude: 1.28141
-    longitude: 103.845
-    gameObject: {fileID: 1310048972028924, guid: e449c046a1efade4ea279d0b2c8fb4a1,
-      type: 2}
-  - latitude: 1.28208
-    longitude: 103.848
-    gameObject: {fileID: 1778303496321536, guid: 0ed1d149657eec644bb78cfcb2002549,
-      type: 2}
-  - latitude: 1.27967
-    longitude: 103.85
-    gameObject: {fileID: 1884448963570114, guid: 28f93b752a6a9294685b822de2b1de32,
-      type: 2}
-  - latitude: 1.27738
-    longitude: 103.845
-    gameObject: {fileID: 1745117375997474, guid: d201d0556aca90041b5676eee5cb89ef,
-      type: 2}
-  - latitude: 1.27284
-    longitude: 103.847
-    gameObject: {fileID: 1963468697389550, guid: 7e4d3e8355e2831489f30c2f98bb57c9,
-      type: 2}
-  - latitude: 1.27995
-    longitude: 103.85
-    gameObject: {fileID: 1001068080598362, guid: b1603af1a7009e543b3cfaa09d64b093,
-      type: 2}
-  - latitude: 1.2769
-    longitude: 103.849
-    gameObject: {fileID: 1120081458531114, guid: b3e2615d1028d8e4e8791775a34f20fe,
-      type: 2}
-  - latitude: 1.27966
-    longitude: 103.849
-    gameObject: {fileID: 1693836724694806, guid: 0f6fb91d6f0a56144a71caba18174094,
-      type: 2}
-  - latitude: 1.28237
-    longitude: 103.847
-    gameObject: {fileID: 1629503576516464, guid: 92b6a6a30c7b30d40bc38fc72151159d,
-      type: 2}
-  - latitude: 1.27597
-    longitude: 103.85
-    gameObject: {fileID: 1186830118428276, guid: 0ae7696aa256e5845817eb1c2bd1926a,
-      type: 2}
-  - latitude: 1.28056
-    longitude: 103.849
-    gameObject: {fileID: 1301048174900028, guid: 24a4aea1e881cae46ac0e869a7f2e82d,
-      type: 2}
-  - latitude: 1.2795
-    longitude: 103.849
-    gameObject: {fileID: 1434025648811930, guid: f1422f4c541c2874abdf9e53562dcfdf,
-      type: 2}
-  - latitude: 1.27739
-    longitude: 103.852
-    gameObject: {fileID: 1894094682284794, guid: 04b3743ef4ee713478485df5e7a7cf3d,
-      type: 2}
-  - latitude: 1.27999
-    longitude: 103.847
-    gameObject: {fileID: 1229802794884616, guid: 16afdb995ecb8544194d43ce297c7976,
-      type: 2}
-  - latitude: 1.28004
-    longitude: 103.848
-    gameObject: {fileID: 1173523040956306, guid: 1fc96f80b2e9b6340a74ce8dd697eba6,
-      type: 2}
-  - latitude: 1.28167
-    longitude: 103.848
-    gameObject: {fileID: 1597151036266570, guid: 4ade440558f3fb848be496914bdcc0d5,
-      type: 2}
-  - latitude: 1.28028
-    longitude: 103.847
-    gameObject: {fileID: 1677760845223062, guid: dd40d32ddb3818f4b87a24b1648a826e,
-      type: 2}
-  - latitude: 1.27589
-    longitude: 103.846
-    gameObject: {fileID: 1014300458990756, guid: 83e484cb4c8f18147b8528640a94cd69,
-      type: 2}
-  - latitude: 1.28014
-    longitude: 103.847
-    gameObject: {fileID: 1996258064045816, guid: f13a8851719bca14ea5e00e7695b2fa7,
-      type: 2}
-  - latitude: 1.28025
-    longitude: 103.846
-    gameObject: {fileID: 1620487895681770, guid: 739fe46176d38a34f843ba2f7ce1caf0,
-      type: 2}
-  - latitude: 1.27689
-    longitude: 103.854
-    gameObject: {fileID: 1107940450758258, guid: dc0ff287d35b9db4383a5ebc1ae2f129,
-      type: 2}
-  - latitude: 1.28358
-    longitude: 103.848
-    gameObject: {fileID: 1531147755418502, guid: 12ae7208423ccf341aa2d14bb9303074,
-      type: 2}
-  - latitude: 1.28228
-    longitude: 103.848
-    gameObject: {fileID: 1482341571749030, guid: a5154c85bf6bf6e418baff2507f4dcb5,
-      type: 2}
-  - latitude: 1.28224
-    longitude: 103.846
-    gameObject: {fileID: 1911506121605636, guid: 73c1871ca9b39e941aa3bc7c19bd1d27,
-      type: 2}
-  - latitude: 1.27931
-    longitude: 103.851
-    gameObject: {fileID: 1784750878548528, guid: d5e3f77add1df3d42a8ca7d13ee5e780,
-      type: 2}
-  - latitude: 1.28213
-    longitude: 103.848
-    gameObject: {fileID: 1579507537649030, guid: 8ef4f0f4985d42248b21d81de8b6e804,
-      type: 2}
-  - latitude: 1.27749
-    longitude: 103.856
-    gameObject: {fileID: 1181959252215560, guid: 41d473a81adf93a4eafcb5202dcde180,
-      type: 2}
-  - latitude: 1.28397
-    longitude: 103.848
-    gameObject: {fileID: 1222713276219910, guid: 5af5c5efbd3e1c04dab6e8f95015ca83,
-      type: 2}
-  - latitude: 1.2769
-    longitude: 103.848
-    gameObject: {fileID: 1992569471176398, guid: 33b4b62efa9619341b869d6e19b29cb9,
-      type: 2}
-  - latitude: 1.27654
-    longitude: 103.846
-    gameObject: {fileID: 1250427680346246, guid: 66cbebd5e554ede4eb85fa706b845084,
-      type: 2}
-  - latitude: 1.27779
-    longitude: 103.847
-    gameObject: {fileID: 1553007544388904, guid: 0f640b721a18a3441a5726fec21fddf5,
-      type: 2}
-  - latitude: 1.28062
-    longitude: 103.846
-    gameObject: {fileID: 1218614386803890, guid: 66f0dbe0ca42a9446888e793b3cdbcf3,
-      type: 2}
-  - latitude: 1.28142
-    longitude: 103.845
-    gameObject: {fileID: 1537382730326354, guid: 81317ed7827c91449805bd40503f0d61,
-      type: 2}
-  - latitude: 1.2808
-    longitude: 103.846
-    gameObject: {fileID: 1862775347569552, guid: 4b2e539409e22ac42aa9db0823835f66,
-      type: 2}
-  - latitude: 1.27594
-    longitude: 103.849
-    gameObject: {fileID: 1566919226866790, guid: 48e9c721d3bbb3a4185c6dc5f3ad56c8,
-      type: 2}
-  - latitude: 1.28098
-    longitude: 103.848
-    gameObject: {fileID: 1581069141010354, guid: a63aa78854779074593a4c5631d7a6e7,
-      type: 2}
-  - latitude: 1.28042
-    longitude: 103.847
-    gameObject: {fileID: 1014481868717276, guid: 270db3bd09e5d934886721bcdb735f0c,
-      type: 2}
-  - latitude: 1.28104
-    longitude: 103.847
-    gameObject: {fileID: 1160300526915198, guid: d19066eba2f77224b9321c7879d92aa0,
-      type: 2}
-  - latitude: 1.27888
-    longitude: 103.85
-    gameObject: {fileID: 1799183724915764, guid: 55db7f383fa5296468699358df4ef7c6,
-      type: 2}
-  - latitude: 1.28375
-    longitude: 103.847
-    gameObject: {fileID: 1228975563061822, guid: ed0328284a75a004ba3205bc54890413,
-      type: 2}
-  - latitude: 1.28065
-    longitude: 103.847
-    gameObject: {fileID: 1624805307733172, guid: e121896486ae6104eabd3a4d485f1237,
-      type: 2}
-  - latitude: 1.28167
-    longitude: 103.845
-    gameObject: {fileID: 1327355826956800, guid: 36f73f15c5ade01448be49d4ab0442f8,
-      type: 2}
-  - latitude: 1.28145
-    longitude: 103.846
-    gameObject: {fileID: 1040237340284062, guid: a535f3c0f77525240bd8f42dfe5d19de,
-      type: 2}
-  - latitude: 1.27659
-    longitude: 103.853
-    gameObject: {fileID: 1156818399657222, guid: 9b4f1cfee44a06b4aa42457c19677298,
-      type: 2}
-  - latitude: 1.28251
-    longitude: 103.848
-    gameObject: {fileID: 1997780171770708, guid: 422ea0869ebff2e42aae31812aea92d0,
-      type: 2}
-  - latitude: 1.28146
-    longitude: 103.848
-    gameObject: {fileID: 1544559037730122, guid: 26ed4d93ca49e4e4685ea7dce55e6f85,
-      type: 2}
-  - latitude: 1.27827
-    longitude: 103.853
-    gameObject: {fileID: 1640923646405350, guid: 33f1c338952f86841ba6e64de0b7fdf4,
-      type: 2}
-  - latitude: 1.27482
-    longitude: 103.853
-    gameObject: {fileID: 1186055459710468, guid: 3ed270f6bc0ceab4b91efe861dec3b13,
-      type: 2}
-  - latitude: 1.28052
-    longitude: 103.849
-    gameObject: {fileID: 1476631603717866, guid: 08a5f13b95c2ea64fb99f5d86334318f,
-      type: 2}
-  - latitude: 1.28205
-    longitude: 103.845
-    gameObject: {fileID: 1408094387352718, guid: 97df1cc34d9b413499e1d01e4550973b,
-      type: 2}
-  - latitude: 1.27641
-    longitude: 103.845
-    gameObject: {fileID: 1452566596521166, guid: 1b772857ff01fcb4bab778362652f40b,
-      type: 2}
-  - latitude: 1.28048
-    longitude: 103.847
-    gameObject: {fileID: 1104626457807898, guid: 68bdd4c60c31cab43a9118722994c6f3,
-      type: 2}
-  - latitude: 1.28231
-    longitude: 103.847
-    gameObject: {fileID: 1041599811996334, guid: be43e2679163ed54f8eb5dd27b239f51,
-      type: 2}
-  - latitude: 1.28201
-    longitude: 103.845
-    gameObject: {fileID: 1831409003123582, guid: a7e065d74ef4f654bb708da181d5fd44,
-      type: 2}
-  - latitude: 1.27457
-    longitude: 103.852
-    gameObject: {fileID: 1600561318056990, guid: db156cd8e8b790540a3b5375d42e645c,
-      type: 2}
-  - latitude: 1.27537
-    longitude: 103.846
-    gameObject: {fileID: 1930619849873720, guid: eeadc66d000ecae4ab7f6821a58ce9e4,
-      type: 2}
-  - latitude: 1.27367
-    longitude: 103.856
-    gameObject: {fileID: 1816888653925000, guid: 83115f1839c8d2949b6279504db0cc4f,
-      type: 2}
-  - latitude: 1.27816
-    longitude: 103.853
-    gameObject: {fileID: 1392071343380280, guid: 41bae89cb456b824ea64141c86e6a3ad,
-      type: 2}
-  - latitude: 1.27491
-    longitude: 103.849
-    gameObject: {fileID: 1807957042176094, guid: 245ec404f2badf5418b969d4d412ca95,
-      type: 2}
-  - latitude: 1.27338
-    longitude: 103.847
-    gameObject: {fileID: 1330620359967208, guid: 34e85fc4620868f4c8396c77a39e1e0b,
-      type: 2}
-  - latitude: 1.28223
-    longitude: 103.848
-    gameObject: {fileID: 1558472753148334, guid: dc681361e629f89459e21ebaf8484c40,
-      type: 2}
-  - latitude: 1.27734
-    longitude: 103.845
-    gameObject: {fileID: 1517646544471654, guid: 9fb5d4b2c06fd374e8866827f653266a,
-      type: 2}
-  - latitude: 1.28189
-    longitude: 103.847
-    gameObject: {fileID: 1734447679874798, guid: f986c2c2d4f05484186e9770f80cb552,
-      type: 2}
-  - latitude: 1.28149
-    longitude: 103.848
-    gameObject: {fileID: 1375867026304068, guid: d5c87470350ee574e815ed8213a37cbb,
-      type: 2}
-  - latitude: 1.28188
-    longitude: 103.845
-    gameObject: {fileID: 1808263677567666, guid: 4bc8ed53c695f7541957b53275e5f74e,
-      type: 2}
-  - latitude: 1.27691
-    longitude: 103.845
-    gameObject: {fileID: 1074329635276080, guid: 74b7df1d0689f5640aa86e1a906ac8c7,
-      type: 2}
-  - latitude: 1.28298
-    longitude: 103.846
-    gameObject: {fileID: 1465280536951064, guid: d793202b81bdc8b4793d8dfb250beb17,
-      type: 2}
-  - latitude: 1.27837
-    longitude: 103.853
-    gameObject: {fileID: 1580703286790442, guid: 59518cfffb420874fb6ce048e9692105,
-      type: 2}
-  - latitude: 1.28041
-    longitude: 103.847
-    gameObject: {fileID: 1983873969390796, guid: 1da218e9319614341942408b9516784e,
-      type: 2}
-  - latitude: 1.2765
-    longitude: 103.854
-    gameObject: {fileID: 1646481695200844, guid: a825fc24320b44142a22d458907c912f,
-      type: 2}
-  - latitude: 1.2813
-    longitude: 103.845
-    gameObject: {fileID: 1642594980279754, guid: c2515af42622e3440b43031403dcd600,
-      type: 2}
-  - latitude: 1.28337
-    longitude: 103.846
-    gameObject: {fileID: 1312111835456716, guid: 7a2463c8e36736f4395148455c8ca357,
-      type: 2}
-  - latitude: 1.28237
-    longitude: 103.846
-    gameObject: {fileID: 1744738207821270, guid: 5c96422ca5d5cdb48ad87446599a69af,
-      type: 2}
-  - latitude: 1.28114
-    longitude: 103.848
-    gameObject: {fileID: 1742535344626382, guid: 43dbf4b40721d6d45bb9b5381256a974,
-      type: 2}
-  - latitude: 1.28108
-    longitude: 103.846
-    gameObject: {fileID: 1485580113033352, guid: c01bcd2376db523488400360aac40f83,
-      type: 2}
-  - latitude: 1.28092
-    longitude: 103.85
-    gameObject: {fileID: 1755639471488032, guid: 555453fb316631e4699e0f456e36d5bd,
-      type: 2}
-  - latitude: 1.27664
-    longitude: 103.845
-    gameObject: {fileID: 1295868988699276, guid: 00306a2e69f45e143991517c363ee321,
-      type: 2}
-  - latitude: 1.27679
-    longitude: 103.853
-    gameObject: {fileID: 1736040815240522, guid: dee4bf37be25d9748b4855c2134b44e1,
-      type: 2}
-  - latitude: 1.27985
-    longitude: 103.847
-    gameObject: {fileID: 1756395599881156, guid: 56a5828a29ccc3b41a9472b407f4a7a1,
-      type: 2}
-  - latitude: 1.27774
-    longitude: 103.853
-    gameObject: {fileID: 1413530720645476, guid: 0166bcbc1e14f564e8b95ff76af38205,
-      type: 2}
-  - latitude: 1.27673
-    longitude: 103.853
-    gameObject: {fileID: 1691292217158494, guid: 8371c091309772a4d9dcb5fa457d6893,
-      type: 2}
-  - latitude: 1.28323
-    longitude: 103.846
-    gameObject: {fileID: 1271725496333878, guid: 7e632e80d25236140b2710f15626ff4a,
-      type: 2}
-  - latitude: 1.28304
-    longitude: 103.846
-    gameObject: {fileID: 1040604886298090, guid: 22fa41874e7a18b47bf5a8d5dc6e5b2b,
-      type: 2}
-  - latitude: 1.28038
-    longitude: 103.847
-    gameObject: {fileID: 1136640101589338, guid: 78e0c20ca94e6ae4db1bf2e548083368,
-      type: 2}
-  - latitude: 1.28075
-    longitude: 103.846
-    gameObject: {fileID: 1077192331805508, guid: 21b0de690c6514548b1a7e4914466be6,
-      type: 2}
-  - latitude: 1.28174
-    longitude: 103.846
-    gameObject: {fileID: 1976529878121022, guid: 64c277aaf7950c948be8f751cc19448b,
-      type: 2}
-  - latitude: 1.28142
-    longitude: 103.846
-    gameObject: {fileID: 1157045363577700, guid: c13593c132e47cc4c95c04d3e1b853d8,
-      type: 2}
-  - latitude: 1.28273
-    longitude: 103.846
-    gameObject: {fileID: 1783245736676356, guid: 8bc8c26596f506a4eb96ac1ee5eacff2,
-      type: 2}
-  - latitude: 1.28075
-    longitude: 103.846
-    gameObject: {fileID: 1538877111148024, guid: 9070091c850a7d34bb4ac0f99b90c0e8,
-      type: 2}
-  - latitude: 1.2744
-    longitude: 103.842
-    gameObject: {fileID: 1674966117747984, guid: 2d8408a8d9501d7409d01a1cddf70d6d,
-      type: 2}
-  - latitude: 1.28019
-    longitude: 103.849
-    gameObject: {fileID: 1100074336231464, guid: 27006c9cbf0b8f44ca8484c8861dc6c2,
-      type: 2}
-  - latitude: 1.28057
-    longitude: 103.846
-    gameObject: {fileID: 1039608069962016, guid: 540e4b5ee46515145be52e66f5ebf1a4,
-      type: 2}
-  - latitude: 1.27783
-    longitude: 103.856
-    gameObject: {fileID: 1102199654969362, guid: 451bbfc9e495d3e41b7921744e34e824,
-      type: 2}
-  - latitude: 1.28054
-    longitude: 103.845
-    gameObject: {fileID: 1768119377605262, guid: 983a030f007d029459aaab7b9b23defc,
-      type: 2}
-  - latitude: 1.27571
-    longitude: 103.845
-    gameObject: {fileID: 1845738075820006, guid: f046275e14a944f4c8cdd0ca7f30b8a5,
-      type: 2}
-  - latitude: 1.27861
-    longitude: 103.853
-    gameObject: {fileID: 1246882139081502, guid: b2c1b554b845ecd4a8e67659442f5114,
-      type: 2}
-  - latitude: 1.2798
-    longitude: 103.848
-    gameObject: {fileID: 1939861250184282, guid: eb5f8857160672c41a231f3f58b12033,
-      type: 2}
-  - latitude: 1.27908
-    longitude: 103.849
-    gameObject: {fileID: 1108568027245350, guid: e54c4528b692f1e458d24b2423328a16,
-      type: 2}
-  - latitude: 1.27426
-    longitude: 103.846
-    gameObject: {fileID: 1173168655991528, guid: 3341e4a3f4938b7469ab70133c666b82,
-      type: 2}
-  - latitude: 1.27979
-    longitude: 103.847
-    gameObject: {fileID: 1965497596288792, guid: 96bbe3822b9e8244082d2bbf63258179,
-      type: 2}
-  - latitude: 1.28117
-    longitude: 103.848
-    gameObject: {fileID: 1333705749580560, guid: 970b14f6bc6fb1d4192a51a00018103b,
-      type: 2}
-  - latitude: 1.27867
-    longitude: 103.847
-    gameObject: {fileID: 1388518341815444, guid: 329d00de55649404d9bcc104c1261e73,
-      type: 2}
-  - latitude: 1.28046
-    longitude: 103.848
-    gameObject: {fileID: 1290183903414390, guid: f8818da02373f214ca727339907e6686,
-      type: 2}
-  - latitude: 1.27432
-    longitude: 103.847
-    gameObject: {fileID: 1613438980488598, guid: b1b6f74a0a4ae8d47ba4176915a8eb7e,
-      type: 2}
-  - latitude: 1.27999
-    longitude: 103.847
-    gameObject: {fileID: 1798501586990280, guid: 006532d4934dd6d4c818fb52a8e95e78,
-      type: 2}
-  - latitude: 1.27881
-    longitude: 103.853
-    gameObject: {fileID: 1470034052059266, guid: 509824c2620d05249bdac5e7b7f341ff,
-      type: 2}
-  - latitude: 1.28121
-    longitude: 103.846
-    gameObject: {fileID: 1870250374455502, guid: 703adc49fb5355c4a8af77a3ea827398,
-      type: 2}
-  - latitude: 1.27558
-    longitude: 103.85
-    gameObject: {fileID: 1806164585235376, guid: e8b26691da9a8b64680106a6a0b70d0c,
-      type: 2}
-  - latitude: 1.28176
-    longitude: 103.845
-    gameObject: {fileID: 1155718271701154, guid: 3a42edfe838603b41ba21254ed1c9847,
-      type: 2}
-  - latitude: 1.27593
-    longitude: 103.85
-    gameObject: {fileID: 1979284200992762, guid: fda1f49e817dcdb4a91ce7d514878834,
-      type: 2}
-  - latitude: 1.27801
-    longitude: 103.853
-    gameObject: {fileID: 1249900134438790, guid: efcf684f8df8d6b47a81de21738c391e,
-      type: 2}
-  - latitude: 1.27492
-    longitude: 103.844
-    gameObject: {fileID: 1994843604879402, guid: bcdf68a3b7125244d8df3024584c3ffc,
-      type: 2}
-  - latitude: 1.28315
-    longitude: 103.848
-    gameObject: {fileID: 1595470066840724, guid: f12fd6fd30897014a904f78035541087,
-      type: 2}
-  - latitude: 1.28181
-    longitude: 103.848
-    gameObject: {fileID: 1488094057943000, guid: 4d4b9f68eee25a246bb3ba6ab099351a,
-      type: 2}
-  - latitude: 1.28157
-    longitude: 103.845
-    gameObject: {fileID: 1056163420340488, guid: 6620207fe5650114da49c893b958b082,
-      type: 2}
-  - latitude: 1.2745
-    longitude: 103.844
-    gameObject: {fileID: 1346878644843432, guid: 9c866daa6e142af4a90e1a93ec6fcd35,
-      type: 2}
-  - latitude: 1.27594
-    longitude: 103.85
-    gameObject: {fileID: 1985415239463558, guid: 62b6ed37ec4300d4aac5724f57c6ad51,
-      type: 2}
-  - latitude: 1.28136
-    longitude: 103.849
-    gameObject: {fileID: 1803180892142738, guid: bc46d34adbf5dcc459463217ac279d61,
-      type: 2}
-  - latitude: 1.27699
-    longitude: 103.848
-    gameObject: {fileID: 1640337513722302, guid: d1311f8856fc5324fb1a5c2c449da234,
-      type: 2}
-  - latitude: 1.2813
-    longitude: 103.849
-    gameObject: {fileID: 1688275462562034, guid: 92080eec315bd0b4c9d20d345298e335,
-      type: 2}
-  - latitude: 1.27582
-    longitude: 103.845
-    gameObject: {fileID: 1536423195486078, guid: c3e9ee1b07052374a88597ff142f3fb8,
-      type: 2}
-  - latitude: 1.28139
-    longitude: 103.845
-    gameObject: {fileID: 1361308421318792, guid: f545fe2a454ec6b44aebed74970d0fdc,
-      type: 2}
-  - latitude: 1.2797
-    longitude: 103.852
-    gameObject: {fileID: 1494670887542876, guid: 8572b772bc692684e9c8e15168446f1f,
-      type: 2}
-  - latitude: 1.28251
-    longitude: 103.847
-    gameObject: {fileID: 1875675332706876, guid: cc6f2f801afbdf149a24a3b731255c26,
-      type: 2}
-  - latitude: 1.27381
-    longitude: 103.843
-    gameObject: {fileID: 1479235778125884, guid: 9c8b328bb1eda554b8914a395b18f1a3,
-      type: 2}
-  - latitude: 1.2817
-    longitude: 103.848
-    gameObject: {fileID: 1582161880627692, guid: cc28294bfd881c646b7eff8e6c9f8d61,
-      type: 2}
-  - latitude: 1.28221
-    longitude: 103.845
-    gameObject: {fileID: 1919754750597854, guid: 5f760b7486ee1764eb912d9d54e2694c,
-      type: 2}
-  - latitude: 1.27763
-    longitude: 103.855
-    gameObject: {fileID: 1431011005189864, guid: 71d3916ff89b1b0438c47e0f808efa33,
-      type: 2}
-  - latitude: 1.28013
-    longitude: 103.848
-    gameObject: {fileID: 1274954738552082, guid: 47a7bdd82837852418a68a2309eeabd9,
-      type: 2}
-  - latitude: 1.27714
-    longitude: 103.846
-    gameObject: {fileID: 1601929283919534, guid: f0f77e0ffd740e345ba02167eff7d8d6,
-      type: 2}
-  - latitude: 1.27619
-    longitude: 103.849
-    gameObject: {fileID: 1407160146780774, guid: ce799a2a5ae108545ba9f2ca18bf3f6b,
-      type: 2}
-  - latitude: 1.27942
-    longitude: 103.847
-    gameObject: {fileID: 1283211402977908, guid: c9d6fb253250377479b51114c0af52cc,
-      type: 2}
-  - latitude: 1.28482
-    longitude: 103.848
-    gameObject: {fileID: 1685243498662492, guid: bf63e6f0fe46bb745926726198c81b01,
-      type: 2}
-  - latitude: 1.28125
-    longitude: 103.845
-    gameObject: {fileID: 1214557353303742, guid: 046f75667a3949945b6ee3e8c44e7969,
-      type: 2}
-  - latitude: 1.27508
-    longitude: 103.846
-    gameObject: {fileID: 1505728971657352, guid: c40ff34438914714daa4a3430bba839e,
-      type: 2}
-  - latitude: 1.28184
-    longitude: 103.845
-    gameObject: {fileID: 1767949596296774, guid: 0a07e880368aa664299b529282d992b6,
-      type: 2}
-  - latitude: 1.28033
-    longitude: 103.847
-    gameObject: {fileID: 1013237495755982, guid: 4f54dbbf8ee4c6e4f95eb1db5af0d43b,
-      type: 2}
-  - latitude: 1.28109
-    longitude: 103.848
-    gameObject: {fileID: 1684455697151922, guid: 24f83dea196de94409bb2f5d448b3090,
-      type: 2}
-  - latitude: 1.28147
-    longitude: 103.847
-    gameObject: {fileID: 1465104577851782, guid: 2b41343c50bfeb745a2ad6392710feb0,
-      type: 2}
-  - latitude: 1.28243
-    longitude: 103.847
-    gameObject: {fileID: 1698002177036318, guid: 6b182270c9a4a3543b57b444dc0d41f2,
-      type: 2}
-  - latitude: 1.28221
-    longitude: 103.846
-    gameObject: {fileID: 1927296148432518, guid: e39eef099192f6c4b958f9fb687485b2,
-      type: 2}
-  - latitude: 1.28033
-    longitude: 103.845
-    gameObject: {fileID: 1144334961911752, guid: 3a8ca48e0e51b5e4dbd8b252e80036c9,
-      type: 2}
-  - latitude: 1.27465
-    longitude: 103.853
-    gameObject: {fileID: 1886774702624634, guid: 569a137aef11fdc48b2f7d3806029d44,
-      type: 2}
-  - latitude: 1.27913
-    longitude: 103.847
-    gameObject: {fileID: 1532252314825028, guid: b9be0d46c9179d94f85212d4a8b17258,
-      type: 2}
-  - latitude: 1.28047
-    longitude: 103.85
-    gameObject: {fileID: 1506493794785910, guid: 7cc3083310cb45c49bc1f4923507fb0e,
-      type: 2}
-  - latitude: 1.2827
-    longitude: 103.846
-    gameObject: {fileID: 1026886376272078, guid: 5353a09e34087cc4980e49f58e10761c,
-      type: 2}
-  - latitude: 1.28224
-    longitude: 103.845
-    gameObject: {fileID: 1944000166178494, guid: 5e456adde30662d4ba6179ca89efcd0a,
-      type: 2}
-  - latitude: 1.28134
-    longitude: 103.845
-    gameObject: {fileID: 1397456173555728, guid: 345ae546a0c71a149a45a2763526fdfe,
-      type: 2}
-  - latitude: 1.27455
-    longitude: 103.853
-    gameObject: {fileID: 1648140866794560, guid: 146315afb4ce0e14f81821bae1754eac,
-      type: 2}
-  - latitude: 1.28301
-    longitude: 103.846
-    gameObject: {fileID: 1250306271815842, guid: 9f2e8ad952dee304b9f055d6ca30a0cf,
-      type: 2}
-  - latitude: 1.27425
-    longitude: 103.854
-    gameObject: {fileID: 1977679258408210, guid: be15bb1aa0916ae49a445fcdb97f7cf7,
-      type: 2}
-  - latitude: 1.28139
-    longitude: 103.845
-    gameObject: {fileID: 1832699279902286, guid: f9acb77f973363d4e8fe84671cdc10dc,
-      type: 2}
-  - latitude: 1.27644
-    longitude: 103.853
-    gameObject: {fileID: 1277508078252934, guid: b3e23b31705135849ab77e4e8608ce59,
-      type: 2}
-  - latitude: 1.28197
-    longitude: 103.848
-    gameObject: {fileID: 1469526794981592, guid: 7c2ec1354a234d847b01b2b207053dd1,
-      type: 2}
-  - latitude: 1.28334
-    longitude: 103.846
-    gameObject: {fileID: 1081624107995758, guid: 80a6cc177d9a483419901500738d35b2,
-      type: 2}
-  - latitude: 1.28142
-    longitude: 103.848
-    gameObject: {fileID: 1593408379707574, guid: e2f93ea9f288b984389ca784483b2205,
-      type: 2}
-  - latitude: 1.28102
-    longitude: 103.848
-    gameObject: {fileID: 1169976757923570, guid: 1f39cc6471e99c948b6a28255decd249,
-      type: 2}
-  - latitude: 1.28099
-    longitude: 103.846
-    gameObject: {fileID: 1752575500597058, guid: 13c6a782ec8f86f46a804d2eb826b69c,
-      type: 2}
-  - latitude: 1.28234
-    longitude: 103.846
-    gameObject: {fileID: 1410558633623320, guid: e1ff0d4655b8f8541ae9880d1880c3b4,
-      type: 2}
-  - latitude: 1.28136
-    longitude: 103.845
-    gameObject: {fileID: 1421397572975310, guid: bdfbe22bd85781342ad3448204df45e0,
-      type: 2}
-  - latitude: 1.28209
-    longitude: 103.845
-    gameObject: {fileID: 1343969960349278, guid: 36fc57a6d9fe28642ab572e4305e3f9c,
-      type: 2}
-  - latitude: 1.28069
-    longitude: 103.848
-    gameObject: {fileID: 1442189456814370, guid: 547c936be57280744bda8522bf75e2c4,
-      type: 2}
-  - latitude: 1.27712
-    longitude: 103.854
-    gameObject: {fileID: 1733169333072548, guid: 8f18b09aae41e0847b6ae1680f94f818,
-      type: 2}
-  - latitude: 1.28344
-    longitude: 103.848
-    gameObject: {fileID: 1907942046268484, guid: 9d7a1e44b8be236469e8c12b64ea35e3,
-      type: 2}
-  - latitude: 1.27998
-    longitude: 103.847
-    gameObject: {fileID: 1238326245386750, guid: 1ce8f09bf0702dd4e944302a63d9e852,
-      type: 2}
-  - latitude: 1.28186
-    longitude: 103.848
-    gameObject: {fileID: 1745768847818692, guid: b3a867d4639c9b943b0308cfcd6b5be1,
-      type: 2}
-  - latitude: 1.27401
-    longitude: 103.854
-    gameObject: {fileID: 1755330154057554, guid: 1f8d7da64cbb5ac43aa360c19a019121,
-      type: 2}
-  - latitude: 1.28037
-    longitude: 103.848
-    gameObject: {fileID: 1523414657544846, guid: d5c3270ae618d654cb30f86b15bf48c3,
-      type: 2}
-  - latitude: 1.28248
-    longitude: 103.847
-    gameObject: {fileID: 1385709621948340, guid: 1eae303af55a75648a8e7e68c1d06139,
-      type: 2}
-  - latitude: 1.28257
-    longitude: 103.847
-    gameObject: {fileID: 1355624620866022, guid: 8ea4e18ce48ab5e4bb1a324e448eb8ff,
-      type: 2}
-  - latitude: 1.27994
-    longitude: 103.848
-    gameObject: {fileID: 1461680762757434, guid: a05611abfc26b7b4aa25ac5d80409ee8,
-      type: 2}
-  - latitude: 1.2762
-    longitude: 103.851
-    gameObject: {fileID: 1709331210968604, guid: b2c280d5962a219498512c969d8f57ba,
-      type: 2}
-  - latitude: 1.27397
-    longitude: 103.854
-    gameObject: {fileID: 1402712256187342, guid: f081772ad48dc874cb0930cd2c2e2c0f,
-      type: 2}
-  - latitude: 1.2832
-    longitude: 103.849
-    gameObject: {fileID: 1150521490381694, guid: 15964162db6882c4a9c94a9bc6762e0e,
-      type: 2}
-  - latitude: 1.27637
-    longitude: 103.85
-    gameObject: {fileID: 1574232947220260, guid: b9c5ad488725e9d4bb06f6293b11cfe4,
-      type: 2}
-  - latitude: 1.27919
-    longitude: 103.848
-    gameObject: {fileID: 1696208166242554, guid: 856d385a681ff344ba360b61a6c97559,
-      type: 2}
-  - latitude: 1.28158
-    longitude: 103.846
-    gameObject: {fileID: 1543478051017834, guid: d81f3c0ac35d094439f75bde0f21aeab,
-      type: 2}
-  - latitude: 1.28002
-    longitude: 103.849
-    gameObject: {fileID: 1185320164151586, guid: 08fb1ed57bd56c147936f06f9220ac6a,
-      type: 2}
-  - latitude: 1.28172
-    longitude: 103.847
-    gameObject: {fileID: 1802034502248900, guid: 47ae1927477f05b42b9465b3a8154c74,
-      type: 2}
-  - latitude: 1.28308
-    longitude: 103.846
-    gameObject: {fileID: 1754366961737266, guid: fa3b8f24b105321438866f149fd102ed,
-      type: 2}
-  - latitude: 1.28149
-    longitude: 103.845
-    gameObject: {fileID: 1067072951010124, guid: fd08647f78103e545a21c0620b272a9d,
-      type: 2}
-  - latitude: 1.28052
-    longitude: 103.847
-    gameObject: {fileID: 1025457989066280, guid: 54afe9c4b747010479d4a197d003a9ff,
-      type: 2}
-  - latitude: 1.27663
-    longitude: 103.85
-    gameObject: {fileID: 1545980495846650, guid: 82c4751012672c94db3800600f22c6ff,
-      type: 2}
-  - latitude: 1.28
-    longitude: 103.848
-    gameObject: {fileID: 1994146589383464, guid: d5a9077cbcf707a44899884accd7ad1c,
-      type: 2}
-  - latitude: 1.27837
-    longitude: 103.853
-    gameObject: {fileID: 1916988511659528, guid: b4a99de85e16d78409061d1cb7a5713f,
-      type: 2}
-  - latitude: 1.28025
-    longitude: 103.847
-    gameObject: {fileID: 1739935547122938, guid: f8fe408204f831c46bc30968eb56f0e3,
-      type: 2}
-  - latitude: 1.27498
-    longitude: 103.851
-    gameObject: {fileID: 1010140847371108, guid: 1a7fbdd86870ecf4c8d16666f4d0028e,
-      type: 2}
-  - latitude: 1.28013
-    longitude: 103.846
-    gameObject: {fileID: 1000394898565752, guid: 5b910197601314e48a0c0980f241f533,
-      type: 2}
-  - latitude: 1.27826
-    longitude: 103.853
-    gameObject: {fileID: 1767267102568538, guid: fa3d1280dec76674bb01b2c82e9a2c1f,
-      type: 2}
-  - latitude: 1.28255
-    longitude: 103.846
-    gameObject: {fileID: 1242267817999442, guid: 837b32142a413964a9d9c651e538618c,
-      type: 2}
-  - latitude: 1.27472
-    longitude: 103.844
-    gameObject: {fileID: 1036518072646462, guid: e2bc3b1a77245cc42b0dac9a232504e4,
-      type: 2}
-  - latitude: 1.28181
-    longitude: 103.846
-    gameObject: {fileID: 1663555640718588, guid: 62f9e084a2f141b4ea5c9183c95dea71,
-      type: 2}
-  - latitude: 1.28099
-    longitude: 103.847
-    gameObject: {fileID: 1444922231354594, guid: 5b4acfc3305d98b4da1c790e2f75584f,
-      type: 2}
-  - latitude: 1.28128
-    longitude: 103.846
-    gameObject: {fileID: 1841964546429776, guid: 1868088760ae8504ba713cca3552be88,
-      type: 2}
-  - latitude: 1.28064
-    longitude: 103.848
-    gameObject: {fileID: 1278169727413182, guid: d513c12505ae10647bf67815106f4544,
-      type: 2}
-  - latitude: 1.27347
-    longitude: 103.847
-    gameObject: {fileID: 1445406148424242, guid: 282230df1411e26438e9fcb21062d09f,
-      type: 2}
-  - latitude: 1.28134
-    longitude: 103.846
-    gameObject: {fileID: 1620340315822224, guid: b5e069c547f6df840b487dad72142e2f,
-      type: 2}
-  - latitude: 1.28071
-    longitude: 103.846
-    gameObject: {fileID: 1330244766430914, guid: 3c0adfc49b25ae448bf23ca57436f86b,
-      type: 2}
-  - latitude: 1.28173
-    longitude: 103.846
-    gameObject: {fileID: 1292651859132444, guid: 973c820afb4c3364dbc81330cec80e5d,
-      type: 2}
-  - latitude: 1.28135
-    longitude: 103.847
-    gameObject: {fileID: 1064908519122848, guid: 1683d6f718a6dc7469ebcdcf7934975e,
-      type: 2}
-  - latitude: 1.27592
-    longitude: 103.85
-    gameObject: {fileID: 1058888026022168, guid: 4be2cb3ece6b09d41843cc4263ac3909,
-      type: 2}
-  - latitude: 1.27593
-    longitude: 103.85
-    gameObject: {fileID: 1931986099632872, guid: 1a68d25ace60cf149b82b4fba20c2ed2,
-      type: 2}
-  - latitude: 1.28195
-    longitude: 103.846
-    gameObject: {fileID: 1267418298751018, guid: 2d9bcc704e22cd744ab380ee33cd0618,
-      type: 2}
-  - latitude: 1.28197
-    longitude: 103.845
-    gameObject: {fileID: 1792376590537434, guid: 6f83a87988295c14eb4c1874ad3a4119,
-      type: 2}
-  - latitude: 1.28149
-    longitude: 103.846
-    gameObject: {fileID: 1699938607306156, guid: 89121870f1d657f4d89e49f22bdaff98,
-      type: 2}
-  - latitude: 1.28098
-    longitude: 103.849
-    gameObject: {fileID: 1971846106990408, guid: b99753305db4109439f665c7f55124c9,
-      type: 2}
-  - latitude: 1.2812
-    longitude: 103.847
-    gameObject: {fileID: 1957311186418372, guid: e636846d97e75f343ac21be9a2d7677f,
-      type: 2}
-  - latitude: 1.28269
-    longitude: 103.847
-    gameObject: {fileID: 1660301316669892, guid: 6d32682f4b4e58149832f33d03a25eaa,
-      type: 2}
-  - latitude: 1.27838
-    longitude: 103.853
-    gameObject: {fileID: 1790994354452698, guid: abbaf90d8484e5f43908025630026e71,
-      type: 2}
-  - latitude: 1.27716
-    longitude: 103.85
-    gameObject: {fileID: 1227745144909836, guid: 1a37092b632498d4383a4e624ac085bb,
-      type: 2}
-  - latitude: 1.28111
-    longitude: 103.846
-    gameObject: {fileID: 1688425976545340, guid: 0afcb34834a74cf4b987ddd227562678,
-      type: 2}
-  - latitude: 1.27881
-    longitude: 103.848
-    gameObject: {fileID: 1032215279768520, guid: dee4668753c1cb34182f6b1d803bd839,
-      type: 2}
-  - latitude: 1.27482
-    longitude: 103.854
-    gameObject: {fileID: 1119750565029028, guid: c93a940b5c38a5d449245ab401af966f,
-      type: 2}
-  - latitude: 1.28354
-    longitude: 103.847
-    gameObject: {fileID: 1030796877446002, guid: a50ce3ea01fb82b4bb6e3857c7fee06a,
-      type: 2}
-  - latitude: 1.27997
-    longitude: 103.847
-    gameObject: {fileID: 1656544849585692, guid: f977877596d6fc046b1379c67c80fc80,
-      type: 2}
-  - latitude: 1.28352
-    longitude: 103.848
-    gameObject: {fileID: 1221804540712408, guid: a4cd5cd757cb51043a8f85670c1176ec,
-      type: 2}
-  - latitude: 1.28215
-    longitude: 103.847
-    gameObject: {fileID: 1703089328734944, guid: 72528ffaf7a301e4bac03c32cb1780da,
-      type: 2}
-  - latitude: 1.27723
-    longitude: 103.85
-    gameObject: {fileID: 1824312698987562, guid: d29afedbd01a9a94aa77e0c908054fb7,
-      type: 2}
-  - latitude: 1.28146
-    longitude: 103.848
-    gameObject: {fileID: 1867239834431144, guid: b5faecdc4f541564bbe1a6f60d9e8af7,
-      type: 2}
-  - latitude: 1.27709
-    longitude: 103.849
-    gameObject: {fileID: 1420090470841880, guid: a90a81a3ea59597409065e47b7fa3e66,
-      type: 2}
-  - latitude: 1.28402
-    longitude: 103.849
-    gameObject: {fileID: 1241111768523232, guid: c2e842308c178bb498abd226e20b99ad,
-      type: 2}
-  - latitude: 1.28234
-    longitude: 103.846
-    gameObject: {fileID: 1343033900056376, guid: a263bad671eab16469b2c8e4717e84d8,
-      type: 2}
-  - latitude: 1.27926
-    longitude: 103.848
-    gameObject: {fileID: 1106703961248846, guid: 297b29a3fbc7f504f84e36f4bed5a14e,
-      type: 2}
-  - latitude: 1.27486
-    longitude: 103.852
-    gameObject: {fileID: 1766442070525982, guid: 74c5bea17fff5ee4a94c7a49a2641b91,
-      type: 2}
-  - latitude: 1.28191
-    longitude: 103.846
-    gameObject: {fileID: 1123723675766672, guid: b07b57e421d7c88419f0d38bb2a2a0ac,
-      type: 2}
-  - latitude: 1.27506
-    longitude: 103.85
-    gameObject: {fileID: 1311198590625502, guid: 75d5f05c3d7580645945b93eec902830,
-      type: 2}
-  - latitude: 1.2829
-    longitude: 103.846
-    gameObject: {fileID: 1167870686288348, guid: ddeb31132fa1b0e44b241e286f0b78f7,
-      type: 2}
-  - latitude: 1.274
-    longitude: 103.854
-    gameObject: {fileID: 1907543494023806, guid: 4939babddfcc16e4199cd8c9731216de,
-      type: 2}
-  - latitude: 1.28155
-    longitude: 103.847
-    gameObject: {fileID: 1787483665129664, guid: 865a4ede38c28ed4f8c027946e2ec839,
-      type: 2}
-  - latitude: 1.2806
-    longitude: 103.847
-    gameObject: {fileID: 1198459697265352, guid: c237a7491df998f46bf176992b610b03,
-      type: 2}
-  - latitude: 1.27634
-    longitude: 103.853
-    gameObject: {fileID: 1174864200930618, guid: affc78d7dff081448860af07a908e961,
-      type: 2}
-  - latitude: 1.28256
-    longitude: 103.846
-    gameObject: {fileID: 1959279670169794, guid: 46d0a6b9f850cc840aea5e6c843eb59b,
-      type: 2}
-  - latitude: 1.27865
-    longitude: 103.855
-    gameObject: {fileID: 1934287432860538, guid: b81f1d0a47fda9b418f89162f5198cd7,
-      type: 2}
-  - latitude: 1.28298
-    longitude: 103.849
-    gameObject: {fileID: 1118116277345088, guid: 18afdca8514e1504d917e9325d586ddd,
-      type: 2}
-  - latitude: 1.28183
-    longitude: 103.846
-    gameObject: {fileID: 1406562724150326, guid: fc7e24e8f8af8c547a7f87878a74e9dd,
-      type: 2}
-  - latitude: 1.28072
-    longitude: 103.847
-    gameObject: {fileID: 1300386801938426, guid: ada8d582dc90454498db4cdb5a1426fc,
-      type: 2}
-  - latitude: 1.28272
-    longitude: 103.849
-    gameObject: {fileID: 1485826259173282, guid: 1f072f8133587d14fa0b02fc87e21124,
-      type: 2}
-  - latitude: 1.28089
-    longitude: 103.845
-    gameObject: {fileID: 1906502370568688, guid: 0a65c8b91eea16e43ad98a4239048629,
-      type: 2}
-  - latitude: 1.2833
-    longitude: 103.846
-    gameObject: {fileID: 1152374267988892, guid: fdc9d56590e383b47b7ba8dd99e56bac,
-      type: 2}
-  - latitude: 1.28016
-    longitude: 103.849
-    gameObject: {fileID: 1506836303918462, guid: 78d38e59df5ed5d48b231e05459e09ef,
-      type: 2}
-  - latitude: 1.28217
-    longitude: 103.845
-    gameObject: {fileID: 1751514374278404, guid: 183f420c89620da42b47a3181244b592,
-      type: 2}
-  - latitude: 1.27414
-    longitude: 103.846
-    gameObject: {fileID: 1971031113061338, guid: 178561b316acbd14396619946641b647,
-      type: 2}
-  - latitude: 1.28089
-    longitude: 103.846
-    gameObject: {fileID: 1230643441346410, guid: b803a81115b79324b887494e91f45279,
-      type: 2}
-  - latitude: 1.28247
-    longitude: 103.847
-    gameObject: {fileID: 1651692263936306, guid: 93d2ef74ab60d474e8814cc74a677728,
-      type: 2}
-  - latitude: 1.28203
-    longitude: 103.846
-    gameObject: {fileID: 1861430461726980, guid: da2259b254b436b4abcace11d1252a4e,
-      type: 2}
-  - latitude: 1.27969
-    longitude: 103.845
-    gameObject: {fileID: 1407075441302966, guid: c7326769f50c52145ae9f6e5662a3b8c,
-      type: 2}
-  - latitude: 1.28082
-    longitude: 103.849
-    gameObject: {fileID: 1602084659841958, guid: 9c5cd5ab55a45e04d8ffe5cdac42acfb,
-      type: 2}
-  - latitude: 1.27706
-    longitude: 103.852
-    gameObject: {fileID: 1658585588644990, guid: f76e442ad6e689b409e6501efd3992ff,
-      type: 2}
-  - latitude: 1.27728
-    longitude: 103.854
-    gameObject: {fileID: 1797653833134132, guid: 58c337c99aff3524299b498293f97df6,
-      type: 2}
-  - latitude: 1.28241
-    longitude: 103.846
-    gameObject: {fileID: 1514194913357268, guid: e967119397cbe55409885452106173a0,
-      type: 2}
-  - latitude: 1.28194
-    longitude: 103.846
-    gameObject: {fileID: 1883612912098218, guid: 4f32b85724c37a045b8416ccabeb546c,
-      type: 2}
-  - latitude: 1.28157
-    longitude: 103.848
-    gameObject: {fileID: 1728514430605196, guid: 6c1d6abae70c3864084f58af6162dc35,
-      type: 2}
-  - latitude: 1.27985
-    longitude: 103.848
-    gameObject: {fileID: 1703892086919862, guid: 977fe75cc33f55147b4fb84c0973d803,
-      type: 2}
-  - latitude: 1.2749
-    longitude: 103.852
-    gameObject: {fileID: 1938023927014962, guid: 3fcff3b6db2a5a44a86cfc2664e433d2,
-      type: 2}
-  - latitude: 1.28078
-    longitude: 103.846
-    gameObject: {fileID: 1173778792098138, guid: 48b12494a4816c047ab2eb2a3657257f,
-      type: 2}
-  - latitude: 1.27685
-    longitude: 103.856
-    gameObject: {fileID: 1300576554777766, guid: 48d7e2ebe59fef241897ab9c76c9c9af,
-      type: 2}
-  - latitude: 1.27689
-    longitude: 103.849
-    gameObject: {fileID: 1613298580557494, guid: 27aee2b54a2823f4eab92ca66f09d74a,
-      type: 2}
-  - latitude: 1.276
-    longitude: 103.854
-    gameObject: {fileID: 1513785297925622, guid: bea71a0664d71384b967cb3cdfb64405,
-      type: 2}
-  - latitude: 1.28074
-    longitude: 103.846
-    gameObject: {fileID: 1550428018818296, guid: 613cbed494bb9c842a4422adbadb1962,
-      type: 2}
-  - latitude: 1.28064
-    longitude: 103.847
-    gameObject: {fileID: 1855891164267668, guid: f765601dcb904d0459a535820ff0b414,
-      type: 2}
-  - latitude: 1.28267
-    longitude: 103.846
-    gameObject: {fileID: 1433024196625918, guid: f2022c6c67351ad4da6e069ebee25ee1,
-      type: 2}
-  - latitude: 1.27686
-    longitude: 103.846
-    gameObject: {fileID: 1252555422078380, guid: 4f502e765da114146ba719e9ecc03e2f,
-      type: 2}
-  - latitude: 1.28208
-    longitude: 103.848
-    gameObject: {fileID: 1625421971636066, guid: 46de10be72ea2244fba914624556b234,
-      type: 2}
-  - latitude: 1.28172
-    longitude: 103.845
-    gameObject: {fileID: 1641195089723840, guid: 2b61bd8fe6e72534aa8d42b903e5f0f6,
-      type: 2}
-  - latitude: 1.27471
-    longitude: 103.851
-    gameObject: {fileID: 1595895354593730, guid: 4ed76f875e4dc9f4b8f964dae908c68f,
-      type: 2}
-  - latitude: 1.27999
-    longitude: 103.848
-    gameObject: {fileID: 1367001325706798, guid: ee31bd635316e8141af4999d2230011a,
-      type: 2}
-  - latitude: 1.27685
-    longitude: 103.845
-    gameObject: {fileID: 1504936663870590, guid: b89b2593dc034944b96cd3c2d7981b43,
-      type: 2}
-  - latitude: 1.27371
-    longitude: 103.845
-    gameObject: {fileID: 1308053218958136, guid: 5eff1c099feede349af48cd71597e861,
-      type: 2}
-  - latitude: 1.28029
-    longitude: 103.848
-    gameObject: {fileID: 1595945161743534, guid: 8c08b36850e7f90479ddbfebc87c9598,
-      type: 2}
-  - latitude: 1.27823
-    longitude: 103.846
-    gameObject: {fileID: 1154297388849390, guid: 046f69b7a45e6b4409f341178f12c7ed,
+    gameObject: {fileID: 1141598153560770, guid: a7c5b173580ec7441a2cb418af48e386,
       type: 2}
   - latitude: 1.28178
     longitude: 103.846
-    gameObject: {fileID: 1583987241775150, guid: c473754ff344b724a8bd3dca7c2b86c0,
+    gameObject: {fileID: 1996033881294730, guid: 9298c89c73d4276468e8daf9d7ba3740,
       type: 2}
-  - latitude: 1.28247
-    longitude: 103.847
-    gameObject: {fileID: 1480327763752572, guid: c0ec5c630e4d20a40a830dd041266c52,
-      type: 2}
-  - latitude: 1.27349
-    longitude: 103.847
-    gameObject: {fileID: 1159150036481750, guid: 7c189f8cc9790024288ccf46642bcb6e,
-      type: 2}
-  - latitude: 1.27838
-    longitude: 103.849
-    gameObject: {fileID: 1068492597701612, guid: 975a96ca91c311a4d985298bffa365c6,
-      type: 2}
-  - latitude: 1.28139
-    longitude: 103.847
-    gameObject: {fileID: 1417484716066744, guid: 00c47b757cc1ce5408918e7870c202aa,
-      type: 2}
-  - latitude: 1.27833
-    longitude: 103.853
-    gameObject: {fileID: 1724342343356240, guid: 2495e609d7638e043bcab4da8320517d,
-      type: 2}
-  - latitude: 1.27846
-    longitude: 103.853
-    gameObject: {fileID: 1966533116680780, guid: ffb98f7ef47dfa349a5ce89ee8e29ba6,
-      type: 2}
-  - latitude: 1.28116
-    longitude: 103.849
-    gameObject: {fileID: 1361350726384438, guid: 3cbd69e725eb47b4ab44bf2af5a43805,
-      type: 2}
-  - latitude: 1.27996
-    longitude: 103.847
-    gameObject: {fileID: 1347614496479176, guid: 1293326f802d185418b3e4146bd3c7a3,
-      type: 2}
-  - latitude: 1.27466
-    longitude: 103.852
-    gameObject: {fileID: 1499537512162518, guid: 25deae57e63a765449bb76be9cbb7677,
-      type: 2}
-  - latitude: 1.28174
+  - latitude: 1.27718
     longitude: 103.846
-    gameObject: {fileID: 1969810065495482, guid: 8c8fb11f8a4a38645987c42599745c82,
-      type: 2}
-  - latitude: 1.2799
-    longitude: 103.847
-    gameObject: {fileID: 1795969262143574, guid: dbfadafb936a8914a8e318c9a48a7890,
-      type: 2}
-  - latitude: 1.27456
-    longitude: 103.853
-    gameObject: {fileID: 1104105677548192, guid: ac8fbe4aac1206244aa4c71e74af3839,
-      type: 2}
-  - latitude: 1.28261
-    longitude: 103.847
-    gameObject: {fileID: 1662007463494480, guid: 247ea4f6b20619d40816e003711483d6,
-      type: 2}
-  - latitude: 1.28085
-    longitude: 103.846
-    gameObject: {fileID: 1465446258398314, guid: 59d0d93b2b77c3c408c400ceb0552a6f,
-      type: 2}
-  - latitude: 1.27499
-    longitude: 103.855
-    gameObject: {fileID: 1339633646042484, guid: 47f3a48c885839942a671a435358e0a8,
-      type: 2}
-  - latitude: 1.27603
-    longitude: 103.855
-    gameObject: {fileID: 1104330507551178, guid: bb55cc99b16d1874c989d7ac4d23ffd7,
-      type: 2}
-  - latitude: 1.28451
-    longitude: 103.847
-    gameObject: {fileID: 1890278600290904, guid: c7ad8b572eea4eb49af8fc3a36b38125,
-      type: 2}
-  - latitude: 1.27736
-    longitude: 103.845
-    gameObject: {fileID: 1285110866240752, guid: 18415f5f36bf5d64cbad2f8c582d2629,
-      type: 2}
-  - latitude: 1.27455
-    longitude: 103.852
-    gameObject: {fileID: 1193258214341164, guid: 75f194a89d7599d49aaaf24092df003d,
-      type: 2}
-  - latitude: 1.27692
-    longitude: 103.845
-    gameObject: {fileID: 1047249686078412, guid: fb60ed7c5361a1e41b8799ec29b0e1ee,
-      type: 2}
-  - latitude: 1.27711
-    longitude: 103.854
-    gameObject: {fileID: 1012749020096452, guid: 75c6b685a6bd4c6468665a6d0a26c110,
-      type: 2}
-  - latitude: 1.28005
-    longitude: 103.847
-    gameObject: {fileID: 1032153577165056, guid: f5b9eb96e569eda45a2b680f23b4c92d,
-      type: 2}
-  - latitude: 1.28266
-    longitude: 103.847
-    gameObject: {fileID: 1765337187632492, guid: fa76c8b001a4e38458fbc54f3b1ca074,
-      type: 2}
-  - latitude: 1.28096
-    longitude: 103.846
-    gameObject: {fileID: 1792344878923430, guid: d71d85298db02dd44a1ac30c0f040cde,
-      type: 2}
-  - latitude: 1.27572
-    longitude: 103.855
-    gameObject: {fileID: 1808621707642094, guid: f6dd4a7a7c41e1d42b87894e49b8bda7,
-      type: 2}
-  - latitude: 1.28228
-    longitude: 103.846
-    gameObject: {fileID: 1389309768548476, guid: 497d59d16c8d7f6478443e603ccf5bf7,
-      type: 2}
-  - latitude: 1.28051
-    longitude: 103.848
-    gameObject: {fileID: 1904540301453606, guid: e334515b8500d9a49bad8f7eac7f3877,
-      type: 2}
-  - latitude: 1.27886
-    longitude: 103.846
-    gameObject: {fileID: 1183778956943990, guid: 9b12cfa258de4ec4f95af547232e118e,
-      type: 2}
-  - latitude: 1.27631
-    longitude: 103.851
-    gameObject: {fileID: 1592108234058332, guid: 4da8f1ec07c2610418c6e19492c8ed48,
-      type: 2}
-  - latitude: 1.2767
-    longitude: 103.845
-    gameObject: {fileID: 1146382511026612, guid: be637bc4798641247a18efb425de2bf4,
-      type: 2}
-  - latitude: 1.28035
-    longitude: 103.847
-    gameObject: {fileID: 1334943432039726, guid: 0ab30751aed7b2c4d86767b5e7f49435,
-      type: 2}
-  - latitude: 1.28224
-    longitude: 103.847
-    gameObject: {fileID: 1653128496734400, guid: f7e32220bd138394dbf365ee109cd9a8,
-      type: 2}
-  - latitude: 1.27608
-    longitude: 103.856
-    gameObject: {fileID: 1837853639163284, guid: 8f33c321e2823364cb9e0d71ac19261a,
-      type: 2}
-  - latitude: 1.28188
-    longitude: 103.846
-    gameObject: {fileID: 1696756733807782, guid: 3211b8c8f60072144aedfab60656c6fe,
-      type: 2}
-  - latitude: 1.28199
-    longitude: 103.847
-    gameObject: {fileID: 1503462969106376, guid: 27507e1bcddf5ff4aabcd6a8c153a0a4,
-      type: 2}
-  - latitude: 1.27672
-    longitude: 103.854
-    gameObject: {fileID: 1625326341258966, guid: f85d62c73a36f5841b1645beca7ed428,
-      type: 2}
-  - latitude: 1.27789
-    longitude: 103.849
-    gameObject: {fileID: 1706353939192542, guid: 8ef71f6e5cddd36489a1628c3402bfeb,
-      type: 2}
-  - latitude: 1.2805
-    longitude: 103.847
-    gameObject: {fileID: 1216042308832720, guid: dc150d64e2e83e64892f81c1a1b35721,
-      type: 2}
-  - latitude: 1.28111
-    longitude: 103.848
-    gameObject: {fileID: 1368699043720428, guid: 6eaaecfed354301448c7651c1dfdf643,
-      type: 2}
-  - latitude: 1.28254
-    longitude: 103.847
-    gameObject: {fileID: 1523110538187904, guid: 06a3404a596093c4789b43708ba747d1,
-      type: 2}
-  - latitude: 1.28214
-    longitude: 103.846
-    gameObject: {fileID: 1984882332802444, guid: 578034695d1d6204e9538a54e3cc854b,
-      type: 2}
-  - latitude: 1.28122
-    longitude: 103.85
-    gameObject: {fileID: 1651685908783134, guid: a4a3874a656170d46939aed11a845f4c,
-      type: 2}
-  - latitude: 1.27728
-    longitude: 103.846
-    gameObject: {fileID: 1657486021981680, guid: 04d4075e3993f7f49ab3270139081e9f,
-      type: 2}
-  - latitude: 1.27484
-    longitude: 103.852
-    gameObject: {fileID: 1531444516309880, guid: a9ba4bda63cb0854d80549bf64f9f87c,
-      type: 2}
-  - latitude: 1.27444
-    longitude: 103.853
-    gameObject: {fileID: 1043604585508532, guid: d1f1cb40695a2a34ba53e561b59f7f06,
-      type: 2}
-  - latitude: 1.28263
-    longitude: 103.847
-    gameObject: {fileID: 1442681328292060, guid: ee5e1dc6517992441a79f2614c8bb46d,
-      type: 2}
-  - latitude: 1.28
-    longitude: 103.847
-    gameObject: {fileID: 1084898415995988, guid: d2b2e92140edc4a4b89d3b0b3e83eacb,
-      type: 2}
-  - latitude: 1.2799
-    longitude: 103.848
-    gameObject: {fileID: 1624562379417492, guid: a39b42b1550dd004fa96407b93962de1,
-      type: 2}
-  - latitude: 1.27743
-    longitude: 103.852
-    gameObject: {fileID: 1797582297514754, guid: d9e9581951062f24d994aab2cdfd2d09,
-      type: 2}
-  - latitude: 1.28015
-    longitude: 103.848
-    gameObject: {fileID: 1589505703396528, guid: 77aea9291418938408c3d8f110f1e683,
-      type: 2}
-  - latitude: 1.28252
-    longitude: 103.847
-    gameObject: {fileID: 1380032108835944, guid: 6b196949bc272e443b276ace818274c0,
-      type: 2}
-  - latitude: 1.2814
-    longitude: 103.848
-    gameObject: {fileID: 1376679309106780, guid: 9300cf704f541b24aa00969ec142c8b6,
-      type: 2}
-  - latitude: 1.28153
-    longitude: 103.845
-    gameObject: {fileID: 1991082415808890, guid: a0b88c6cdeae0e14685a1dffb8caecad,
-      type: 2}
-  - latitude: 1.28042
-    longitude: 103.848
-    gameObject: {fileID: 1373340164303088, guid: 838f2c98dafbc8d43a1f9e80ae5a2775,
-      type: 2}
-  - latitude: 1.28217
-    longitude: 103.848
-    gameObject: {fileID: 1722261757713084, guid: 5d7a4e466ac69574ab2e8e8ef206cf18,
-      type: 2}
-  - latitude: 1.28089
-    longitude: 103.846
-    gameObject: {fileID: 1488311097933238, guid: 45df92ee5727daa45a6c0972a0512164,
-      type: 2}
-  - latitude: 1.28127
-    longitude: 103.849
-    gameObject: {fileID: 1500240761137730, guid: 68ada4118534b1541904ea182b72699e,
-      type: 2}
-  - latitude: 1.2842
-    longitude: 103.849
-    gameObject: {fileID: 1780388374026536, guid: 8edeb41342d515a41943540329d9e318,
-      type: 2}
-  - latitude: 1.28161
-    longitude: 103.846
-    gameObject: {fileID: 1964568010388908, guid: db16db6f7ac27a045a9f7edcee24a253,
-      type: 2}
-  - latitude: 1.2796
-    longitude: 103.85
-    gameObject: {fileID: 1390396843117496, guid: 0131b09604f2b6a44aa70a5cb3339199,
-      type: 2}
-  - latitude: 1.28033
-    longitude: 103.847
-    gameObject: {fileID: 1850021336659830, guid: 2ed5434f69da1c0488a4a8142c53fa39,
-      type: 2}
-  - latitude: 1.27641
-    longitude: 103.852
-    gameObject: {fileID: 1609416741940238, guid: 53fee901ecd3a4e41b452ad3217b7fb5,
-      type: 2}
-  - latitude: 1.27801
-    longitude: 103.854
-    gameObject: {fileID: 1869951205724338, guid: eef2c0cdc7cd2b5499a0aae680f1edc3,
-      type: 2}
-  - latitude: 1.2809
-    longitude: 103.847
-    gameObject: {fileID: 1322221241189928, guid: 5ef7c39e3a4da894b9b2f89ce0ce44a9,
-      type: 2}
-  - latitude: 1.28391
-    longitude: 103.848
-    gameObject: {fileID: 1938502597020474, guid: 5b275ec32e800f647a92872d99286fdc,
-      type: 2}
-  - latitude: 1.27692
-    longitude: 103.854
-    gameObject: {fileID: 1392574773381258, guid: 776f2665ce409114aa566fa1b37f2826,
-      type: 2}
-  - latitude: 1.27987
-    longitude: 103.849
-    gameObject: {fileID: 1999335563837406, guid: fbff8cdd1c63342439789dbdfbeafa82,
-      type: 2}
-  - latitude: 1.28069
-    longitude: 103.847
-    gameObject: {fileID: 1563073940699648, guid: 26bafbb5fe1e373419d2f7a38f2ae0a4,
-      type: 2}
-  - latitude: 1.28066
-    longitude: 103.846
-    gameObject: {fileID: 1999019331083350, guid: b92338f734eb9874d9db21f6f91493c6,
-      type: 2}
-  - latitude: 1.28162
-    longitude: 103.846
-    gameObject: {fileID: 1405089214904220, guid: 5f64bbe50cb5e97409609767b8be9d53,
-      type: 2}
-  - latitude: 1.27483
-    longitude: 103.852
-    gameObject: {fileID: 1738962526217322, guid: a31852f76c6041c46996ab40e83cd0c5,
-      type: 2}
-  - latitude: 1.27464
-    longitude: 103.853
-    gameObject: {fileID: 1633724772130748, guid: 1b4b442302136b040931e09a8da5ff62,
-      type: 2}
-  - latitude: 1.27653
-    longitude: 103.845
-    gameObject: {fileID: 1817227769719926, guid: f30bb0f834fa25343baee8825dc02f08,
-      type: 2}
-  - latitude: 1.27979
-    longitude: 103.848
-    gameObject: {fileID: 1482891288749364, guid: e55d43aaffe8c334cb4ca61242359abf,
-      type: 2}
-  - latitude: 1.28005
-    longitude: 103.847
-    gameObject: {fileID: 1007146287448540, guid: b15f0a8b1bdc539448c503252543c7e4,
-      type: 2}
-  - latitude: 1.28032
-    longitude: 103.848
-    gameObject: {fileID: 1234080919609574, guid: 61194d6b31da9e446b09254dd1cf163a,
-      type: 2}
-  - latitude: 1.27341
-    longitude: 103.846
-    gameObject: {fileID: 1857345397115168, guid: 0ef6ec7b6daff764fb211957d6949604,
-      type: 2}
-  - latitude: 1.27974
-    longitude: 103.848
-    gameObject: {fileID: 1663267665109918, guid: f2de3af66e4a7d549812d39fafe6005b,
-      type: 2}
-  - latitude: 1.27444
-    longitude: 103.852
-    gameObject: {fileID: 1160173984378316, guid: 7ba6bf681205ef443a3a0728fa1c3fd0,
-      type: 2}
-  - latitude: 1.27445
-    longitude: 103.844
-    gameObject: {fileID: 1237987730475392, guid: f74742f299e44944982afafaace6e596,
-      type: 2}
-  - latitude: 1.27762
-    longitude: 103.854
-    gameObject: {fileID: 1961887516052008, guid: 284ee722f3e4f3b458fe255d6ce10313,
-      type: 2}
-  - latitude: 1.27462
-    longitude: 103.853
-    gameObject: {fileID: 1516052231338214, guid: a5a5d3071b2e02845b99494e59d434bb,
-      type: 2}
-  - latitude: 1.28195
-    longitude: 103.848
-    gameObject: {fileID: 1638767242390524, guid: 789b3e4393b389845b57625b089821b9,
-      type: 2}
-  - latitude: 1.2812
-    longitude: 103.845
-    gameObject: {fileID: 1435385307210582, guid: cc4698a5394ac6746aae14f5e480a745,
-      type: 2}
-  - latitude: 1.28109
-    longitude: 103.847
-    gameObject: {fileID: 1061711847690098, guid: e2365ece3c08b104a9c9b868c7989d41,
-      type: 2}
-  - latitude: 1.28124
-    longitude: 103.849
-    gameObject: {fileID: 1177438094761094, guid: e4edf097494ed4a40b52d4358ffa3dc7,
-      type: 2}
-  - latitude: 1.28182
-    longitude: 103.847
-    gameObject: {fileID: 1754023758937382, guid: 0c3606f43d8e96248b1135f86f8a9f52,
-      type: 2}
-  - latitude: 1.27827
-    longitude: 103.853
-    gameObject: {fileID: 1597871814211624, guid: 9175ae16f63203c418e8a1cc1555b339,
-      type: 2}
-  - latitude: 1.27675
-    longitude: 103.845
-    gameObject: {fileID: 1510697744670650, guid: 307099ad87371a145b05f481c6668467,
-      type: 2}
-  - latitude: 1.27959
-    longitude: 103.846
-    gameObject: {fileID: 1805723043018074, guid: 9ead75a6d26aba5479ff9a4f5bc2498f,
-      type: 2}
-  - latitude: 1.28177
-    longitude: 103.847
-    gameObject: {fileID: 1803807521033854, guid: 08eeec90062f9b945b8a7005e3081d72,
-      type: 2}
-  - latitude: 1.28045
-    longitude: 103.847
-    gameObject: {fileID: 1108858846200508, guid: c0a21b880fef125428a74536a6b0ac76,
-      type: 2}
-  - latitude: 1.28008
-    longitude: 103.848
-    gameObject: {fileID: 1469457241949418, guid: 51a8f7e14bed222409acafe14823f833,
-      type: 2}
-  - latitude: 1.27298
-    longitude: 103.842
-    gameObject: {fileID: 1167436031929976, guid: b691e321dd6f1a042aa1d5018b6f4f71,
-      type: 2}
-  - latitude: 1.28083
-    longitude: 103.847
-    gameObject: {fileID: 1413680419007870, guid: d52dad636a781c64cbcb5cd62594c4db,
-      type: 2}
-  - latitude: 1.28163
-    longitude: 103.848
-    gameObject: {fileID: 1773910296169516, guid: 7f765ad24c0e0c947823e334a8e4c35c,
-      type: 2}
-  - latitude: 1.28204
-    longitude: 103.848
-    gameObject: {fileID: 1824683005004018, guid: 892349a1898d1614ca126c8dbaebb40f,
-      type: 2}
-  - latitude: 1.2813
-    longitude: 103.848
-    gameObject: {fileID: 1061213110255460, guid: ac367da55c252c04893a670a3e1eb974,
-      type: 2}
-  - latitude: 1.27446
-    longitude: 103.853
-    gameObject: {fileID: 1205950154160160, guid: 15efb85a48212c747a918d82baba07bc,
-      type: 2}
-  - latitude: 1.28252
-    longitude: 103.846
-    gameObject: {fileID: 1430733213784214, guid: 2a2a8c2bd16077c4a9bb507d72855879,
-      type: 2}
-  - latitude: 1.28005
-    longitude: 103.847
-    gameObject: {fileID: 1883594463042136, guid: 260538e201d500f41bd413f7c0bb9791,
+    gameObject: {fileID: 1454983303858644, guid: 2dae960a35673f845a1222b03a7a117f,
       type: 2}
   - latitude: 1.2766
     longitude: 103.845
-    gameObject: {fileID: 1390380098078294, guid: 995bb5c755a45034cac16dad66ce5bfb,
+    gameObject: {fileID: 1522476175397652, guid: db6ac35aecb6b4147b32f24d29c3cabf,
       type: 2}
-  - latitude: 1.28179
-    longitude: 103.846
-    gameObject: {fileID: 1372744509892276, guid: 1a6f5bfa34c291b4f8c8011d6408fb37,
-      type: 2}
-  - latitude: 1.27881
-    longitude: 103.848
-    gameObject: {fileID: 1004445166285040, guid: 1f3ce001a606a3f479ad47c4281eed84,
-      type: 2}
-  - latitude: 1.2804
-    longitude: 103.846
-    gameObject: {fileID: 1544676074343656, guid: a4d09a2e8f57f514cb4bccefc9f84ee4,
-      type: 2}
-  - latitude: 1.28293
-    longitude: 103.848
-    gameObject: {fileID: 1439292266282374, guid: 0d6e8f4afa882fb449d83246532d18cd,
-      type: 2}
-  - latitude: 1.28225
-    longitude: 103.846
-    gameObject: {fileID: 1575046735583288, guid: 304bdce034c2c934084f75c573642270,
-      type: 2}
-  - latitude: 1.28048
-    longitude: 103.847
-    gameObject: {fileID: 1109743017201092, guid: bd2a6a1de3bcf3c4fa18114204731da4,
-      type: 2}
-  - latitude: 1.28238
-    longitude: 103.846
-    gameObject: {fileID: 1276239850969440, guid: 584b8d15ce6d87043983f44b9eeb28e9,
-      type: 2}
-  - latitude: 1.28177
-    longitude: 103.847
-    gameObject: {fileID: 1619003409323770, guid: 01179593a8eda0f42abf592379cacfe8,
-      type: 2}
-  - latitude: 1.2818
-    longitude: 103.848
-    gameObject: {fileID: 1696144089917192, guid: a02dcf84db8d94a4197b81bfd0cecf34,
-      type: 2}
-  - latitude: 1.27928
+  - latitude: 1.2813
     longitude: 103.849
-    gameObject: {fileID: 1285029973107976, guid: 3499c8ab6efdfc14e8fae4fe060fc2dd,
+    gameObject: {fileID: 1281144262640512, guid: 2675a49d9912d554dbb8e692c6f37fa7,
       type: 2}
-  - latitude: 1.28118
+  - latitude: 1.28027
     longitude: 103.848
-    gameObject: {fileID: 1511784525010842, guid: 91ee668583837cc4b89b7d2b81b357d4,
+    gameObject: {fileID: 1679667341445580, guid: 1cbc9385bf108514c87c55c202dc8a4b,
+      type: 2}
+  - latitude: 1.27706
+    longitude: 103.852
+    gameObject: {fileID: 1970689443054084, guid: 270d429a6f69ce242be9ff2a547cd8d4,
+      type: 2}
+  - latitude: 1.2767
+    longitude: 103.853
+    gameObject: {fileID: 1475619467825812, guid: 759751529b8eb0947a7391d04b776a29,
       type: 2}
   - latitude: 1.28236
     longitude: 103.846
-    gameObject: {fileID: 1875179255612590, guid: 289d5069f6dfdf244ac69bd0da856f17,
+    gameObject: {fileID: 1738152569972680, guid: b5b648c8feaa28442b2d8470d4e747a8,
       type: 2}
-  - latitude: 1.27792
-    longitude: 103.854
-    gameObject: {fileID: 1624270262763742, guid: b8cb961f9d8617d4ebfd44f156b077d2,
-      type: 2}
-  - latitude: 1.28114
-    longitude: 103.846
-    gameObject: {fileID: 1939497329334972, guid: 74fc52ddf4ed7f647bd9f041c1a5376c,
-      type: 2}
-  - latitude: 1.27893
-    longitude: 103.849
-    gameObject: {fileID: 1832750629487296, guid: a55e7665f89acaa4e8edb5c053644dbf,
-      type: 2}
-  - latitude: 1.2738
+  - latitude: 1.27329
     longitude: 103.842
-    gameObject: {fileID: 1643354124755420, guid: 098c7441c38ac0840880d7d7bf87cce6,
+    gameObject: {fileID: 1005742257205290, guid: 58f51e10faf1b3e41b68e32db98ad47c,
       type: 2}
-  - latitude: 1.28136
+  - latitude: 1.27762
+    longitude: 103.854
+    gameObject: {fileID: 1580038776911466, guid: 58b1d570d3e5bff4f85b59506f2b3d3b,
+      type: 2}
+  - latitude: 1.28247
+    longitude: 103.847
+    gameObject: {fileID: 1851300746674970, guid: 20b3f30c05ec8fe49a79b55db7a4ff77,
+      type: 2}
+  - latitude: 1.28237
+    longitude: 103.847
+    gameObject: {fileID: 1692246683764070, guid: a90b039a56a6346499367d784110cff0,
+      type: 2}
+  - latitude: 1.28131
     longitude: 103.849
-    gameObject: {fileID: 1082333818164068, guid: bfa118b1602755a4888c1b46ef5fac8b,
+    gameObject: {fileID: 1768265336257626, guid: abdce3351e311fe458945d2f8cbf4624,
       type: 2}
-  - latitude: 1.28198
+  - latitude: 1.2749
+    longitude: 103.852
+    gameObject: {fileID: 1229954203476678, guid: c30ab128fdb6abf48b356d84fe944351,
+      type: 2}
+  - latitude: 1.28165
+    longitude: 103.845
+    gameObject: {fileID: 1479018941296714, guid: ce8e016441ac0e8489f1e146378433ee,
+      type: 2}
+  - latitude: 1.28172
+    longitude: 103.845
+    gameObject: {fileID: 1635469475729276, guid: 00057f7cb883b2540beb9606e2bbcc70,
+      type: 2}
+  - latitude: 1.27667
+    longitude: 103.853
+    gameObject: {fileID: 1723640432907610, guid: 5646124fc28a68d42b492d1106323660,
+      type: 2}
+  - latitude: 1.28167
+    longitude: 103.848
+    gameObject: {fileID: 1077951059969100, guid: 81352232f6e664b41993fa31cd8a2817,
+      type: 2}
+  - latitude: 1.27451
+    longitude: 103.852
+    gameObject: {fileID: 1785734018525662, guid: 8b9802bf7e7e3be44b72d17cb14d03c3,
+      type: 2}
+  - latitude: 1.28327
     longitude: 103.846
-    gameObject: {fileID: 1984373823213906, guid: 999c8eb0a70466c46b3110abc55cd53f,
+    gameObject: {fileID: 1688288492248910, guid: 129ad6fb7e43f4d44b0f0396e45f57bb,
+      type: 2}
+  - latitude: 1.27279
+    longitude: 103.847
+    gameObject: {fileID: 1937479436926826, guid: d7a717eea292bf7409ebf5a34d6a15ba,
+      type: 2}
+  - latitude: 1.27446
+    longitude: 103.853
+    gameObject: {fileID: 1100996137765314, guid: bc24bb655291cd542924f9c41d60b01c,
+      type: 2}
+  - latitude: 1.28163
+    longitude: 103.848
+    gameObject: {fileID: 1177513505639496, guid: 7f765ad24c0e0c947823e334a8e4c35c,
+      type: 2}
+  - latitude: 1.28212
+    longitude: 103.848
+    gameObject: {fileID: 1918378818431924, guid: cafb3371373bf5d449d86d4c9386c02f,
+      type: 2}
+  - latitude: 1.28032
+    longitude: 103.848
+    gameObject: {fileID: 1562991892890830, guid: 61194d6b31da9e446b09254dd1cf163a,
+      type: 2}
+  - latitude: 1.28127
+    longitude: 103.849
+    gameObject: {fileID: 1835486542113900, guid: 583a30be94481c54498e38bb83a4f290,
+      type: 2}
+  - latitude: 1.27996
+    longitude: 103.847
+    gameObject: {fileID: 1910941748727340, guid: d4180b150a3d11d4e9e48d7225f55f00,
+      type: 2}
+  - latitude: 1.28139
+    longitude: 103.847
+    gameObject: {fileID: 1495141813226226, guid: 00c47b757cc1ce5408918e7870c202aa,
+      type: 2}
+  - latitude: 1.28049
+    longitude: 103.848
+    gameObject: {fileID: 1565071877517860, guid: fe1bd728a6b990945aa25ac588d3f29f,
+      type: 2}
+  - latitude: 1.28221
+    longitude: 103.848
+    gameObject: {fileID: 1839743176905926, guid: af4541d34e2169a40b338f22d4d52eff,
+      type: 2}
+  - latitude: 1.27456
+    longitude: 103.852
+    gameObject: {fileID: 1914989467227452, guid: d65594168ffebae4bbed9d7cc0145f74,
+      type: 2}
+  - latitude: 1.28147
+    longitude: 103.846
+    gameObject: {fileID: 1883268668763060, guid: 832ac85ccd69f844e831fdf8c5b90cac,
+      type: 2}
+  - latitude: 1.28146
+    longitude: 103.848
+    gameObject: {fileID: 1879550298400964, guid: e14c66be167afd246b118ecbafe9a4cb,
+      type: 2}
+  - latitude: 1.27823
+    longitude: 103.846
+    gameObject: {fileID: 1487707768152620, guid: 6800fbed5d5275a49aabe10040c919ca,
+      type: 2}
+  - latitude: 1.27762
+    longitude: 103.853
+    gameObject: {fileID: 1578765795389478, guid: d249687992046ae4fac2cad6abbcc55b,
+      type: 2}
+  - latitude: 1.28098
+    longitude: 103.848
+    gameObject: {fileID: 1421035221734810, guid: 98f58328b98a0334caa443d9e6f14b56,
+      type: 2}
+  - latitude: 1.2804
+    longitude: 103.846
+    gameObject: {fileID: 1822881690918442, guid: d5fed12901e7ac24fa4cd7dbdc51bb7e,
+      type: 2}
+  - latitude: 1.28304
+    longitude: 103.846
+    gameObject: {fileID: 1819115291444448, guid: 80b23dfcebcde5b4aaac844112e2378b,
+      type: 2}
+  - latitude: 1.27968
+    longitude: 103.848
+    gameObject: {fileID: 1603440249920592, guid: 3700b406c40ca86498223019e4ed28a2,
+      type: 2}
+  - latitude: 1.2749
+    longitude: 103.851
+    gameObject: {fileID: 1399939506713466, guid: cdd77a81e734cde44adb32c53f5c0840,
+      type: 2}
+  - latitude: 1.27475
+    longitude: 103.847
+    gameObject: {fileID: 1062698071914040, guid: 6983b204c27e11149a2991543ecc995b,
+      type: 2}
+  - latitude: 1.28175
+    longitude: 103.848
+    gameObject: {fileID: 1330428876779256, guid: 1b706224ea5386f439b377628c89127b,
+      type: 2}
+  - latitude: 1.28172
+    longitude: 103.847
+    gameObject: {fileID: 1766368619380196, guid: cf68b45d18f37574cb23d202ea198234,
+      type: 2}
+  - latitude: 1.28217
+    longitude: 103.845
+    gameObject: {fileID: 1012320013909378, guid: 646d76fec79769b4f914736869ee3656,
+      type: 2}
+  - latitude: 1.28093
+    longitude: 103.848
+    gameObject: {fileID: 1451765450096920, guid: 1bc804d353930c145b53d9b7b984b5aa,
+      type: 2}
+  - latitude: 1.2802
+    longitude: 103.848
+    gameObject: {fileID: 1328797928196264, guid: 9dada1afb2b20d147b80792a93cad7b3,
+      type: 2}
+  - latitude: 1.28256
+    longitude: 103.846
+    gameObject: {fileID: 1231051680731872, guid: 93181f8a5980350408fee4a11ae04f67,
+      type: 2}
+  - latitude: 1.28205
+    longitude: 103.845
+    gameObject: {fileID: 1960313233407960, guid: 6993438354be2d547a411f3ffdc0cdbc,
+      type: 2}
+  - latitude: 1.28078
+    longitude: 103.846
+    gameObject: {fileID: 1089800514718104, guid: 5f821d7e657c907478992e1ed9274b8d,
+      type: 2}
+  - latitude: 1.28017
+    longitude: 103.847
+    gameObject: {fileID: 1830909287059054, guid: f3d8c65b376889846ad3ef759d7faa4c,
+      type: 2}
+  - latitude: 1.27846
+    longitude: 103.853
+    gameObject: {fileID: 1244168766317702, guid: b2de291039059174aa0a93cfb992aa8a,
+      type: 2}
+  - latitude: 1.28029
+    longitude: 103.848
+    gameObject: {fileID: 1233844524008692, guid: b1da090c7d33de946b8d1a8fe78eebb6,
+      type: 2}
+  - latitude: 1.27904
+    longitude: 103.847
+    gameObject: {fileID: 1957641214310360, guid: 31c3fbc0dcb3a40478ec17f84e008f2e,
+      type: 2}
+  - latitude: 1.28243
+    longitude: 103.846
+    gameObject: {fileID: 1900256976703916, guid: df68942692cf1244ca5b19e611a6b9fc,
+      type: 2}
+  - latitude: 1.27881
+    longitude: 103.853
+    gameObject: {fileID: 1451320434544258, guid: 082765c89c06ba5499be4efb113fe401,
+      type: 2}
+  - latitude: 1.28176
+    longitude: 103.848
+    gameObject: {fileID: 1815754123271470, guid: c6edb816f1c90bf4dbb53b366b8c3112,
+      type: 2}
+  - latitude: 1.28042
+    longitude: 103.847
+    gameObject: {fileID: 1894127650393154, guid: 049f61ccd2e6cca4db1bd14be6dc3f37,
+      type: 2}
+  - latitude: 1.27969
+    longitude: 103.845
+    gameObject: {fileID: 1471993851892020, guid: 35dcee234b547e64f9ed69ec7da94c31,
+      type: 2}
+  - latitude: 1.28221
+    longitude: 103.845
+    gameObject: {fileID: 1801096422709502, guid: 8c66d5586ff04cc41ab0b3ab3b11d4b4,
+      type: 2}
+  - latitude: 1.28235
+    longitude: 103.847
+    gameObject: {fileID: 1181334308511542, guid: c42d27d31d2fb5e40b5846d41fb57dbf,
+      type: 2}
+  - latitude: 1.28228
+    longitude: 103.848
+    gameObject: {fileID: 1234117393439460, guid: 9ef8bec877ee63e49a2030ca776dc667,
+      type: 2}
+  - latitude: 1.27405
+    longitude: 103.854
+    gameObject: {fileID: 1337299842086504, guid: dbf52cdbc14e5744fa0e44e6a13a5e26,
+      type: 2}
+  - latitude: 1.28192
+    longitude: 103.845
+    gameObject: {fileID: 1077822059322614, guid: 8714f1b781949b940a43f2512dea2a23,
+      type: 2}
+  - latitude: 1.27881
+    longitude: 103.848
+    gameObject: {fileID: 1059722258887758, guid: bb37b4c137d93b544b19e490351bbd0c,
+      type: 2}
+  - latitude: 1.27718
+    longitude: 103.854
+    gameObject: {fileID: 1202118828611622, guid: b0b88addae33eaa4e8f176f74f9d714e,
+      type: 2}
+  - latitude: 1.27734
+    longitude: 103.845
+    gameObject: {fileID: 1374251161705856, guid: d6e63a81a21fb5b489096b7c1a5295d1,
+      type: 2}
+  - latitude: 1.28089
+    longitude: 103.846
+    gameObject: {fileID: 1076592497572298, guid: 7a20b4ccd6ed7904a8c0ecaae41d424c,
       type: 2}
   - latitude: 1.27692
     longitude: 103.845
-    gameObject: {fileID: 1287797728917514, guid: cc54f3af83b7c3b4dae581380056e1fa,
+    gameObject: {fileID: 1979104141556338, guid: 0df9861711f6bed468f1f791bd9f29e9,
+      type: 2}
+  - latitude: 1.28233
+    longitude: 103.846
+    gameObject: {fileID: 1376830120692626, guid: 446a517216a841d4db0f216e3cc2665a,
+      type: 2}
+  - latitude: 1.28221
+    longitude: 103.846
+    gameObject: {fileID: 1670849838090296, guid: 1b91f74537d3fb544aab3f3d98e561de,
+      type: 2}
+  - latitude: 1.27499
+    longitude: 103.855
+    gameObject: {fileID: 1094849105730168, guid: a53b9717b068f664388a22e7e637bd97,
+      type: 2}
+  - latitude: 1.28228
+    longitude: 103.847
+    gameObject: {fileID: 1578036751443784, guid: 7009cc18fa182424cba7855054f82c03,
+      type: 2}
+  - latitude: 1.27712
+    longitude: 103.854
+    gameObject: {fileID: 1077079892822994, guid: b815e291a8c50864184997ed3d5155a0,
+      type: 2}
+  - latitude: 1.27711
+    longitude: 103.854
+    gameObject: {fileID: 1632966894585516, guid: 18c7d737e21ef144a8e2bebd107c45de,
+      type: 2}
+  - latitude: 1.28111
+    longitude: 103.848
+    gameObject: {fileID: 1502701116989090, guid: d8f570ba0c511ed4e888181b85238518,
+      type: 2}
+  - latitude: 1.28147
+    longitude: 103.847
+    gameObject: {fileID: 1939006454015930, guid: d8eb30614e0d16344a79cc0b2840a33b,
+      type: 2}
+  - latitude: 1.27763
+    longitude: 103.855
+    gameObject: {fileID: 1393149624454640, guid: 2c1a4a72479b7644799302ca20f24a4f,
+      type: 2}
+  - latitude: 1.27893
+    longitude: 103.849
+    gameObject: {fileID: 1903294895924968, guid: 87582b6878bc25d4a84b7d143fe6f48e,
+      type: 2}
+  - latitude: 1.27524
+    longitude: 103.855
+    gameObject: {fileID: 1264086113353804, guid: db9eda725a78ca84b94fee8e5944fe09,
+      type: 2}
+  - latitude: 1.27728
+    longitude: 103.854
+    gameObject: {fileID: 1825353681659466, guid: 4d0e7d3c6de36b544971f707729ee778,
+      type: 2}
+  - latitude: 1.28337
+    longitude: 103.846
+    gameObject: {fileID: 1312784978929612, guid: 92955cab740662f49b87cc6e16fa3fa9,
+      type: 2}
+  - latitude: 1.28009
+    longitude: 103.847
+    gameObject: {fileID: 1179773133449706, guid: e0939d992a70d0847b223a0601589ee4,
+      type: 2}
+  - latitude: 1.28301
+    longitude: 103.846
+    gameObject: {fileID: 1218703242845806, guid: 6d4f0327876f52d429bb72ccac4b5ca9,
+      type: 2}
+  - latitude: 1.2765
+    longitude: 103.854
+    gameObject: {fileID: 1051251990727516, guid: 4d0e091b2a77be041ab4a973117f8fca,
+      type: 2}
+  - latitude: 1.2812
+    longitude: 103.845
+    gameObject: {fileID: 1896628232661012, guid: e676bd4bac5d1ea499d490e651fa3a04,
+      type: 2}
+  - latitude: 1.27629
+    longitude: 103.849
+    gameObject: {fileID: 1366823101085070, guid: 75bdc3f69f47eb8468d1c6c778f0b8f6,
+      type: 2}
+  - latitude: 1.28046
+    longitude: 103.846
+    gameObject: {fileID: 1823562737027084, guid: 392becdd6396ce5448d43ef205af68cf,
+      type: 2}
+  - latitude: 1.28295
+    longitude: 103.846
+    gameObject: {fileID: 1401474180850934, guid: 353ff04b33f0144468d3e8ae8b1a2ce1,
+      type: 2}
+  - latitude: 1.2761
+    longitude: 103.851
+    gameObject: {fileID: 1294038220177922, guid: 51bc04cfc27d234459af9719c475bada,
+      type: 2}
+  - latitude: 1.2797
+    longitude: 103.852
+    gameObject: {fileID: 1621899444718492, guid: 02caff365799dbb40b9dcba7b1559fc5,
+      type: 2}
+  - latitude: 1.28188
+    longitude: 103.846
+    gameObject: {fileID: 1535491356966178, guid: 41baa49f0150450438f9f1ef34072e24,
+      type: 2}
+  - latitude: 1.27913
+    longitude: 103.847
+    gameObject: {fileID: 1601050303510624, guid: 66e32ab2a4a1cf24f910bad21363478c,
+      type: 2}
+  - latitude: 1.28159
+    longitude: 103.845
+    gameObject: {fileID: 1464366998060786, guid: 6041c85a07bbff34fb46c61925e4177c,
+      type: 2}
+  - latitude: 1.28064
+    longitude: 103.847
+    gameObject: {fileID: 1806220386114902, guid: e5659b9919e30a24c90d2151fc053069,
+      type: 2}
+  - latitude: 1.27466
+    longitude: 103.852
+    gameObject: {fileID: 1820728630225736, guid: e24d3d1b78767d34e9b2d64ee15420b0,
+      type: 2}
+  - latitude: 1.27425
+    longitude: 103.854
+    gameObject: {fileID: 1054877174003616, guid: ab1954b93ff02374eaa1f38106e79045,
+      type: 2}
+  - latitude: 1.2808
+    longitude: 103.846
+    gameObject: {fileID: 1586005599105268, guid: a04a3f85458a654439b1cd5ed4f6a4b5,
+      type: 2}
+  - latitude: 1.28121
+    longitude: 103.846
+    gameObject: {fileID: 1796749096656662, guid: c005a854bb42a0c4e95fd9f3f9fd2bb4,
+      type: 2}
+  - latitude: 1.28177
+    longitude: 103.847
+    gameObject: {fileID: 1157775808817688, guid: 952f4dbd42e632e4b8d1ac24e864e647,
+      type: 2}
+  - latitude: 1.27958
+    longitude: 103.848
+    gameObject: {fileID: 1379489091201144, guid: 950a371a8ff4ae34581819bfb4259185,
+      type: 2}
+  - latitude: 1.28135
+    longitude: 103.846
+    gameObject: {fileID: 1222970207804644, guid: a99a2cc902539f74cb0bab04467c3a0d,
+      type: 2}
+  - latitude: 1.2817
+    longitude: 103.846
+    gameObject: {fileID: 1876819866279036, guid: 36f75dc51bcfea7478f86ce9bfa2b1f3,
+      type: 2}
+  - latitude: 1.27654
+    longitude: 103.846
+    gameObject: {fileID: 1960381417687274, guid: edd826889509ebe42b96b462261053f9,
+      type: 2}
+  - latitude: 1.28234
+    longitude: 103.846
+    gameObject: {fileID: 1430191549013138, guid: f02cc851f53677948a3195e6ecf8b595,
+      type: 2}
+  - latitude: 1.27631
+    longitude: 103.851
+    gameObject: {fileID: 1869024932098752, guid: 07310b834bc07b845b436f3e649f10b3,
+      type: 2}
+  - latitude: 1.28122
+    longitude: 103.85
+    gameObject: {fileID: 1317869769177170, guid: 8398ae9c24db947488733dde87d5f4fd,
+      type: 2}
+  - latitude: 1.28191
+    longitude: 103.846
+    gameObject: {fileID: 1776045791300882, guid: b07b57e421d7c88419f0d38bb2a2a0ac,
+      type: 2}
+  - latitude: 1.28023
+    longitude: 103.85
+    gameObject: {fileID: 1925704122402536, guid: 6b6fb65bfc593874fb93d511eb9cf845,
+      type: 2}
+  - latitude: 1.27739
+    longitude: 103.852
+    gameObject: {fileID: 1818230006930118, guid: c15775f38b9e81d47a9b2a5c45c37d13,
+      type: 2}
+  - latitude: 1.27801
+    longitude: 103.854
+    gameObject: {fileID: 1594328248531266, guid: 0f459d07e5ff14a4484cb5dfa07d5784,
+      type: 2}
+  - latitude: 1.27393
+    longitude: 103.844
+    gameObject: {fileID: 1983098424633026, guid: 56170a2ed811f894e9ead491d444525e,
+      type: 2}
+  - latitude: 1.28204
+    longitude: 103.848
+    gameObject: {fileID: 1831604885623644, guid: 52ccc64c5b376c44c8ac6867f704480b,
+      type: 2}
+  - latitude: 1.28135
+    longitude: 103.845
+    gameObject: {fileID: 1473211545081448, guid: a7bd04fdc8de6634da5faa2212c8461c,
+      type: 2}
+  - latitude: 1.28299
+    longitude: 103.849
+    gameObject: {fileID: 1505658162036498, guid: d9464dcb7e60eee45bd28c1028699421,
+      type: 2}
+  - latitude: 1.2801
+    longitude: 103.847
+    gameObject: {fileID: 1166501713501400, guid: 69d4198db0bebd342bdbd859397281ed,
+      type: 2}
+  - latitude: 1.28109
+    longitude: 103.846
+    gameObject: {fileID: 1793387758607182, guid: 726b59fab02fd6c43bd103464087ba79,
+      type: 2}
+  - latitude: 1.28135
+    longitude: 103.847
+    gameObject: {fileID: 1519661642545628, guid: e14d74d2af9ddad4cb20f1ab70dd2c4b,
+      type: 2}
+  - latitude: 1.28174
+    longitude: 103.845
+    gameObject: {fileID: 1372754396317324, guid: 34d2150adc9b5b04d88bbf1f693a95ad,
+      type: 2}
+  - latitude: 1.28431
+    longitude: 103.847
+    gameObject: {fileID: 1831371786564214, guid: 5d4673f2d68ab7c46b8922a410a4301c,
+      type: 2}
+  - latitude: 1.28308
+    longitude: 103.846
+    gameObject: {fileID: 1933095236850432, guid: fa3b8f24b105321438866f149fd102ed,
+      type: 2}
+  - latitude: 1.27779
+    longitude: 103.847
+    gameObject: {fileID: 1468312613594886, guid: 244087b2ce70f424ea87da6f6c798fb5,
+      type: 2}
+  - latitude: 1.28139
+    longitude: 103.845
+    gameObject: {fileID: 1549182055341560, guid: 5b3abb2785bc48f4fbcef4b2bccc7b58,
+      type: 2}
+  - latitude: 1.2827
+    longitude: 103.846
+    gameObject: {fileID: 1556265484313648, guid: cdcfa7c2c3e6c6a40929d5ffa79eabec,
+      type: 2}
+  - latitude: 1.28184
+    longitude: 103.845
+    gameObject: {fileID: 1888392725993966, guid: f91731c7022a2f74980b8852f8912259,
+      type: 2}
+  - latitude: 1.28048
+    longitude: 103.847
+    gameObject: {fileID: 1374289044883730, guid: 658482fa6e5b72c4ca4cb940d9acdb21,
+      type: 2}
+  - latitude: 1.2824
+    longitude: 103.847
+    gameObject: {fileID: 1750283907169132, guid: dda7435e349c7be488015160de6c46f6,
+      type: 2}
+  - latitude: 1.28009
+    longitude: 103.847
+    gameObject: {fileID: 1914768513691702, guid: 9c34224dd1bb9084e8887b90a3dc7840,
+      type: 2}
+  - latitude: 1.27888
+    longitude: 103.85
+    gameObject: {fileID: 1298963088726084, guid: a7325cf409b6ca844ba11d64e2f68e9c,
+      type: 2}
+  - latitude: 1.2796
+    longitude: 103.85
+    gameObject: {fileID: 1653317960279918, guid: a8e999a521d59654c87e73f1d8685848,
+      type: 2}
+  - latitude: 1.28124
+    longitude: 103.849
+    gameObject: {fileID: 1912895088993446, guid: 77680ef31f2bcc74394a208ba4a1236a,
+      type: 2}
+  - latitude: 1.28178
+    longitude: 103.848
+    gameObject: {fileID: 1840122571095450, guid: f1d2e1843fd1f8e44b8ba82f30cecea7,
+      type: 2}
+  - latitude: 1.27806
+    longitude: 103.85
+    gameObject: {fileID: 1851206261948676, guid: 8d9a035844a040542ab138d622608be2,
+      type: 2}
+  - latitude: 1.28322
+    longitude: 103.849
+    gameObject: {fileID: 1390880240655410, guid: 57c445250d12ed24ea72067954703ce2,
+      type: 2}
+  - latitude: 1.27801
+    longitude: 103.845
+    gameObject: {fileID: 1302540563692456, guid: 1801ef0819ba074498b5f1795ffa6b7c,
+      type: 2}
+  - latitude: 1.27672
+    longitude: 103.854
+    gameObject: {fileID: 1746073021818364, guid: 4d369b7dbe9b78f4ab13998f84d6c46a,
+      type: 2}
+  - latitude: 1.27373
+    longitude: 103.848
+    gameObject: {fileID: 1327080256324192, guid: cca4e8e6f1d6cc847a33f36295d3c3e8,
+      type: 2}
+  - latitude: 1.27444
+    longitude: 103.853
+    gameObject: {fileID: 1695929183785088, guid: 4867c1dcd77328e4b95a43808b0a4fe3,
+      type: 2}
+  - latitude: 1.28054
+    longitude: 103.847
+    gameObject: {fileID: 1792034746520476, guid: a9ddfc14bdb040e47adb6c35db407cb7,
+      type: 2}
+  - latitude: 1.28176
+    longitude: 103.845
+    gameObject: {fileID: 1248301358976330, guid: 56d362ca976ebad458bd597c858224e0,
+      type: 2}
+  - latitude: 1.28171
+    longitude: 103.848
+    gameObject: {fileID: 1852360611991272, guid: fdb4b6322c3d2864d954fef3f4f7eb03,
+      type: 2}
+  - latitude: 1.2833
+    longitude: 103.846
+    gameObject: {fileID: 1019759633549798, guid: fdc9d56590e383b47b7ba8dd99e56bac,
+      type: 2}
+  - latitude: 1.27506
+    longitude: 103.85
+    gameObject: {fileID: 1392036973817630, guid: 974d0aa274cc4044ebf6cb7c3d689ec9,
+      type: 2}
+  - latitude: 1.27482
+    longitude: 103.853
+    gameObject: {fileID: 1751918167174386, guid: 9f51cdda477eed840b3f1dcd3de1c25b,
+      type: 2}
+  - latitude: 1.28071
+    longitude: 103.846
+    gameObject: {fileID: 1695540969865318, guid: 15e8d98c2e7ec7642b440bcb9136dff3,
+      type: 2}
+  - latitude: 1.27465
+    longitude: 103.853
+    gameObject: {fileID: 1234400130842216, guid: 82db8207757dba647a0e7f3f0116304c,
+      type: 2}
+  - latitude: 1.28243
+    longitude: 103.847
+    gameObject: {fileID: 1950802462874602, guid: f2677d85abc35764a9f17460525fb621,
+      type: 2}
+  - latitude: 1.27649
+    longitude: 103.853
+    gameObject: {fileID: 1780022269403892, guid: c8230717faeb3684e83a39069db7ca8d,
+      type: 2}
+  - latitude: 1.27391
+    longitude: 103.85
+    gameObject: {fileID: 1643390211150136, guid: a5136b20df0141c40acbea6e38b57f85,
+      type: 2}
+  - latitude: 1.28054
+    longitude: 103.847
+    gameObject: {fileID: 1372380734993954, guid: 21cfa6ecfb80d2b4dae20e8dddd4c8b2,
+      type: 2}
+  - latitude: 1.28147
+    longitude: 103.848
+    gameObject: {fileID: 1872263511336220, guid: 38377627ed2ecda449feecdb563bbd3e,
+      type: 2}
+  - latitude: 1.28239
+    longitude: 103.846
+    gameObject: {fileID: 1982766646093110, guid: 672986bc2f8b8444d8bbbecdd794bcc9,
+      type: 2}
+  - latitude: 1.27501
+    longitude: 103.849
+    gameObject: {fileID: 1838333364216010, guid: 2432a13c61efceb40b22c8e48660a73d,
+      type: 2}
+  - latitude: 1.27508
+    longitude: 103.846
+    gameObject: {fileID: 1921240610483604, guid: 99ff14fd7e02bd34c8eb86f565c43668,
+      type: 2}
+  - latitude: 1.28194
+    longitude: 103.846
+    gameObject: {fileID: 1917712505915560, guid: 4f32b85724c37a045b8416ccabeb546c,
+      type: 2}
+  - latitude: 1.28402
+    longitude: 103.849
+    gameObject: {fileID: 1728605627702368, guid: d5043416814ab324faa99092303e679f,
+      type: 2}
+  - latitude: 1.27486
+    longitude: 103.852
+    gameObject: {fileID: 1235755474942320, guid: 1e3a375546a882d44b8fcf478e8bdb31,
+      type: 2}
+  - latitude: 1.28048
+    longitude: 103.847
+    gameObject: {fileID: 1720820075716080, guid: ac16ae4350eb79d4fb069b2fd864f290,
+      type: 2}
+  - latitude: 1.2842
+    longitude: 103.849
+    gameObject: {fileID: 1394537721675800, guid: 4c9e19dfea0001c4883df2f160c6a3af,
+      type: 2}
+  - latitude: 1.27985
+    longitude: 103.847
+    gameObject: {fileID: 1382344846212224, guid: b5c852a87901aee4cbb893964a0ae06b,
+      type: 2}
+  - latitude: 1.28256
+    longitude: 103.847
+    gameObject: {fileID: 1638719968774180, guid: a0b97557f48406b4ba4e886820818482,
+      type: 2}
+  - latitude: 1.28155
+    longitude: 103.846
+    gameObject: {fileID: 1361077227143106, guid: 32fb7d93dffa2784f9c11d6407ecee58,
+      type: 2}
+  - latitude: 1.28116
+    longitude: 103.849
+    gameObject: {fileID: 1271577519873116, guid: dc6cc2760dd16df4ab000632775fc158,
+      type: 2}
+  - latitude: 1.27995
+    longitude: 103.85
+    gameObject: {fileID: 1296875949855994, guid: 1e10a47599bc43c4a90d12f6dc866f3e,
+      type: 2}
+  - latitude: 1.27589
+    longitude: 103.846
+    gameObject: {fileID: 1672285278796624, guid: 2a2a3b5405bbad84aad4c8771810f29d,
+      type: 2}
+  - latitude: 1.28164
+    longitude: 103.847
+    gameObject: {fileID: 1602045046319074, guid: 0f2386e9e57070844aca645492a96203,
+      type: 2}
+  - latitude: 1.27414
+    longitude: 103.846
+    gameObject: {fileID: 1020919638520502, guid: 178561b316acbd14396619946641b647,
+      type: 2}
+  - latitude: 1.27338
+    longitude: 103.848
+    gameObject: {fileID: 1025589687281570, guid: 85831999366046d46a52b8857b2ebf22,
+      type: 2}
+  - latitude: 1.28241
+    longitude: 103.846
+    gameObject: {fileID: 1944054005728486, guid: cff295b3e50bf7145a2e74437fd8908e,
+      type: 2}
+  - latitude: 1.28056
+    longitude: 103.849
+    gameObject: {fileID: 1876128295420952, guid: ba0c510ac9d30c14da52facc78f3862d,
+      type: 2}
+  - latitude: 1.27314
+    longitude: 103.843
+    gameObject: {fileID: 1006096022958956, guid: 5d9be00ae41d611439bd83dc42b5035c,
+      type: 2}
+  - latitude: 1.28286
+    longitude: 103.846
+    gameObject: {fileID: 1838511263501396, guid: cfe763a2d26a4164ea4e7c22d683a604,
+      type: 2}
+  - latitude: 1.2729
+    longitude: 103.847
+    gameObject: {fileID: 1744977571354940, guid: b82ec83bca10c2b40b1f075023780dec,
+      type: 2}
+  - latitude: 1.27641
+    longitude: 103.845
+    gameObject: {fileID: 1018264847791738, guid: 1b772857ff01fcb4bab778362652f40b,
+      type: 2}
+  - latitude: 1.2769
+    longitude: 103.849
+    gameObject: {fileID: 1072048774987006, guid: b3e2615d1028d8e4e8791775a34f20fe,
+      type: 2}
+  - latitude: 1.27713
+    longitude: 103.847
+    gameObject: {fileID: 1274050436236728, guid: 8d82116c91e0f534caca2dfff015314c,
+      type: 2}
+  - latitude: 1.28109
+    longitude: 103.848
+    gameObject: {fileID: 1334026197998410, guid: 585e74db3f279154a82d3fb6deff92b3,
+      type: 2}
+  - latitude: 1.28089
+    longitude: 103.846
+    gameObject: {fileID: 1679203143669232, guid: e7648b4c82d992b458642607294c7450,
+      type: 2}
+  - latitude: 1.28023
+    longitude: 103.847
+    gameObject: {fileID: 1994307293975836, guid: 32fde1835abfba340925d7d04aa866f2,
+      type: 2}
+  - latitude: 1.28298
+    longitude: 103.846
+    gameObject: {fileID: 1924977513487904, guid: 848d7e139fb2c9c4bb9970b76c98224f,
+      type: 2}
+  - latitude: 1.28047
+    longitude: 103.85
+    gameObject: {fileID: 1347920600131170, guid: 1ed11ac705ec2aa4cb6ecb120b9469dd,
+      type: 2}
+  - latitude: 1.28096
+    longitude: 103.846
+    gameObject: {fileID: 1329003114500668, guid: eddef62694b74cf48accdfc4d6d6fd3d,
+      type: 2}
+  - latitude: 1.28259
+    longitude: 103.846
+    gameObject: {fileID: 1437031299224272, guid: 8291cebc1059e994fb8edba794fb7843,
+      type: 2}
+  - latitude: 1.28137
+    longitude: 103.846
+    gameObject: {fileID: 1687161817637074, guid: 6718382e30bf71247bff127c490bd171,
+      type: 2}
+  - latitude: 1.27996
+    longitude: 103.847
+    gameObject: {fileID: 1075534830406804, guid: 088cc057f8e798b4a9a3adb02726c099,
+      type: 2}
+  - latitude: 1.2823
+    longitude: 103.846
+    gameObject: {fileID: 1481014035367344, guid: 7e8fb2402d93c684494c75e6b634fbef,
+      type: 2}
+  - latitude: 1.28287
+    longitude: 103.846
+    gameObject: {fileID: 1724085373097162, guid: 5185d7e785984d345affa64b39999315,
+      type: 2}
+  - latitude: 1.28082
+    longitude: 103.846
+    gameObject: {fileID: 1375722966433088, guid: 9c80ed1f24443294d806a192b715f041,
+      type: 2}
+  - latitude: 1.27995
+    longitude: 103.847
+    gameObject: {fileID: 1854361919939402, guid: 682372a551af11944a4885546440c8a7,
+      type: 2}
+  - latitude: 1.27865
+    longitude: 103.855
+    gameObject: {fileID: 1035216936624290, guid: 510e8a72a8c3edf4287afdb9152922fb,
+      type: 2}
+  - latitude: 1.282
+    longitude: 103.848
+    gameObject: {fileID: 1433435671497788, guid: a9a0f49171a8cf744914aa195b5d6bdb,
+      type: 2}
+  - latitude: 1.28258
+    longitude: 103.847
+    gameObject: {fileID: 1667584125930398, guid: b6217015679456041b9f58cbd7e73dc6,
+      type: 2}
+  - latitude: 1.28354
+    longitude: 103.847
+    gameObject: {fileID: 1862061526969710, guid: 8d7c0cbd0c6af2d469a536f673674842,
+      type: 2}
+  - latitude: 1.28051
+    longitude: 103.848
+    gameObject: {fileID: 1579855042208780, guid: 1d8f0efadcad8ab448161bb15cdb48e2,
+      type: 2}
+  - latitude: 1.27999
+    longitude: 103.847
+    gameObject: {fileID: 1846123495349364, guid: 0f9765912cda7a94daf10a8a3d53e15c,
+      type: 2}
+  - latitude: 1.28024
+    longitude: 103.848
+    gameObject: {fileID: 1225421892823248, guid: 22883f43c070eb946889ad184e9a1bde,
+      type: 2}
+  - latitude: 1.27462
+    longitude: 103.853
+    gameObject: {fileID: 1332347841936572, guid: 6d3822296e06cf84886ea8dfbd021698,
+      type: 2}
+  - latitude: 1.2797
+    longitude: 103.849
+    gameObject: {fileID: 1954241119529404, guid: 5e47121e06414cc4f81b3e800c4c7638,
+      type: 2}
+  - latitude: 1.28251
+    longitude: 103.847
+    gameObject: {fileID: 1545235516050144, guid: 7a0ac9a0270c4bc4184f38e501bfb413,
+      type: 2}
+  - latitude: 1.27716
+    longitude: 103.85
+    gameObject: {fileID: 1646899606236766, guid: d3f1edb22468a604ba5bacfc985ae958,
+      type: 2}
+  - latitude: 1.27837
+    longitude: 103.853
+    gameObject: {fileID: 1929615375420644, guid: 59518cfffb420874fb6ce048e9692105,
+      type: 2}
+  - latitude: 1.27861
+    longitude: 103.853
+    gameObject: {fileID: 1093408696476654, guid: 69418f52805d74f408d570522e2ef9bb,
+      type: 2}
+  - latitude: 1.28149
+    longitude: 103.848
+    gameObject: {fileID: 1958548544898636, guid: d2edb90397efeb841b476140c81e26d7,
+      type: 2}
+  - latitude: 1.28194
+    longitude: 103.847
+    gameObject: {fileID: 1778328460555256, guid: 1fa5b8762e3980a438a5d6c90cdd3525,
+      type: 2}
+  - latitude: 1.28075
+    longitude: 103.846
+    gameObject: {fileID: 1830398002144668, guid: 6343873a361891642b826f6e3c83637f,
+      type: 2}
+  - latitude: 1.27999
+    longitude: 103.848
+    gameObject: {fileID: 1799240393724248, guid: fb9b802f2f311da408fd88720768ec14,
+      type: 2}
+  - latitude: 1.28198
+    longitude: 103.846
+    gameObject: {fileID: 1006148464556412, guid: 0a343bcc6cbf8ce46af8b7f3f76b4adf,
+      type: 2}
+  - latitude: 1.28079
+    longitude: 103.847
+    gameObject: {fileID: 1614007442764630, guid: 2aa31f4f81ae5f64287c68b8886943cb,
+      type: 2}
+  - latitude: 1.28298
+    longitude: 103.849
+    gameObject: {fileID: 1789392757893656, guid: b9c54179f7bfc874287a7252bedc7c91,
+      type: 2}
+  - latitude: 1.28213
+    longitude: 103.845
+    gameObject: {fileID: 1361622403316020, guid: 7a26b2cdcdea1384bace515ffe43817a,
+      type: 2}
+  - latitude: 1.28144
+    longitude: 103.848
+    gameObject: {fileID: 1380733027242730, guid: 0a621936e22f2b342a1bc76166c45c7d,
+      type: 2}
+  - latitude: 1.28252
+    longitude: 103.847
+    gameObject: {fileID: 1012716740588232, guid: e4085d33f74039f44bbc261b3ef2a317,
+      type: 2}
+  - latitude: 1.27749
+    longitude: 103.856
+    gameObject: {fileID: 1815853033604780, guid: b286e98b37e39164fa748d705e6a9688,
+      type: 2}
+  - latitude: 1.2818
+    longitude: 103.845
+    gameObject: {fileID: 1394653538724884, guid: d16a18da67c4be446b8940a5cf1ba893,
+      type: 2}
+  - latitude: 1.27991
+    longitude: 103.847
+    gameObject: {fileID: 1579472792586266, guid: ab8681079c1fb8742b06bd082eeb9e40,
+      type: 2}
+  - latitude: 1.27761
+    longitude: 103.848
+    gameObject: {fileID: 1538567491612490, guid: 13a2f9ec6dccb664c85589188d54241a,
+      type: 2}
+  - latitude: 1.28082
+    longitude: 103.849
+    gameObject: {fileID: 1004512065051332, guid: 9c5cd5ab55a45e04d8ffe5cdac42acfb,
+      type: 2}
+  - latitude: 1.27931
+    longitude: 103.851
+    gameObject: {fileID: 1995163047068642, guid: 471745e4110aacc46a720e7067e618cb,
+      type: 2}
+  - latitude: 1.27858
+    longitude: 103.854
+    gameObject: {fileID: 1950292006775370, guid: e5dc6f0dfcad2b0498074a05e24de0a7,
+      type: 2}
+  - latitude: 1.28139
+    longitude: 103.845
+    gameObject: {fileID: 1727900394272094, guid: 320b783897b41ce45bc2ae78c74eb3e9,
+      type: 2}
+  - latitude: 1.27619
+    longitude: 103.849
+    gameObject: {fileID: 1280209346704284, guid: 53c15deaef81b8f4fbb634f079d41906,
+      type: 2}
+  - latitude: 1.28157
+    longitude: 103.848
+    gameObject: {fileID: 1451436377570992, guid: 9a187a579c3e3e842b84354c0078ec1a,
+      type: 2}
+  - latitude: 1.28137
+    longitude: 103.849
+    gameObject: {fileID: 1099300067674496, guid: 8a54de76ce22acf4ab0de103c2795167,
+      type: 2}
+  - latitude: 1.28005
+    longitude: 103.847
+    gameObject: {fileID: 1818639640286554, guid: 6cdf0bce8f690c747b6197a7100663b7,
+      type: 2}
+  - latitude: 1.28344
+    longitude: 103.848
+    gameObject: {fileID: 1297970042730076, guid: 10e8585268c8e514ebe3f0f7405706b2,
+      type: 2}
+  - latitude: 1.2761
+    longitude: 103.85
+    gameObject: {fileID: 1458635057694398, guid: 2d4202ae9a74c2d4c885a3fc1b607ee5,
+      type: 2}
+  - latitude: 1.28293
+    longitude: 103.846
+    gameObject: {fileID: 1923048736835526, guid: 2cda86e97b39c854ab73106c3aca213b,
+      type: 2}
+  - latitude: 1.27774
+    longitude: 103.853
+    gameObject: {fileID: 1935179071959936, guid: d88b7c89e589f7b418667e7eb03b7565,
+      type: 2}
+  - latitude: 1.28195
+    longitude: 103.846
+    gameObject: {fileID: 1274375049812480, guid: 4b7a0184efae178488195003bb550668,
+      type: 2}
+  - latitude: 1.27985
+    longitude: 103.848
+    gameObject: {fileID: 1944842016953324, guid: 634a7ef0fc6f9ca448b6359b4ec9660d,
+      type: 2}
+  - latitude: 1.27586
+    longitude: 103.85
+    gameObject: {fileID: 1867471488683028, guid: a0b0305a9a4933c4e85ae031e7d9ee92,
+      type: 2}
+  - latitude: 1.2815
+    longitude: 103.846
+    gameObject: {fileID: 1354997741867090, guid: fe6fbcf802db68a49a3dff886e2584e0,
+      type: 2}
+  - latitude: 1.2817
+    longitude: 103.848
+    gameObject: {fileID: 1035457921116310, guid: 527d710fbd8b5fc4f88be4dffa229654,
+      type: 2}
+  - latitude: 1.27381
+    longitude: 103.843
+    gameObject: {fileID: 1320194884980614, guid: c52faf2eae5ab28448d92f59d1081f13,
+      type: 2}
+  - latitude: 1.281
+    longitude: 103.846
+    gameObject: {fileID: 1695286741775440, guid: e0cd6f14f4a3f7148829325ffd6c2918,
+      type: 2}
+  - latitude: 1.27686
+    longitude: 103.846
+    gameObject: {fileID: 1637326470490944, guid: 4c508511e3ed2f341af117b34a2b929b,
+      type: 2}
+  - latitude: 1.28074
+    longitude: 103.846
+    gameObject: {fileID: 1910780121161466, guid: 613cbed494bb9c842a4422adbadb1962,
+      type: 2}
+  - latitude: 1.27446
+    longitude: 103.853
+    gameObject: {fileID: 1558231330975504, guid: c5853a04392acc24ba623cc598d862b8,
+      type: 2}
+  - latitude: 1.28056
+    longitude: 103.847
+    gameObject: {fileID: 1210207261739396, guid: 15d841667f48a4a44aa2b6b097610cbe,
+      type: 2}
+  - latitude: 1.2842
+    longitude: 103.847
+    gameObject: {fileID: 1874691215088864, guid: f6c6c73a2920b9c4da7d4b47dbbc80ad,
+      type: 2}
+  - latitude: 1.27786
+    longitude: 103.853
+    gameObject: {fileID: 1906873067899470, guid: 79bc37a1d8850b241ad3651c2d0455d1,
+      type: 2}
+  - latitude: 1.28162
+    longitude: 103.846
+    gameObject: {fileID: 1200822843216508, guid: 22a0f45310a4aec4c99e9079cc86a9ae,
+      type: 2}
+  - latitude: 1.27659
+    longitude: 103.853
+    gameObject: {fileID: 1461648516883082, guid: 9a0251beb329e354faee8ce150261e01,
+      type: 2}
+  - latitude: 1.27426
+    longitude: 103.846
+    gameObject: {fileID: 1492307999301838, guid: 23aae2a81a81db04eaaefcdbb54486b2,
+      type: 2}
+  - latitude: 1.28251
+    longitude: 103.847
+    gameObject: {fileID: 1788268825873320, guid: 7102a632136f5ef48a0a950872b01b03,
+      type: 2}
+  - latitude: 1.27397
+    longitude: 103.854
+    gameObject: {fileID: 1008548891224854, guid: cafcac96c33cddd49939da947656e32e,
+      type: 2}
+  - latitude: 1.27896
+    longitude: 103.851
+    gameObject: {fileID: 1788650900951054, guid: 2f76062b3ea0f8147890e0b0e92d09f4,
+      type: 2}
+  - latitude: 1.28013
+    longitude: 103.847
+    gameObject: {fileID: 1119042603253020, guid: 9783ee80a13eeef42a66afa701594fc7,
+      type: 2}
+  - latitude: 1.27771
+    longitude: 103.848
+    gameObject: {fileID: 1848162782455678, guid: f6869f35feea2ce4f8bf83c69e60fd53,
+      type: 2}
+  - latitude: 1.28033
+    longitude: 103.845
+    gameObject: {fileID: 1614841005620686, guid: 75dc8ece7b3bb134f9b32d0fd84431c4,
+      type: 2}
+  - latitude: 1.27484
+    longitude: 103.852
+    gameObject: {fileID: 1692941284120268, guid: db111decb6f155749b899953b4ceea6f,
+      type: 2}
+  - latitude: 1.27942
+    longitude: 103.847
+    gameObject: {fileID: 1714129353151170, guid: 289dcc61057800546bd8b2877fe94928,
+      type: 2}
+  - latitude: 1.27477
+    longitude: 103.851
+    gameObject: {fileID: 1212825040719516, guid: 544304a8b01426b41b399720189f520b,
+      type: 2}
+  - latitude: 1.28204
+    longitude: 103.848
+    gameObject: {fileID: 1354553735272898, guid: 892349a1898d1614ca126c8dbaebb40f,
+      type: 2}
+  - latitude: 1.27449
+    longitude: 103.846
+    gameObject: {fileID: 1988479616217720, guid: 1479a1e98fbe1d14ea1ee2cd89d37024,
+      type: 2}
+  - latitude: 1.27634
+    longitude: 103.853
+    gameObject: {fileID: 1100651570740882, guid: 44d9bbc9f5dda8440b5eec6f25da3c63,
+      type: 2}
+  - latitude: 1.27678
+    longitude: 103.853
+    gameObject: {fileID: 1730788264289192, guid: 7ef70c193c58b764096472c9549fb638,
+      type: 2}
+  - latitude: 1.2798
+    longitude: 103.848
+    gameObject: {fileID: 1546467281364190, guid: bca162dccef43a446b663f08f047e0e8,
+      type: 2}
+  - latitude: 1.2814
+    longitude: 103.848
+    gameObject: {fileID: 1037783112109530, guid: d64a717dc47265f43b490bb27586c9ff,
+      type: 2}
+  - latitude: 1.28062
+    longitude: 103.846
+    gameObject: {fileID: 1564166883507314, guid: e5b06038f6fd5cd4594552bc59b8990b,
+      type: 2}
+  - latitude: 1.2769
+    longitude: 103.853
+    gameObject: {fileID: 1558262897870482, guid: f7cd51a9b8725ce43a7f9fa903e35401,
+      type: 2}
+  - latitude: 1.28065
+    longitude: 103.847
+    gameObject: {fileID: 1735547907957156, guid: 12f2973e6546a05489fcf991ae96b4b0,
+      type: 2}
+  - latitude: 1.28161
+    longitude: 103.848
+    gameObject: {fileID: 1476074860939424, guid: bd0f989326332304ca4e2493eb3f20d2,
+      type: 2}
+  - latitude: 1.2812
+    longitude: 103.847
+    gameObject: {fileID: 1309510373099968, guid: c7b99decc74ef5b4c8e031405fab0cb5,
+      type: 2}
+  - latitude: 1.27945
+    longitude: 103.845
+    gameObject: {fileID: 1439399381494386, guid: d6f1ea79a739ba049ac631707f8b2313,
+      type: 2}
+  - latitude: 1.28042
+    longitude: 103.848
+    gameObject: {fileID: 1102785235905910, guid: 86cbc9a6075dc0741963520c02fb4d81,
+      type: 2}
+  - latitude: 1.28017
+    longitude: 103.848
+    gameObject: {fileID: 1829836801124704, guid: eade03d4aa82ed14daab0c24aff3b3dc,
+      type: 2}
+  - latitude: 1.27733
+    longitude: 103.845
+    gameObject: {fileID: 1755752108971790, guid: 16f61c314488f8d4c9b8f67f851b4aa7,
+      type: 2}
+  - latitude: 1.28276
+    longitude: 103.846
+    gameObject: {fileID: 1966680482461898, guid: 90dcf505260156145ab948b5a7492247,
+      type: 2}
+  - latitude: 1.28068
+    longitude: 103.846
+    gameObject: {fileID: 1858390330199350, guid: bc474d1667e560e4d86db608660bbd97,
+      type: 2}
+  - latitude: 1.2767
+    longitude: 103.845
+    gameObject: {fileID: 1516011501098062, guid: c70daab9031f3994ca77bdf514ae455e,
+      type: 2}
+  - latitude: 1.27919
+    longitude: 103.848
+    gameObject: {fileID: 1582238369705950, guid: bd50a8ecb075e2c47aba24a8344f737b,
+      type: 2}
+  - latitude: 1.27886
+    longitude: 103.846
+    gameObject: {fileID: 1671347156584934, guid: 67ecc32884323ed47b0c64730d7609f2,
+      type: 2}
+  - latitude: 1.2832
+    longitude: 103.849
+    gameObject: {fileID: 1211699896250536, guid: e7e7da4a9f204ff45be15d4f2e1ce959,
+      type: 2}
+  - latitude: 1.28131
+    longitude: 103.846
+    gameObject: {fileID: 1594386968708100, guid: dcd21216ca09c9549a9417408a4c79b8,
+      type: 2}
+  - latitude: 1.28037
+    longitude: 103.848
+    gameObject: {fileID: 1730301731629628, guid: cb89e8c0636337b4a87b3838c57a19a2,
+      type: 2}
+  - latitude: 1.27583
+    longitude: 103.85
+    gameObject: {fileID: 1368850021218682, guid: 0914960e9ced49a4db88dfa2393802ba,
+      type: 2}
+  - latitude: 1.28142
+    longitude: 103.846
+    gameObject: {fileID: 1673317092900574, guid: 63b9a71db297eef428fb88e96daa53c2,
+      type: 2}
+  - latitude: 1.27492
+    longitude: 103.844
+    gameObject: {fileID: 1126258316935418, guid: 35c5b4fdfbea4b14e85c2721cdad3695,
+      type: 2}
+  - latitude: 1.28127
+    longitude: 103.847
+    gameObject: {fileID: 1137627786324566, guid: 459f9a1f5f063be49b38b81da3afe23e,
+      type: 2}
+  - latitude: 1.27532
+    longitude: 103.856
+    gameObject: {fileID: 1610144904847780, guid: 7bef559653a3ad64f8bcb3e0318d7f73,
+      type: 2}
+  - latitude: 1.28119
+    longitude: 103.846
+    gameObject: {fileID: 1296448836824628, guid: 7ae6f98e8883a3547a4037d0feefd7ab,
+      type: 2}
+  - latitude: 1.28025
+    longitude: 103.847
+    gameObject: {fileID: 1126234339439632, guid: 66728b24147142741ba4194adb5e84b0,
+      type: 2}
+  - latitude: 1.27582
+    longitude: 103.845
+    gameObject: {fileID: 1027513510833806, guid: 36350a5c616f39247be304a5573f92bc,
       type: 2}
   csvFile: {fileID: 4900000, guid: 237719db9fa329042b8e589b962f60a1, type: 3}
   prefabFolderPath: Assets/Prefabs/BuildingPrefabList
